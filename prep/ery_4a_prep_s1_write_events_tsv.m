@@ -32,12 +32,12 @@ subjs2write = {};
 
 runnames = {'run-1','run-2','run-3','run-4','run-5','run-6'};
 logfilenames = {'*_run1.log','*_run2.log','*_run3.log','*_run4.log','*_run5.log','*_run6.log'};
-taskname = 'sweettaste';
-event_cats = categorical({'high_fear';'moderate_fear';'neutral_fear';'imagine'});
-high_fear_pics = {'pic_fear1','pic_fear2','pic_fear3','pic_fear4','pic_fear5'};
-mod_fear_pics = {'pic_fear6','pic_fear7','pic_fear8','pic_fear9','pic_fear10'};
-neutral_pics = {'pic_neutral1','pic_neutral2','pic_neutral3','pic_neutral4','pic_neutral5'};
-imagine_cats = categorical({'imagine_high';'imagine_moderate';'imagine_neutral'});
+taskname = 'sweettaste_';
+event_cats = categorical({'sucrose delivery';'erythritol delivery';'sucralose delivery';'neutral solution delivery';'rating'});
+rating_labels = {'Sucrose','Erythritol','Sucralose','Control'};
+% mod_fear_pics = {'pic_fear6','pic_fear7','pic_fear8','pic_fear9','pic_fear10'};
+% neutral_pics = {'pic_neutral1','pic_neutral2','pic_neutral3','pic_neutral4','pic_neutral5'};
+% imagine_cats = categorical({'imagine_high';'imagine_moderate';'imagine_neutral'});
 
 
 %% LOOP OVER SUBJECTS TO READ LOGFILES, CREATE TABLE WITH ONSETS AND DURATIONS, AND SAVE AS EVENTS.TSV TO BIDSSUBJDIRS
@@ -84,9 +84,10 @@ else
                 
                 else
                     log = readtable(logfilepath,'FileType','text','Delimiter','tab');
+                    log = log(~isnan(log.Trial),:);
                     log.EventType = categorical(log.EventType);
                     log.Code = categorical(log.Code);
-                    time_zero = log.Time(log.Trial == 1 & log.EventType == 'Pulse'); % time for onsets and durations is counted from the first scanner pulse onwards
+                    time_zero = log.Time(log.Trial == 0 & log.EventType == 'Pulse'); % time for onsets and durations is counted from the first scanner pulse onwards
                         
                         if size(time_zero,1) > 1
                             error('ambiguity about time zero in %s%s, please check logfile',subjs{sub},logfilenames{run});
@@ -118,7 +119,7 @@ else
                         end
                         
                     log(isundefined(log.trial_type),:) = [];
-                    filename = strcat(subjrawdir,'\',subjs{sub},'_ses-1_task-',char(tasknames(run)),'_model_1_events.tsv');
+                    filename = strcat(subjBIDSdir,'/',sourcesubjs{sub},'_task-',taskname,runnames{run},'_model_1_events.tsv');
                     writetable(log,filename,'Filetype','text','Delimiter','\t');
                     clear logfile log time_zero filename
 
