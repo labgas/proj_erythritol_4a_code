@@ -26,7 +26,7 @@
 %% DEFINE DIRECTORIES, SUBJECTS, RUNS, AND CONDITIONS
 %--------------------------------------------------------------------------
 
-LaBGAScore_prep_s0_define_directories;
+ery_4a_prep_s0_define_directories;
 
 subjs2write = {};
 

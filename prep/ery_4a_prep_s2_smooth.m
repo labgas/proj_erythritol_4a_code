@@ -48,7 +48,7 @@ subjs2smooth = {}; % specify if you only want to smooth a subset of all subjects
 %% DEFINE DIRECTORIES
 %--------------------------------------------------------------------------
 
-LaBGAScore_prep_s0_define_directories;
+ery_4a_prep_s0_define_directories;
 
 
 %% UNZIP IMAGES, SMOOTH, ZIP, SMOOTHED IMAGES, AND DELETE ALL UNZIPPED IMAGES
