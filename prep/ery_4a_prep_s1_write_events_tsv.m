@@ -30,21 +30,21 @@ ery_4a_prep_s0_define_directories;
 
 subjs2write = {};
 
-runnames = {'run-1','run-2','run-3','run-4','run-5','run-6'};
+runnames = {'run-01','run-02','run-03','run-04','run-05','run-06'};
 logfilenames = {'*_run1.log','*_run2.log','*_run3.log','*_run4.log','*_run5.log','*_run6.log'};
 taskname = 'sweettaste_';
-sweet_labels = {'sucrose delivery';'erythritol delivery';'sucralose delivery';'control delivery'};
-swallow_rinse_labels = {'sucrose_swallowing';'erythritol_swallowing';'sucralose_swallowing';'control_swallowing'};
-rating_labels = {'Sucrose','Erythritol','Sucralose','Control'};
-fixation_labels = {'fixation_cross','Sucrose fixation cross','Erythritol fixation cross','Sucralose fixation cross','Control fixation cross'};
-events_interest = {'sucrose','erythritol','sucralose','control'};
-events_nuisance = {'swallow_rinse','rating'};
+sweet_labels = {'sucrose delivery';'erythritol delivery';'sucralose delivery';'control delivery'}; % labels for sweet substance delivery in Code var of logfile
+swallow_rinse_labels = {'sucrose_swallowing';'erythritol_swallowing';'sucralose_swallowing';'control_swallowing'}; % labels for swallowing cue presentation after sweet substance delivery in Code var of logfile
+rating_labels = {'Sucrose','Erythritol','Sucralose','Control'}; % labels for start of rating period in Code var of logfile
+fixation_labels = {'fixation_cross','Sucrose fixation cross','Erythritol fixation cross','Sucralose fixation cross','Control fixation cross'}; % labels for fixation cross in Code var of logfile
+events_interest = {'sucrose','erythritol','sucralose','control'}; % names of events of interest to be written to events.tsv
+events_nuisance = {'swallow_rinse','rating'}; % names of nuisance events to be written to events.tsv
 
-varNames = {'Trial','Event Type','Code','Time','TTime','Uncertainty','Duration','Uncertainty','ReqTime','ReqDur','Stim Type','Pair Index'};
-selectedVarNames = [1:5 7 9];
-varTypes = {'double','categorical','categorical','double','double','double','double','double','double','char','char','double'};
+varNames = {'Trial','Event Type','Code','Time','TTime','Uncertainty','Duration','Uncertainty','ReqTime','ReqDur','Stim Type','Pair Index'}; % varnames of logfile
+selectedVarNames = [1:5 7 9]; % varnames we want to use in the script
+varTypes = {'double','categorical','categorical','double','double','double','double','double','double','char','char','double'}; % matlab vartypes to be used when importing log file as table
 delimiter = '\t';
-dataStartLine = 5;
+dataStartLine = 5; % line on which actual data starts in logfile
 extraColRule = 'ignore';
 
 opts = delimitedTextImportOptions('VariableNames',varNames,...
@@ -117,13 +117,48 @@ if ~isempty(subjs2write)
                             
                             end
                         end
+                        
+                    log.rating = zeros(height(log),1);
                     
+                        for l = 1:height(log)
+                            
+                            if contains(char(log.Code(l)),'score','IgnoreCase',true)
+                                scorestring = char(log.Code(l));
+                                
+                                if ~contains(scorestring(1,end-2:end),':')
+                                    log.rating(l) = str2double(strtrim(scorestring(1,end-2:end)));
+                                
+                                else log.rating(l) = str2double(scorestring(1,end));
+                                    
+                                end
+                            
+                            else log.rating(l) = NaN;
+                                
+                            end
+                            
+                        end
+                        
                     log.trial_type = categorical(log.trial_type);
-                    log = log(~isundefined(log.trial_type),:);        
+                    
+                    log = log((~isundefined(log.trial_type) | ~isnan(log.rating)),:);
+                    
+                        for n = 1:height(log)
+                            
+                            if ismember(log.trial_type(n),events_interest)
+                                log.rating(n) = log.rating(n+3);
+                            
+                            end
+                            
+                        end
+                          
                     log = removevars(log,{'Trial','EventType','Code','Time','TTime','Duration','ReqTime','TimeZero'}); % get rid of junk variables from logfile we don't need
+                    
+                    log = log(~isundefined(log.trial_type),:);  
+                    
                     log.duration = zeros(height(log),1);
                         
                         for m = 1:height(log)
+                            
                             if ~isequal(log.trial_type(m),'fixation')
                                 log.duration(m) = log.onset(m+1) - log.onset(m);
                             
@@ -134,7 +169,7 @@ if ~isempty(subjs2write)
                         
                     log = log(~isnan(log.duration),:);
                         
-                    filename = strcat(subjBIDSdir,'/',sourcesubjs{sub},'_task-',taskname,runnames{run},'_model_1_events.tsv');
+                    filename = strcat(subjBIDSdir,'/',sourcesubjs{sub},'_task-',taskname,runnames{run},'_events.tsv');
                     writetable(log,filename,'Filetype','text','Delimiter','\t');
                     clear logfile log time_zero filename
 
@@ -207,9 +242,43 @@ else
                             end
                         end
                     
+                    log.rating = zeros(height(log),1);
+                    
+                        for l = 1:height(log)
+                            
+                            if contains(char(log.Code(l)),'score','IgnoreCase',true)
+                                scorestring = char(log.Code(l));
+                                
+                                if ~contains(scorestring(1,end-2:end),':')
+                                    log.rating(l) = str2double(strtrim(scorestring(1,end-2:end)));
+                                
+                                else log.rating(l) = str2double(scorestring(1,end));
+                                    
+                                end
+                            
+                            else log.rating(l) = NaN;
+                                
+                            end
+                            
+                        end
+                        
                     log.trial_type = categorical(log.trial_type);
-                    log = log(~isundefined(log.trial_type),:);        
+                    
+                    log = log((~isundefined(log.trial_type) | ~isnan(log.rating)),:);
+                    
+                        for n = 1:height(log)
+                            
+                            if ismember(log.trial_type(n),events_interest)
+                                log.rating(n) = log.rating(n+3);
+                            
+                            end
+                            
+                        end
+                          
                     log = removevars(log,{'Trial','EventType','Code','Time','TTime','Duration','ReqTime','TimeZero'}); % get rid of junk variables from logfile we don't need
+                    
+                    log = log(~isundefined(log.trial_type),:);  
+                    
                     log.duration = zeros(height(log),1);
                         
                         for m = 1:height(log)
@@ -224,7 +293,7 @@ else
                         
                     log = log(~isnan(log.duration),:);
                         
-                    filename = strcat(subjBIDSdir,'/',sourcesubjs{sub},'_task-',taskname,runnames{run},'_model_1_events.tsv');
+                    filename = strcat(subjBIDSdir,'/',sourcesubjs{sub},'_task-',taskname,runnames{run},'_events.tsv');
                     writetable(log,filename,'Filetype','text','Delimiter','\t');
                     clear logfile log time_zero filename
 
