@@ -95,7 +95,7 @@ if ~isempty(subjs2write)
                         end
                         
                     log.TimeZero = log.Time - time_zero;
-                    log.onset = log.TimeZero ./ 10000; % convert to seconds 
+                    log.onset = log.TimeZero ./ 10000; % convert to seconds
                     log(log.EventType == 'Pulse',:) = [];
                     log.trial_type = cell(height(log),1);
                         
@@ -105,6 +105,7 @@ if ~isempty(subjs2write)
                             
                             elseif ismember(log.Code(k),rating_labels)
                                 log.trial_type{k} = events_nuisance{2};
+                                log.onset(k) = log.onset(k)+4;
                             
                             elseif ismember(log.Code(k),sweet_labels)
                                 idx = (log.Code(k) == sweet_labels);
