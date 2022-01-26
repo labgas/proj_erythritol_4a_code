@@ -1,8 +1,8 @@
 %% ery_4a_prep_s1_write_events_tsv
 %
-% This script reads logfiles, extract the onsets and durations for
-% different conditions, and write events.tsv files to the BIDS dir for
-% each subject, for two different models
+% This script reads logfiles, extracts the onsets and durations for
+% different conditions, and writes events.tsv files to the BIDS dir for
+% each subject
 % 
 % DEPENDENCIES
 % None
