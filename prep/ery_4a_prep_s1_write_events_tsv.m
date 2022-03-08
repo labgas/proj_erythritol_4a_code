@@ -37,7 +37,7 @@ sweet_labels = {'sucrose delivery';'erythritol delivery';'sucralose delivery';'c
 swallow_rinse_labels = {'sucrose_swallowing';'erythritol_swallowing';'sucralose_swallowing';'control_swallowing'}; % labels for swallowing cue presentation after sweet substance delivery in Code var of logfile
 rating_labels = {'Sucrose','Erythritol','Sucralose','Control'}; % labels for start of rating period in Code var of logfile
 fixation_labels = {'fixation_cross','Sucrose fixation cross','Erythritol fixation cross','Sucralose fixation cross','Control fixation cross'}; % labels for fixation cross in Code var of logfile
-events_interest = {'sucrose','erythritol','sucralose','control'}; % names of events of interest to be written to events.tsv
+events_interest = {'sucrose','erythritol','sucralose','water'}; % names of events of interest to be written to events.tsv
 events_nuisance = {'swallow_rinse','rating'}; % names of nuisance events to be written to events.tsv
 
 varNames = {'Trial','Event Type','Code','Time','TTime','Uncertainty','Duration','Uncertainty','ReqTime','ReqDur','Stim Type','Pair Index'}; % varnames of logfile
