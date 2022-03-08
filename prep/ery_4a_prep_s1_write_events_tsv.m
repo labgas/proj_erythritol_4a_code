@@ -28,9 +28,9 @@
 
 ery_4a_prep_s0_define_directories;
 
-subjs2write = {};
+subjs2write = {}; % enter subjects separated by comma if you only want to write files for selected subjects e.g. {'sub-01','sub-02'}
 
-runnames = {'run-01','run-02','run-03','run-04','run-05','run-06'};
+runnames = {'run-1','run-2','run-3','run-4','run-5','run-6'};
 logfilenames = {'*_run1.log','*_run2.log','*_run3.log','*_run4.log','*_run5.log','*_run6.log'};
 taskname = 'sweettaste_';
 sweet_labels = {'sucrose delivery';'erythritol delivery';'sucralose delivery';'control delivery'}; % labels for sweet substance delivery in Code var of logfile
