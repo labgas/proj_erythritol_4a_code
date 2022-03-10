@@ -19,8 +19,8 @@
 % date:   December, 2021
 %
 %__________________________________________________________________________
-% @(#)% ery_4a_prep_s1_write_events_tsv.m         v1.0        
-% last modified: 2021/12/23
+% @(#)% ery_4a_prep_s1_write_events_tsv.m         v1.1        
+% last modified: 2022/03/10
 
 
 %% DEFINE DIRECTORIES, SUBJECTS, RUNS, CONDITIONS, AND IMPORT OPTIONS
@@ -170,7 +170,7 @@ if ~isempty(subjs2write)
                         
                     log = log(~isnan(log.duration),:);
                         
-                    filename = strcat(subjBIDSdir,'/',sourcesubjs{sub},'_task-',taskname,runnames{run},'_events.tsv');
+                    filename = fullfile(subjBIDSdir,sourcesubjs{sub},'_task-',taskname,runnames{run},'_events.tsv');
                     writetable(log,filename,'Filetype','text','Delimiter','\t');
                     clear logfile log time_zero filename
 
@@ -294,7 +294,7 @@ else
                         
                     log = log(~isnan(log.duration),:);
                         
-                    filename = strcat(subjBIDSdir,'/',sourcesubjs{sub},'_task-',taskname,runnames{run},'_events.tsv');
+                    filename = fullfile(subjBIDSdir,sourcesubjs{sub},'_task-',taskname,runnames{run},'_events.tsv');
                     writetable(log,filename,'Filetype','text','Delimiter','\t');
                     clear logfile log time_zero filename
 
