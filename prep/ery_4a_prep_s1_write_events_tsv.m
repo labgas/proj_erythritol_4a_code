@@ -30,6 +30,7 @@
 % OUTPUTS
 %
 % events.tsv files for each run in BIDS dir for each subject
+% phenotype.tsv file in BIDS dir (optional)
 %
 %__________________________________________________________________________
 %
@@ -37,8 +38,8 @@
 % date:   December, 2021
 %
 %__________________________________________________________________________
-% @(#)% LaBGAScore_prep_s1_write_events_tsv.m         v1.1        
-% last modified: 2022/03/16
+% @(#)% LaBGAScore_prep_s1_write_events_tsv.m         v1.2        
+% last modified: 2022/04/20
 
 
 %% DEFINE DIRECTORIES, SUBJECTS, RUNS, CONDITIONS, AND IMPORT OPTIONS
@@ -47,6 +48,7 @@
 ery_4a_prep_s0_define_directories; % lukasvo edited from original LaBGAScore script to enable standalone functioning of proj_ery_4a dataset
 
 subjs2write = {}; % enter subjects separated by comma if you only want to write files for selected subjects e.g. {'sub-01','sub-02'}
+pheno_tsv = true; % turn to false if you do not wish to generate a phenotype.tsv file with trial-by-trial ratings; will only work if subjs2write is empty (i.e. when you loop over all your subjects)
 
 runnames = {'run-1','run-2','run-3','run-4','run-5','run-6'};
 logfilenames = {'*_run1.log','*_run2.log','*_run3.log','*_run4.log','*_run5.log','*_run6.log'};
@@ -97,7 +99,7 @@ if ~isempty(subjs2write)
                 logfilepath = fullfile(subjsourcedir,'logfiles',logfilename);
                 
                 if ~isfile(logfilepath)
-                    warning('\n%s does not exist, please check before proceeding',logfilepath);
+                    warning('\nlogfile missing for run %d in %s, please check before proceeding',run,logfilepath);
                     continue
                 
                 elseif size(logfilepath,1) > 1
@@ -215,8 +217,16 @@ else
         error('\nsubject %s present in %s not present in %s, please check before proceeding',BIDSsubjs{~ismember(BIDSsubjs,D)},BIDSdir,derivdir);
         
     else
-    
+        
+        if pheno_tsv
+            pheno_file = table();
+        end
+        
         for sub = 1:size(sourcesubjs,1)
+            
+            if pheno_tsv
+                pheno_file_subj = table();
+            end
 
         % DEFINE SUBJECT LEVEL DIRS
         subjsourcedir = sourcesubjdirs{sub};
@@ -230,7 +240,7 @@ else
                 logfilepath = fullfile(subjsourcedir,'logfiles',logfilename);
                 
                 if ~isfile(logfilepath)
-                    warning('\n%s does not exist, please check before proceeding',logfilepath);
+                    warning('\nlogfile missing for run %d in %s, please check before proceeding',run,logfilepath);
                     continue
                 
                 elseif size(logfilepath,1) > 1
@@ -331,13 +341,48 @@ else
                         
                     filename = fullfile(subjBIDSdir,[sourcesubjs{sub},'_task-',taskname,runnames{run},'_events.tsv']);
                     writetable(log,filename,'Filetype','text','Delimiter','\t');
-                    clear logfile log time_zero filename
+                    
+                        if pheno_tsv
+                            
+                            log2 = log(~isnan(log.rating),:);
+                            log2 = removevars(log2,{'onset','duration'});
+
+                            for n = 1:height(log2)
+                                log2.subject(n) = sub;
+                                log2.run(n) = run;
+                                log2.trial_nr_run(n) = n; % generates consecutive trial numbers within each run
+                                log2.trial_nr_concat(n) = height(pheno_file_subj) + n; % generates consecutive trial numbers over all conditions & runs
+                            end  
+                            
+                            for o = 1:size(events_interest,2)
+                                idx_run = log2.trial_type == events_interest{o};
+                                log2.trial_nr_cond_run(idx_run) = 1:sum(idx_run);
+                                    if height(pheno_file_subj) > 0
+                                        idx_sub = pheno_file_subj.trial_type == events_interest{o};
+                                        log2.trial_nr_cond_concat(idx_run) = sum(idx_sub)+1:(sum(idx_sub)+sum(idx_run));
+                                    else
+                                        log2.trial_nr_cond_concat = log2.trial_nr_cond_run;
+                                    end
+                                    clear idx_run idx_sub
+                            end
+                            
+                            pheno_file_subj = [pheno_file_subj;log2];
+
+                        end
+                    
+                    clear logfile log time_zero filename log2
 
                 end % if loop checking whether logfile exists
 
             end % for loop runs
+            
+            pheno_file = [pheno_file;pheno_file_subj];
+            clear pheno_file_subj;
 
         end % for loop subjects
+        
+        pheno_filename = fullfile(BIDSdir,'phenotype.tsv');
+        writetable(pheno_file,pheno_filename,'Filetype','text','Delimiter','\t');
     
     end % if loop checking sourcesubjs == BIDSsubjs
     
