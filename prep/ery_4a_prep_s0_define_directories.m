@@ -1,4 +1,4 @@
-%% LaBGAScore_prep_s0_define_directories
+%% ery_4a_prep_s0_define_directories
 %
 % This script defines the paths for the standard BIDS-compliant
 % directory structure for LaBGAS neuroimaging (datalad) datasets

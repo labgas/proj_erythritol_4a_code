@@ -1,4 +1,4 @@
-%% LaBGAScore_prep_s1_write_events_tsv
+%% ery_4a_prep_s1_write_events_tsv
 %
 % This script reads logfiles, extracts the onsets, durations, and ratings for
 % different conditions, and writes events.tsv files to the BIDS dir for
@@ -44,7 +44,7 @@
 %% DEFINE DIRECTORIES, SUBJECTS, RUNS, CONDITIONS, AND IMPORT OPTIONS
 %--------------------------------------------------------------------------
 
-LaBGAScore_prep_s0_define_directories;
+ery_4a_prep_s0_define_directories; % lukasvo edited from original LaBGAScore script to enable standalone functioning of proj_ery_4a dataset
 
 subjs2write = {}; % enter subjects separated by comma if you only want to write files for selected subjects e.g. {'sub-01','sub-02'}
 
@@ -194,6 +194,7 @@ if ~isempty(subjs2write)
                         end
                         
                     log = log(~isnan(log.duration),:);
+                    log = log(log.rating~=-100,:); % lukasvo76 added to original LaBGAScore script - trials with -100 ratings need to be removed since subjects were instructed to use this in case of failed solution delivery
                         
                     filename = fullfile(subjBIDSdir,[sourcesubjs{sub},'_task-',taskname,runnames{run},'_events.tsv']);
                     writetable(log,filename,'Filetype','text','Delimiter','\t');
@@ -326,6 +327,7 @@ else
                         end
                         
                     log = log(~isnan(log.duration),:);
+                    log = log(log.rating~=-100,:); % lukasvo76 added to original LaBGAScore script - trials with -100 ratings need to be removed since subjects were instructed to use this in case of failed solution delivery
                         
                     filename = fullfile(subjBIDSdir,[sourcesubjs{sub},'_task-',taskname,runnames{run},'_events.tsv']);
                     writetable(log,filename,'Filetype','text','Delimiter','\t');
