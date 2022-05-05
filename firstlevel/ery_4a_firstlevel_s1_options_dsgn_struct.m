@@ -178,7 +178,7 @@ LaBGAS_options.mandatory.spike_def = 'fMRIprep';
 LaBGAS_options.mandatory.omit_spike_trials = 'no';
 LaBGAS_options.mandatory.spikes_percent_threshold=0.15;
 LaBGAS_options.mandatory.vif_thresh=2;
-LaBGAS_options.movement_reg_quadratic = true; % change to false if you don't want to add quadratic terms for movement parameters and their first-order derivatives
+LaBGAS_options.movement_reg_quadratic = false; % false here because we have quite a lot of regressors of interest and do not want to spend too many df on quadratic terms of movement regs
 
 % OPTIONAL
 LaBGAS_options.subjs2analyze = {}; % enter subjects separated by comma if you only want to analyze selected subjects e.g. {'sub-01','sub-02'}; THIS IS NOT YET FULLY IMPLEMENTED HENCE LEAVE CELL ARRAY EMPTY OR COMMENT OUT OR DO NOT SPECIFY FIELD AT ALL
