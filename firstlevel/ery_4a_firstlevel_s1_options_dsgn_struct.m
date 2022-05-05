@@ -212,7 +212,7 @@ end
 
 % load standard BIDS directory structure from root dir
 
-LaBGAScore_prep_s0_define_directories;
+ery_4a_prep_s0_define_directories;
 
 % define run directory names
 % names are defaults, only change number
@@ -230,7 +230,7 @@ githubrootdir = '/data/master_github_repos';
     
     % REQUIRED FIELDS
     DSGN.metadata = "proj-erythritol_4a first level analysis model 1, i.e. modeling 4 conditions for sucrose, erythritol, sucralose, and water as long events (= duration of solution in mouth), with sweetness liking ratings as parametric modulators"; % field for annotation with study info, or whatever you like
-    DSGN.modeldir = '/data/test_scripts/firstlevel/model_1_conds_pmods'; % directory where you want to write first level results for this model
+    DSGN.modeldir = '/data/proj_erythritol/proj_erythritol_4a/firstlevel/model_1_conds_pmods'; % directory where you want to write first level results for this model
         if ~isfield(LaBGAS_options,'subjs2analyze')
             DSGN.subjects = derivsubjdirs';
         elseif ~isempty(LaBGAS_options.subjs2analyze)
@@ -255,7 +255,7 @@ githubrootdir = '/data/master_github_repos';
    
     % OPTIONAL FIELDS
 %     DSGN.concatenation = {[1:6]}; % default: none; cell array of arrays of runs to concatenate; see documentation for when to concatenate, and how it works exactly
-    DSGN.allowmissingfunc = true; % default: false; true will prevent erroring out when functional file is missing for at least one run is missing for at least one subject
+    DSGN.allowmissingfunc = true; % CANlab default: false; LaBGAS default: true, will prevent erroring out when functional file is missing for at least one run is missing for at least one subject
 %     DSGN.customrunintercepts = {1:6}; % default: none; will only work if DSGN.concatenation is specified; cell array of vectors specifying custom intercepts, NOT YET FULLY TESTED 
     
 % PARAMETERS
@@ -283,7 +283,9 @@ githubrootdir = '/data/master_github_repos';
     
     % OPTIONAL FIELDS
     
-    % cell array (one cell per session) of cell arrays (one cell per condition) of cell arrays (one cell per modulator) of MAT-file names; set to {{}} if you don't want parametric modulators
+    % cell array (one cell per session) of cell arrays (one cell per
+    % condition) of cell arrays (one cell per modulator) of MAT-file names;
+    % set to {{}} if you don't want parametric modulators;
     c=0;
     c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose' 'liking_water'};
     c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose' 'liking_water'};
@@ -295,10 +297,10 @@ githubrootdir = '/data/master_github_repos';
 %     DSGN.convolution.time; default 0, which means no time derivative
 %     DSGN.convolution.dispersion: default 0, which means no dispersion derivative
 %     DSGN.ar1 = false; % autoregressive AR(1) to model serial correlations; SPM default is true, CANlab default is false, Tor recommends turning autocorrelation off, because this algorithm pools across the whole brain, and does not perform well in some situations; if you are performing a group analysis, the autocorrelation problem is not as concerning
-    DSGN.notimemod = true; % default: false; if true, turn off time modulation of conditions, i.e. when you do not expect linear trends over time
+    DSGN.notimemod = true; % CANlab default: false; if true, turn off time modulation of conditions, i.e. when you do not expect linear trends over time
 %     DSGN.singletrials = {{}}; % a cell array (1 cell per session) of cell arrays (1 cell per condition) of (corresponding to DSGN.conditions) of true/false values indicating whether to convert specified condition to set of single trial conditions
 %     DSGN.singletrialsall = false; % default: false; if true, set DSGN.singletrials to true for all conditions
-    DSGN.modelingfilesdir = 'model_1_conds_pmods'; % name of subfolder which will be created within directory containing functional files where .mat files containing fields of DSGN structure will be saved
+    DSGN.modelingfilesdir = 'model_1_conds_pmods'; % name of subfolder which will be created within directory containing functional files where .mat files containing fields of DSGN structure will be saved; typically same as the last part of the path of DSGN.modeldir
 %     DSGN.allowemptycond = false; % default:false; if true, allow empty conditions
 %     DSGN.allowmissingcondfiles = false; % default:false; if true, throw warning instead of error when no file(s) are found corresponding to a MAT-file name/wildcard
     DSGN.multireg = 'noise_regs'; % specify name for matfile with noise parameters you want to save
@@ -402,7 +404,7 @@ githubrootdir = '/data/master_github_repos';
     DSGN.contrastnames{c} = 'erythritol unmodulated vs sucralose unmodulated'; % CON_0010
     DSGN.contrastweights{c} = [1 -1];
     
-    % modulated[X,delta,delta_hires,hrf] = onsets2fmridesign(ons_durs_int,DSGN.tr,nii_hdr.tdim .*DSGN.tr, hrf_name,'parametric_singleregressor',pmods);
+    % modulated
     c=c+1;
     DSGN.contrastnames{c} = 'sucrose modulated'; % CON_0011
     DSGN.contrastweights{c} = [1];

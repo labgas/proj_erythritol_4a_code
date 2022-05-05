@@ -8,7 +8,7 @@
 % help scn_spm_design_check
 % 
 % USAGE
-% Script should be called from LaBGAScore_firstlevel_s1_prep_firstlvl.m, it
+% Script should be called from LaBGAScore_firstlevel_s1_options_design_struct.m, it
 % is not for standalone use
 %
 %__________________________________________________________________________
