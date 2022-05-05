@@ -106,11 +106,11 @@
 
 %% MAKE SURE DEPENDENCIES ARE ON MATLAB PATH, AND PREVIOUS SCRIPT IS RUN
 
-% check whether LaBGAScore_firstlevel_s1_options_dsgn_struct has been run
+% check whether ery_4a_firstlevel_s1_options_dsgn_struct has been run
 
 if ~exist('DSGN','var')
     warning('\nDSGN structure variable not found in Matlab workspace, running LaBGAScore_firstlevel_s1_options_dsgn_struct before proceeding')
-    LaBGAScore_firstlevel_s1_options_dsgn_struct;
+    ery_4a_firstlevel_s1_options_dsgn_struct;
     cd(rootdir);
 else
     cd(rootdir);
