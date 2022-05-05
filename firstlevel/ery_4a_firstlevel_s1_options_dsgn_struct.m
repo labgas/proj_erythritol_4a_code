@@ -287,12 +287,12 @@ githubrootdir = '/data/master_github_repos';
     % condition) of cell arrays (one cell per modulator) of MAT-file names;
     % set to {{}} if you don't want parametric modulators;
     c=0;
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose' 'liking_water'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose' 'liking_water'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose' 'liking_water'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose' 'liking_water'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose' 'liking_water'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose' 'liking_water'};
+    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
+    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
+    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
+    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
+    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
+    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
 %     DSGN.convolution.type; default hrf, which means canonical hrf - other options: fir, spline (the latter is not yet implemented @LaBGAS, help needed from Tor/Martin/Bogdan)
 %     DSGN.convolution.time; default 0, which means no time derivative
 %     DSGN.convolution.dispersion: default 0, which means no dispersion derivative
@@ -352,19 +352,11 @@ githubrootdir = '/data/master_github_repos';
     c=c+1;
     DSGN.contrasts{c} = {{'.*liking_sucralose'}}; % CON_0013
     c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_water'}}; % CON_0014
+    DSGN.contrasts{c} = {{'.*liking_sucrose'} {'.*liking_sucralose'}}; % CON_0014
     c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_sucrose'} {'.*liking_water'}}; % CON_0015
+    DSGN.contrasts{c} = {{'.*liking_sucrose'} {'.*liking_erythritol'}}; % CON_0015
     c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_erythritol'} {'.*liking_water'}}; % CON_0016
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_sucralose'} {'.*liking_water'}}; % CON_0017
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_sucrose'} {'.*liking_sucralose'}}; % CON_0018
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_sucrose'} {'.*liking_erythritol'}}; % CON_0019
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_erythritol'} {'.*liking_sucralose'}}; % CON_0020
+    DSGN.contrasts{c} = {{'.*liking_erythritol'} {'.*liking_sucralose'}}; % CON_0016
     
     % OPTIONAL FIELDS
     
@@ -415,25 +407,13 @@ githubrootdir = '/data/master_github_repos';
     DSGN.contrastnames{c} = 'sucralose modulated'; % CON_0013
     DSGN.contrastweights{c} = [1];
     c=c+1;
-    DSGN.contrastnames{c} = 'water modulated'; % CON_0014
-    DSGN.contrastweights{c} = [1];
-    c=c+1;
-    DSGN.contrastnames{c} = 'sucrose modulated vs water modulated'; % CON_0015
+    DSGN.contrastnames{c} = 'sucrose modulated vs sucralose modulated'; % CON_0014
     DSGN.contrastweights{c} = [1 -1];
     c=c+1;
-    DSGN.contrastnames{c} = 'erythritol modulated vs water modulated'; % CON_0016
-    DSGN.contrastweights{c} = [1 -1];    
-    c=c+1;
-    DSGN.contrastnames{c} = 'sucralose modulated vs water modulated'; % CON_0017
+    DSGN.contrastnames{c} = 'sucrose modulated vs erythritol modulated'; % CON_0015
     DSGN.contrastweights{c} = [1 -1];
     c=c+1;
-    DSGN.contrastnames{c} = 'sucrose modulated vs sucralose modulated'; % CON_0018
-    DSGN.contrastweights{c} = [1 -1];
-    c=c+1;
-    DSGN.contrastnames{c} = 'sucrose modulated vs erythritol modulated'; % CON_0019
-    DSGN.contrastweights{c} = [1 -1];
-    c=c+1;
-    DSGN.contrastnames{c} = 'erythritol modulated vs sucralose modulated'; % CON_0020
+    DSGN.contrastnames{c} = 'erythritol modulated vs sucralose modulated'; % CON_0016
     DSGN.contrastweights{c} = [1 -1];
     
     
