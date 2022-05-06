@@ -226,7 +226,7 @@ firstsubjs = cellstr(char(firstlist(:).name));
 %% LOOP OVER SUBJECTS
 %--------------------------------------------------------------------------
 
-for sub=1:size(derivsubjs,1)
+for sub=17:size(derivsubjs,1)
     
     %% DEFINE SUBJECT LEVEL DIRS & FILENAMES
     
