@@ -1,4 +1,4 @@
-%% LaBGAScore_firstlevel_s1_options_dsgn_struct.m
+%% ery_4a_firstlevel_m1_s1_options_dsgn_struct.m
 %
 % This script sets the options and creates a CANlab-style DSGN structure
 % variable, which are used by the subsequent script in the standard LaBGAS

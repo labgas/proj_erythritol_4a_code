@@ -1,4 +1,4 @@
-%% LaBGAScore_firstlevel_s2_fit_model.m
+%% ery_4a_firstlevel_m1_s2_fit_model.m
 %
 % This script does everything to fit and diagnose first level models,
 % more specifically
@@ -110,7 +110,7 @@
 
 if ~exist('DSGN','var')
     warning('\nDSGN structure variable not found in Matlab workspace, running LaBGAScore_firstlevel_s1_options_dsgn_struct before proceeding')
-    ery_4a_firstlevel_s1_options_dsgn_struct;
+    ery_4a_firstlevel_m1_s1_options_dsgn_struct;
     cd(rootdir);
 else
     cd(rootdir);
