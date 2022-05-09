@@ -231,7 +231,7 @@ githubrootdir = '/data/master_github_repos';
     % REQUIRED FIELDS
     DSGN.metadata = "proj-erythritol_4a first level analysis model 1, i.e. modeling 4 conditions for sucrose, erythritol, sucralose, and water as long events (= duration of solution in mouth), with sweetness liking ratings as parametric modulators"; % field for annotation with study info, or whatever you like
     DSGN.modeldir = '/data/proj_erythritol/proj_erythritol_4a/firstlevel/model_2_conds_only'; % directory where you want to write first level results for this model
-        if ~isfield(LaBGAS_options,'subjs2analyze'
+        if ~isfield(LaBGAS_options,'subjs2analyze')
             DSGN.subjects = derivsubjdirs';
         elseif ~isempty(LaBGAS_options.subjs2analyze)
             [C,~,~] = intersect(derivsubjs,LaBGAS_options.mandatory.subjs2analyze);
