@@ -1,4 +1,4 @@
-%% ery_4a_firstlevel_m2_s1_options_dsgn_struct.m
+% ery_4a_firstlevel_m2_s1_options_dsgn_struct.m
 %
 % This script sets the options and creates a CANlab-style DSGN structure
 % variable, which are used by the subsequent script in the standard LaBGAS
@@ -197,10 +197,10 @@ LaBGAS_options.display.mask = which('gray_matter_mask_sparse.img');
 % STUDY-SPECIFIC, SO DISCUSS WITH LUKAS IF IN DOUBT!
 
 % REQUIRED IF YOU HAVE PARAMETRIC MODULATORS
-LaBGAS_options.pmods.pmod_polynom = 1;
-LaBGAS_options.pmods.pmod_name = 'rating';
-LaBGAS_options.pmods.pmod_ortho_off = false;
-LaBGAS_options.pmods.pmod_type = 'parametric_standard';
+%LaBGAS_options.pmods.pmod_polynom = 1;
+%LaBGAS_options.pmods.pmod_name = 'rating';
+%LaBGAS_options.pmods.pmod_ortho_off = false;
+%LaBGAS_options.pmods.pmod_type = 'parametric_standard';
 
 if strcmpi(LaBGAS_options.mandatory.spike_def,'CANlab')==1 && ~isfield(LaBGAS_options.spikes,'dvars_threshold')
     error('spike_def option %s requires specification of LaBGAS_options.spikes.dvars_threshold, please specify before proceeding',LaBGAS_options.mandatory.spike_def)
@@ -230,8 +230,8 @@ githubrootdir = '/data/master_github_repos';
     
     % REQUIRED FIELDS
     DSGN.metadata = "proj-erythritol_4a first level analysis model 1, i.e. modeling 4 conditions for sucrose, erythritol, sucralose, and water as long events (= duration of solution in mouth), with sweetness liking ratings as parametric modulators"; % field for annotation with study info, or whatever you like
-    DSGN.modeldir = '/data/proj_erythritol/proj_erythritol_4a/firstlevel/model_1_conds_pmods'; % directory where you want to write first level results for this model
-        if ~isfield(LaBGAS_options,'subjs2analyze')
+    DSGN.modeldir = '/data/proj_erythritol/proj_erythritol_4a/firstlevel/model_2_conds_only'; % directory where you want to write first level results for this model
+        if ~isfield(LaBGAS_options,'subjs2analyze'
             DSGN.subjects = derivsubjdirs';
         elseif ~isempty(LaBGAS_options.subjs2analyze)
             [C,~,~] = intersect(derivsubjs,LaBGAS_options.mandatory.subjs2analyze);
@@ -254,7 +254,7 @@ githubrootdir = '/data/master_github_repos';
         '/func/run-6/s6*.nii'}; % cell array (one cell per session) of paths to functional files, relative to absolute path specific in DSGN.subjects
    
     % OPTIONAL FIELDS
-    DSGN.concatenation = {[1:6]}; % default: none; cell array of arrays of runs to concatenate; see documentation for when to concatenate, and how it works exactly
+%     DSGN.concatenation = {[1:6]}; % default: false; cell array of arrays of runs to concatenate; see documentation for when to concatenate, and how it works exactly
     DSGN.allowmissingfunc = true; % CANlab default: false; LaBGAS default: true, will prevent erroring out when functional file is missing for at least one run is missing for at least one subject
 %     DSGN.customrunintercepts = {1:6}; % default: none; will only work if DSGN.concatenation is specified; cell array of vectors specifying custom intercepts, NOT YET FULLY TESTED 
     
@@ -285,14 +285,15 @@ githubrootdir = '/data/master_github_repos';
     
     % cell array (one cell per session) of cell arrays (one cell per
     % condition) of cell arrays (one cell per modulator) of MAT-file names;
-    % set to {{}} if you don't want parametric modulators;
-    c=0;
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
-    c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
+    % comment out if you don't want parametric modulators;
+%     c={{}};
+%     c=c+1;DSGN.pmods{c}={{}};
+%     c=c+1;DSGN.pmods{c}={{}};
+%     c=c+1;DSGN.pmods{c}={{}};
+%     c=c+1;DSGN.pmods{c}={{}};
+%     c=c+1;DSGN.pmods{c}={{}};
+%     c=c+1;DSGN.pmods{c}={{}};
+
 %     DSGN.convolution.type; default hrf, which means canonical hrf - other options: fir, spline (the latter is not yet implemented @LaBGAS, help needed from Tor/Martin/Bogdan)
 %     DSGN.convolution.time; default 0, which means no time derivative
 %     DSGN.convolution.dispersion: default 0, which means no dispersion derivative
@@ -300,7 +301,7 @@ githubrootdir = '/data/master_github_repos';
     DSGN.notimemod = true; % CANlab default: false; if true, turn off time modulation of conditions, i.e. when you do not expect linear trends over time
 %     DSGN.singletrials = {{}}; % a cell array (1 cell per session) of cell arrays (1 cell per condition) of (corresponding to DSGN.conditions) of true/false values indicating whether to convert specified condition to set of single trial conditions
 %     DSGN.singletrialsall = false; % default: false; if true, set DSGN.singletrials to true for all conditions
-    DSGN.modelingfilesdir = 'model_1_conds_pmods'; % name of subfolder which will be created within directory containing functional files where .mat files containing fields of DSGN structure will be saved; typically same as the last part of the path of DSGN.modeldir
+    DSGN.modelingfilesdir = 'model_2_conds_only'; % name of subfolder which will be created within directory containing functional files where .mat files containing fields of DSGN structure will be saved; typically same as the last part of the path of DSGN.modeldir
 %     DSGN.allowemptycond = false; % default:false; if true, allow empty conditions
 %     DSGN.allowmissingcondfiles = false; % default:false; if true, throw warning instead of error when no file(s) are found corresponding to a MAT-file name/wildcard
     DSGN.multireg = 'noise_regs'; % specify name for matfile with noise parameters you want to save
@@ -344,76 +345,40 @@ githubrootdir = '/data/master_github_repos';
     c=c+1;
     DSGN.contrasts{c} = {{'.*erythritol{1}\s[^x]'} {'.*sucralose{1}\s[^x]'}}; % CON_0010
     
-    % modulated contrasts
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_sucrose'}}; % CON_0011; this regexp will select any beta regressor with "liking_sucrose" anywhere in its name - which is only the modulated regressors for the sucrose condition
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_erythritol'}}; % CON_0012
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_sucralose'}}; % CON_0013
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_sucrose'} {'.*liking_sucralose'}}; % CON_0014
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_sucrose'} {'.*liking_erythritol'}}; % CON_0015
-    c=c+1;
-    DSGN.contrasts{c} = {{'.*liking_erythritol'} {'.*liking_sucralose'}}; % CON_0016
-    
     % OPTIONAL FIELDS
     
     % to define custom contrast names and weights
     % not needed strictly in this case, because this will be automatically generated for standard contrasts like this
     
-    % unmodulated
     c=0;
     c=c+1;
-    DSGN.contrastnames{c} = 'sucrose unmodulated'; % CON_0001
+    DSGN.contrastnames{c} = 'sucrose'; % CON_0001
     DSGN.contrastweights{c} = [1];
     c=c+1;
-    DSGN.contrastnames{c} = 'erythritol unmodulated'; % CON_0002
+    DSGN.contrastnames{c} = 'erythritol'; % CON_0002
     DSGN.contrastweights{c} = [1];
     c=c+1;
-    DSGN.contrastnames{c} = 'sucralose unmodulated'; % CON_0003
+    DSGN.contrastnames{c} = 'sucralose'; % CON_0003
     DSGN.contrastweights{c} = [1];
     c=c+1;
-    DSGN.contrastnames{c} = 'water unmodulated'; % CON_0004
+    DSGN.contrastnames{c} = 'water'; % CON_0004
     DSGN.contrastweights{c} = [1];
     c=c+1;
-    DSGN.contrastnames{c} = 'sucrose unmodulated vs water unmodulated'; % CON_0005
+    DSGN.contrastnames{c} = 'sucrose vs water'; % CON_0005
     DSGN.contrastweights{c} = [1 -1];
     c=c+1;
-    DSGN.contrastnames{c} = 'erythritol unmodulated vs water unmodulated'; % CON_0006
+    DSGN.contrastnames{c} = 'erythritol vs water'; % CON_0006
     DSGN.contrastweights{c} = [1 -1];
     c=c+1;
-    DSGN.contrastnames{c} = 'sucralose unmodulated vs water unmodulated'; % CON_0007
+    DSGN.contrastnames{c} = 'sucralose vs water'; % CON_0007
     DSGN.contrastweights{c} = [1 -1];
     c=c+1;
-    DSGN.contrastnames{c} = 'sucrose unmodulated vs sucralose unmodulated'; % CON_0008
+    DSGN.contrastnames{c} = 'sucrose vs sucralose'; % CON_0008
     DSGN.contrastweights{c} = [1 -1];
     c=c+1;
-    DSGN.contrastnames{c} = 'sucrose unmodulated vs erythritol unmodulated'; % CON_0009
+    DSGN.contrastnames{c} = 'sucrose vs erythritol'; % CON_0009
     DSGN.contrastweights{c} = [1 -1];
     c=c+1;
-    DSGN.contrastnames{c} = 'erythritol unmodulated vs sucralose unmodulated'; % CON_0010
+    DSGN.contrastnames{c} = 'erythritol vs sucralose'; % CON_0010
     DSGN.contrastweights{c} = [1 -1];
-    
-    % modulated
-    c=c+1;
-    DSGN.contrastnames{c} = 'sucrose modulated'; % CON_0011
-    DSGN.contrastweights{c} = [1];
-    c=c+1;
-    DSGN.contrastnames{c} = 'erythritol modulated'; % CON_0012
-    DSGN.contrastweights{c} = [1];
-    c=c+1;
-    DSGN.contrastnames{c} = 'sucralose modulated'; % CON_0013
-    DSGN.contrastweights{c} = [1];
-    c=c+1;
-    DSGN.contrastnames{c} = 'sucrose modulated vs sucralose modulated'; % CON_0014
-    DSGN.contrastweights{c} = [1 -1];
-    c=c+1;
-    DSGN.contrastnames{c} = 'sucrose modulated vs erythritol modulated'; % CON_0015
-    DSGN.contrastweights{c} = [1 -1];
-    c=c+1;
-    DSGN.contrastnames{c} = 'erythritol modulated vs sucralose modulated'; % CON_0016
-    DSGN.contrastweights{c} = [1 -1];
-    
     
