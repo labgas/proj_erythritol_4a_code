@@ -1,4 +1,4 @@
-%% LaBGAScore_firstlevel_s3_diagnose_model.m
+%% ery_4a_firstlevel_s3_diagnose_model.m
 %
 % This script will run diagnostics on first level models and publish them
 % as an html report using the CANlab function scn_spm_design_check, and
