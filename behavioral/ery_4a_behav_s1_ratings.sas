@@ -17,7 +17,8 @@ see preregistration https://osf.io/z6gy2
 
 *libname ery_4a "C:\Users\u0027997\OneDrive - KU Leuven\ThesisEmmy\phenotype"; *lukas' path;
 
-%let path=C:\Users\u0027997\OneDrive - KU Leuven\ThesisEmmy\phenotype;
+%let path=\\gbw-s-labgas01.luna.kuleuven.be\data\proj_erythritol\proj_erythritol_4a\BIDS\phenotype;
+* NOTE: path to the location on the server through the Windows filesystem, SAS is only available for RedHat Linux systems, not Ubuntu (or at least so it seems);
 
 proc import
 	datafile="&path\ratings_all.xlsx"
