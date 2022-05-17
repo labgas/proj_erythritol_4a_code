@@ -106,10 +106,10 @@
 
 %% MAKE SURE DEPENDENCIES ARE ON MATLAB PATH, AND PREVIOUS SCRIPT IS RUN
 
-% check whether ery_4a_firstlevel_m1_s1_options_dsgn_struct has been run
+% check whether ery_4a_firstlevel_m2_s1_options_dsgn_struct has been run
 
 if ~exist('DSGN','var')
-    warning('\nDSGN structure variable not found in Matlab workspace, running ery_4a_firstlevel_s1_options_dsgn_struct before proceeding')
+    warning('\nDSGN structure variable not found in Matlab workspace, running ery_4a_firstlevel_m2_s1_options_dsgn_struct before proceeding')
     ery_4a_firstlevel_m2_s1_options_dsgn_struct;
     cd(rootdir);
 else
@@ -435,7 +435,7 @@ for sub=1:size(derivsubjs,1)
                     clear row
                 Rfull = Rfull(1:size(mahal_spikes_regs,1), any(table2array(Rfull)));
             else
-                error('\ninvalid LaBGAS_options.mandatory.spike_def option %s specified in ery_4a_firstlevel_s1_options_dsgn_struct.m, please check before proceeding', LaBGAS_options.mandatory.spike_def)
+                error('\ninvalid LaBGAS_options.mandatory.spike_def option %s specified in ery_4a_firstlevel_m2_s1_options_dsgn_struct.m, please check before proceeding', LaBGAS_options.mandatory.spike_def)
             end
 
         % Select confound and spike regressors to return for use in GLM 
@@ -535,7 +535,7 @@ for sub=1:size(derivsubjs,1)
                 O(same,:)=[]; % get rid of trials coinciding with spikes
             elseif strcmpi(LaBGAS_options.mandatory.omit_spike_trials,'no')==1
             else
-                error('\ninvalid LaBGAS_options.mandatory.omit_spike_trials option %s set in ery_4a_firstlevel_s1_options_dsgn_struct.m',LaBGAS_options.mandatory.omit_spike_trials)
+                error('\ninvalid LaBGAS_options.mandatory.omit_spike_trials option %s set in ery_4a_firstlevel_m2_s1_options_dsgn_struct.m',LaBGAS_options.mandatory.omit_spike_trials)
             end
 
         % initialize structures for conditions
