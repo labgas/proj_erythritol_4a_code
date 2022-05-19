@@ -39,6 +39,16 @@ set work.ratings_all;
  drop liking_numeric;
 run;
 
+* Z-score concentrations within conditions;
+proc sort data=work.ratings_all;
+by trial_type;
+run;
+
+proc standard data=work.ratings_all mean=0 std=1 out=work.ratings_all;
+by trial_type;
+var concentration;
+run;
+
 
 * PRIMARY OUTCOME
 -----------------;
@@ -160,16 +170,7 @@ run;
 
 
 * COVARIATES
-------------
-* Z-score concentrations within conditions;
-proc sort data=work.ratings_all;
-by trial_type;
-run;
-
-proc standard data=work.ratings_all mean=0 std=1 out=work.ratings_all;
-by trial_type;
-var concentration;
-run;
+------------;
 
 * CHECK DISTRIBUTIONS;
 * across conditions;
@@ -305,6 +306,19 @@ run;
 * sanity check;
 proc univariate data=work.ratings_means;
 var concentration_erythritol concentration_sucralose;
+run;
+
+* simple correlations;
+proc corr data=work.ratings_means plots=all;
+var concentration_erythritol intensity_erythritol liking_erythritol rating_erythritol hunger;
+run;
+
+proc corr data=work.ratings_means plots=all;
+var concentration_sucralose intensity_sucralose liking_sucralose rating_sucralose hunger;
+run;
+
+proc corr data=work.ratings_means plots=all;
+var intensity_sucrose liking_sucrose rating_sucrose hunger;
 run;
 
 * tidy up library;
