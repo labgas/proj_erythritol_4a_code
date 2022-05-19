@@ -435,7 +435,7 @@ for sub=1:size(derivsubjs,1)
                     clear row
                 Rfull = Rfull(1:size(mahal_spikes_regs,1), any(table2array(Rfull)));
             else
-                error('\ninvalid LaBGAS_options.mandatory.spike_def option %s specified in ery_4a_firstlevel_m2_s1_options_dsgn_struct.m, please check before proceeding', LaBGAS_options.mandatory.spike_def)
+                error('\ninvalid LaBGAS_options.mandatory.spike_def option %s specified in ery_4a_firstlevel_m3_s1_options_dsgn_struct.m, please check before proceeding', LaBGAS_options.mandatory.spike_def)
             end
 
         % Select confound and spike regressors to return for use in GLM 
@@ -536,7 +536,7 @@ for sub=1:size(derivsubjs,1)
                 O(same,:)=[]; % get rid of trials coinciding with spikes
             elseif strcmpi(LaBGAS_options.mandatory.omit_spike_trials,'no')==1
             else
-                error('\ninvalid LaBGAS_options.mandatory.omit_spike_trials option %s set in ery_4a_firstlevel_m2_s1_options_dsgn_struct.m',LaBGAS_options.mandatory.omit_spike_trials)
+                error('\ninvalid LaBGAS_options.mandatory.omit_spike_trials option %s set in ery_4a_firstlevel_m3_s1_options_dsgn_struct.m',LaBGAS_options.mandatory.omit_spike_trials)
             end
 
         % initialize structures for conditions
@@ -876,7 +876,7 @@ for sub=1:size(derivsubjs,1)
                         clear f2 ax1 ax2 ax3 l1 l2
                     
                     otherwise
-                        error('\nInvalid LaBGAS_options.pmods.pmod_type option %s specified in ery_4a_firstlevel_s1_options_dsgn_struct, please check before proceeding',LaBGAS_options.pmods.pmod_type)
+                        error('\nInvalid LaBGAS_options.pmods.pmod_type option %s specified in ery_4a_firstlevel_m3_s1_options_dsgn_struct, please check before proceeding',LaBGAS_options.pmods.pmod_type)
                 end   
                 
         end % if loop pmods
