@@ -106,11 +106,11 @@
 
 %% MAKE SURE DEPENDENCIES ARE ON MATLAB PATH, AND PREVIOUS SCRIPT IS RUN
 
-% check whether ery_4a_firstlevel_m2_s1_options_dsgn_struct has been run
+% check whether ery_4a_firstlevel_m3_s1_options_dsgn_struct has been run
 
 if ~exist('DSGN','var')
-    warning('\nDSGN structure variable not found in Matlab workspace, running ery_4a_firstlevel_m2_s1_options_dsgn_struct before proceeding')
-    ery_4a_firstlevel_m2_s1_options_dsgn_struct;
+    warning('\nDSGN structure variable not found in Matlab workspace, running ery_4a_firstlevel_m3_s1_options_dsgn_struct before proceeding')
+    ery_4a_firstlevel_m3_s1_options_dsgn_struct;
     cd(rootdir);
 else
     cd(rootdir);
@@ -517,6 +517,7 @@ for sub=1:size(derivsubjs,1)
         % read events.tsv files
         O = readtable(fullfile(subjBIDSdir,eventsfiles{run}),'FileType', 'text', 'Delimiter', 'tab');
         O.trial_type = categorical(O.trial_type);
+        O.duration(O.trial_type~='swallow_rinse' & O.trial_type~='rating')=0;
         
         % sanity check #2: conditions
         cat_conds = reordercats(categorical(DSGN.conditions{run}));

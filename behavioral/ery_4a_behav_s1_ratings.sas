@@ -161,30 +161,35 @@ run;
 
 * COVARIATES
 ------------
-
-* CHECK DISTRIBUTIONS;
-* across conditions;
-proc univariate data=work.ratings_all;
-var hunger intensity liking;
-histogram hunger intensity liking / normal (mu=est sigma=est) lognormal (sigma=est theta=est zeta=est);
-run;
-* distributions quite funky - check residuals of models;
-
-* by condition;
+* Z-score concentrations within conditions;
 proc sort data=work.ratings_all;
 by trial_type;
 run;
 
+proc standard data=work.ratings_all mean=0 std=1 out=work.ratings_all;
+by trial_type;
+var concentration;
+run;
+
+* CHECK DISTRIBUTIONS;
+* across conditions;
+proc univariate data=work.ratings_all;
+var hunger intensity liking concentration;
+histogram hunger intensity liking concentration / normal (mu=est sigma=est) lognormal (sigma=est theta=est zeta=est);
+run;
+* distributions quite funky - check residuals of models;
+
+* by condition;
 proc univariate data=work.ratings_all;
 by trial_type;
-var intensity liking;
-histogram intensity liking / kernel normal (mu=est sigma=est) lognormal (sigma=est theta=est zeta=est);
+var intensity liking concentration;
+histogram intensity liking concentration / kernel normal (mu=est sigma=est) lognormal (sigma=est theta=est zeta=est);
 run;
 
 proc univariate data=work.ratings_all;
 class trial_type;
-var intensity liking;
-histogram intensity liking / kernel overlay;
+var intensity liking concentration;
+histogram intensity liking concentration / kernel overlay;
 run;
 
 
@@ -218,12 +223,35 @@ lsmestimate trial_type 'erythritol versus sucrose' 1 0 -1,
 run;
 * NOTE: these models excludes the water condition since it does not have intensity ratings;
 
+* test interaction between intensity and trial type;
+proc mixed data=work.ratings_all;
+class trial_type participant_id;
+model rating = trial_type | intensity hunger / solution residual influence ddfm=kenwardroger2;
+random intercept / subject=participant_id group=trial_type type=un g gcorr;
+lsmeans trial_type;
+lsmestimate trial_type 'erythritol versus sucrose' 1 0 -1,
+	'erythritol versus sucralose' 1 -1 / adjust=bon stepdown adjdfe=row;
+run;
+* effect of intensity does not differ between trial types!
+
+* concentration (excluding sucrose, as it always has the same concentration);
+proc mixed data=work.ratings_all;
+where trial_type NE 'sucrose';
+class trial_type participant_id;
+model rating = trial_type | concentration / solution residual influence ddfm=kenwardroger2;
+random intercept / subject=participant_id group=trial_type type=un g gcorr;
+lsmeans trial_type;
+estimate 'slope of concentration in erythritol' concentration 1 concentration*trial_type 1;
+estimate 'slope of concentration in sucralose' concentration 1 concentration*trial_type 0 1;
+run;
+* no effect of concentration, and it does not differ between ery and sucra!;
+
 
 * CREATE FILE WITH AVERAGES PER CONDITION PER SUBJECT
 -----------------------------------------------------;
 
 proc means data=work.ratings_all noprint;
-var rating hunger intensity liking;
+var rating hunger intensity liking concentration;
 output out=work.ratings_means_long mean= ;
 class trial_type participant_id;
 types () trial_type*participant_id;
@@ -257,15 +285,26 @@ by participant_id;
 id trial_type;
 run;
 
+proc transpose data=work.ratings_means_long out=work.means_wide_concentration (drop=_NAME_ _LABEL_ COL1-COL3 rename=(erythritol=concentration_erythritol sucralose=concentration_sucralose sucrose=concentration_sucrose water=concentration_water));
+var concentration;
+by participant_id; 
+id trial_type;
+run;
+
 proc transpose data=work.ratings_means_long out=work.means_wide_hunger (drop=_NAME_ _LABEL_ COL1-COL3 rename=(COL4=hunger));
 var hunger;
 by participant_id; 
 run;
 
 data work.ratings_means;
-merge work.means_wide_hunger work.means_wide_intensity work.means_wide_liking work.means_wide_rating;
+merge work.means_wide_hunger work.means_wide_intensity work.means_wide_liking work.means_wide_rating work.means_wide_concentration;
 by participant_id;
-drop liking_water intensity_water;
+drop liking_water intensity_water concentration_water concentration_sucrose;
+run;
+
+* sanity check;
+proc univariate data=work.ratings_means;
+var concentration_erythritol concentration_sucralose;
 run;
 
 * tidy up library;
