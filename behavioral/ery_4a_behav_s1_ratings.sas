@@ -321,6 +321,19 @@ proc corr data=work.ratings_means plots=all;
 var intensity_sucrose liking_sucrose rating_sucrose hunger;
 run;
 
+proc corr data=work.ratings_means plots=all;
+var liking_sucrose liking_erythritol liking_sucralose;
+run;
+
+proc corr data=work.ratings_means plots=all;
+var rating_sucrose rating_erythritol rating_sucralose rating_water;
+run;
+
+proc corr data=work.ratings_means plots=all;
+var intensity_sucrose intensity_erythritol intensity_sucralose;
+run;
+
+
 * tidy up library;
 *proc datasets library=ery_4a nodetails nolist;
 *delete ratings_means_long means_wide_hunger means_wide_intensity means_wide_liking means_wide_rating;
