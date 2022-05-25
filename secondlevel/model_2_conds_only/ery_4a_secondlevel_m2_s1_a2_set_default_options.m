@@ -1,4 +1,4 @@
-%% a2_set_default_options.m
+%% ery_4a_secondlevel_m2_s1_a2_set_default_options.m
 %
 % USAGE
 % Set options used in various core secondlevel scripts included in
