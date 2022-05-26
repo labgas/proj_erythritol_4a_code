@@ -281,10 +281,10 @@ end
 %% SAVE
 % -------------------------------------------------------------------------
 
-printhdr('Save results');
+printhdr('Save updated DAT structure in images_names_and_setup.mat, and condition data objects in data_objects(_scaled).mat ');
 
 savefilename = fullfile(resultsdir, 'image_names_and_setup.mat');
-save(savefilename, 'DAT', 'basedir', 'datadir', 'resultsdir', 'scriptsdir', 'figsavedir');
+save(savefilename, '-append', 'DAT');
 
 savefilenamedata = fullfile(resultsdir, 'data_objects.mat');
 save(savefilenamedata, 'DATA_OBJ', '-v7.3');                 % Note: 6/7/17 Tor switched to -v7.3 format by default
