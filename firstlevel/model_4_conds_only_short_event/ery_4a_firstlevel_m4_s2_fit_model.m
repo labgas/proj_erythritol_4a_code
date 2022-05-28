@@ -517,7 +517,7 @@ for sub=1:size(derivsubjs,1)
         % read events.tsv files
         O = readtable(fullfile(subjBIDSdir,eventsfiles{run}),'FileType', 'text', 'Delimiter', 'tab');
         O.trial_type = categorical(O.trial_type);
-        O.duration(O.trial_type~='swallow_rinse' & O.trial_type~='rating')=0;
+        O.duration(O.trial_type~='swallow_rinse' & O.trial_type~='rating')=4;
         
         % sanity check #2: conditions
         cat_conds = reordercats(categorical(DSGN.conditions{run}));
