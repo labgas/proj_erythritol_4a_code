@@ -1,4 +1,4 @@
-% ery_4a_firstlevel_m2_s1_options_dsgn_struct.m
+%%% ery_4a_firstlevel_m2_s1_options_dsgn_struct.m
 %
 % This script sets the options and creates a CANlab-style DSGN structure
 % variable, which are used by the subsequent script in the standard LaBGAS
@@ -178,7 +178,7 @@ LaBGAS_options.mandatory.spike_def = 'fMRIprep';
 LaBGAS_options.mandatory.omit_spike_trials = 'no';
 LaBGAS_options.mandatory.spikes_percent_threshold=0.15;
 LaBGAS_options.mandatory.vif_thresh=2;
-LaBGAS_options.movement_reg_quadratic = false; % false here because we have quite a lot of regressors of interest and do not want to spend too many df on quadratic terms of movement regs
+LaBGAS_options.movement_reg_quadratic = true; % false here because we have quite a lot of regressors of interest and do not want to spend too many df on quadratic terms of movement regs
 
 % OPTIONAL
 LaBGAS_options.subjs2analyze = {}; % enter subjects separated by comma if you only want to analyze selected subjects e.g. {'sub-01','sub-02'}; THIS IS NOT YET FULLY IMPLEMENTED HENCE LEAVE CELL ARRAY EMPTY OR COMMENT OUT OR DO NOT SPECIFY FIELD AT ALL
@@ -229,14 +229,14 @@ githubrootdir = '/data/master_github_repos';
 % INPUT
     
     % REQUIRED FIELDS
-    DSGN.metadata = "proj-erythritol_4a first level analysis model 3, i.e. modeling 4 conditions for sucrose, erythritol, sucralose, and water as impulses (= 0 duration), without parametric modulators"; % field for annotation with study info, or whatever you like
-    DSGN.modeldir = '/data/proj_erythritol/proj_erythritol_4a/firstlevel/model_3_conds_only_impulse'; % directory where you want to write first level results for this model
+    DSGN.metadata = "proj-erythritol_4a first level analysis model 4, i.e. modeling 4 conditions for sucrose, erythritol, sucralose, and water as short events (= 4 sec duration of delivery), without parametric modulators"; % field for annotation with study info, or whatever you like
+    DSGN.modeldir = '/data/proj_erythritol/proj_erythritol_4a/firstlevel/model_4_conds_only_short_event'; % directory where you want to write first level results for this model
         if ~isfield(LaBGAS_options,'subjs2analyze')
             DSGN.subjects = derivsubjdirs';
         elseif ~isempty(LaBGAS_options.subjs2analyze)
             [C,~,~] = intersect(derivsubjs,LaBGAS_options.mandatory.subjs2analyze);
             if ~isequal(C',LaBGAS_options.mandatory.subjs2analyze)
-                error('\n subject %s defined in LaBGAS_options.mandatory.subjs2analyze not present in %s, please check before proceeding',LaBGAS_options.mandatory.subj2analyze{~ismember(LaBGAS_options.mandatory.subjs2analyze,C)},derivdir);
+                error('\nsubject %s defined in LaBGAS_options.mandatory.subjs2analyze not present in %s, please check before proceeding\n',LaBGAS_options.mandatory.subj2analyze{~ismember(LaBGAS_options.mandatory.subjs2analyze,C)},derivdir);
             else
                 DSGN.subjects = cell(1,size(LaBGAS_options.mandatory.subjs2analyze,2));
                     for sub = 1:size(DSGN.subjects,2)
@@ -301,7 +301,7 @@ githubrootdir = '/data/master_github_repos';
     DSGN.notimemod = true; % CANlab default: false; if true, turn off time modulation of conditions, i.e. when you do not expect linear trends over time
 %     DSGN.singletrials = {{}}; % a cell array (1 cell per session) of cell arrays (1 cell per condition) of (corresponding to DSGN.conditions) of true/false values indicating whether to convert specified condition to set of single trial conditions
 %     DSGN.singletrialsall = false; % default: false; if true, set DSGN.singletrials to true for all conditions
-    DSGN.modelingfilesdir = 'model_3_conds_only_impulse'; % name of subfolder which will be created within directory containing functional files where .mat files containing fields of DSGN structure will be saved; typically same as the last part of the path of DSGN.modeldir
+    DSGN.modelingfilesdir = 'model_4_conds_only_short_event'; % name of subfolder which will be created within directory containing functional files where .mat files containing fields of DSGN structure will be saved; typically same as the last part of the path of DSGN.modeldir
 %     DSGN.allowemptycond = false; % default:false; if true, allow empty conditions
 %     DSGN.allowmissingcondfiles = false; % default:false; if true, throw warning instead of error when no file(s) are found corresponding to a MAT-file name/wildcard
     DSGN.multireg = 'noise_regs'; % specify name for matfile with noise parameters you want to save
