@@ -256,7 +256,7 @@ githubrootdir = '/data/master_github_repos';
         '/func/run-6/s6*.nii'}; % cell array (one cell per session) of paths to functional files, relative to absolute path specific in DSGN.subjects
    
     % OPTIONAL FIELDS
-%     DSGN.concatenation = {[1:6]}; % default: false; cell array of arrays of runs to concatenate; see documentation for when to concatenate, and how it works exactly
+    DSGN.concatenation = {[1:6]}; % default: false; cell array of arrays of runs to concatenate; see documentation for when to concatenate, and how it works exactly
     DSGN.allowmissingfunc = true; % CANlab default: false; LaBGAS default: true, will prevent erroring out when functional file is missing for at least one run is missing for at least one subject
 %     DSGN.customrunintercepts = {1:6}; % default: none; will only work if DSGN.concatenation is specified; cell array of vectors specifying custom intercepts, NOT YET FULLY TESTED 
     
