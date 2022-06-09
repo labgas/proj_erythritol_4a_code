@@ -1,4 +1,4 @@
-%%% ery_4a_firstlevel_m2_s2_fit_model.m
+%%% ery_4a_firstlevel_m3_s2_fit_model.m
 %
 % This script does everything to fit and diagnose first level models,
 % more specifically
@@ -106,11 +106,11 @@
 
 %% MAKE SURE DEPENDENCIES ARE ON MATLAB PATH, AND PREVIOUS SCRIPT IS RUN
 
-% check whether ery_4a_firstlevel_m4_s1_options_dsgn_struct has been run
+% check whether ery_4a_firstlevel_m3_s1_options_dsgn_struct has been run
 
 if ~exist('DSGN','var')
     warning('\nDSGN structure variable not found in Matlab workspace, running ery_4a_firstlevel_m4_s1_options_dsgn_struct before proceeding')
-    ery_4a_firstlevel_m4_s1_options_dsgn_struct;
+    ery_4a_firstlevel_m3_s1_options_dsgn_struct;
     cd(rootdir);
 else
     cd(rootdir);
