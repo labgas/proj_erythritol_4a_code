@@ -299,7 +299,7 @@ githubrootdir = '/data/master_github_repos';
 %     DSGN.convolution.type; default hrf, which means canonical hrf - other options: fir, spline (the latter is not yet implemented @LaBGAS, help needed from Tor/Martin/Bogdan)
 %     DSGN.convolution.time; default 0, which means no time derivative
 %     DSGN.convolution.dispersion: default 0, which means no dispersion derivative
-    DSGN.ar1 = false; % autoregressive AR(1) to model serial correlations; SPM default is true, CANlab default is false, Tor recommends turning autocorrelation off, because this algorithm pools across the whole brain, and does not perform well in some situations; if you are performing a group analysis, the autocorrelation problem is not as concerning
+    DSGN.ar1 = true; % autoregressive AR(1) to model serial correlations; SPM default is true, CANlab default is false, Tor recommends turning autocorrelation off, because this algorithm pools across the whole brain, and does not perform well in some situations; if you are performing a group analysis, the autocorrelation problem is not as concerning
     DSGN.notimemod = true; % CANlab default: false; if true, turn off time modulation of conditions, i.e. when you do not expect linear trends over time
 %     DSGN.singletrials = {{}}; % a cell array (1 cell per session) of cell arrays (1 cell per condition) of (corresponding to DSGN.conditions) of true/false values indicating whether to convert specified condition to set of single trial conditions
 %     DSGN.singletrialsall = false; % default: false; if true, set DSGN.singletrials to true for all conditions

@@ -1,4 +1,4 @@
-% ery_4a_firstlevel_m8_s1_options_dsgn_struct.m
+%%% ery_4a_firstlevel_m14_s1_options_dsgn_struct.m
 %
 % This script sets the options and creates a CANlab-style DSGN structure
 % variable, which are used by the subsequent script in the standard LaBGAS
@@ -178,7 +178,7 @@ LaBGAS_options.mandatory.spike_def = 'fMRIprep';
 LaBGAS_options.mandatory.omit_spike_trials = 'no';
 LaBGAS_options.mandatory.spikes_percent_threshold=0.15;
 LaBGAS_options.mandatory.vif_thresh=2;
-LaBGAS_options.movement_reg_quadratic = true; % false here because we have quite a lot of regressors of interest and do not want to spend too many df on quadratic terms of movement regs
+LaBGAS_options.movement_reg_quadratic = false; % false here because we have quite a lot of regressors of interest and do not want to spend too many df on quadratic terms of movement regs
 
 % OPTIONAL
 LaBGAS_options.subjs2analyze = {}; % enter subjects separated by comma if you only want to analyze selected subjects e.g. {'sub-01','sub-02'}; THIS IS NOT YET FULLY IMPLEMENTED HENCE LEAVE CELL ARRAY EMPTY OR COMMENT OUT OR DO NOT SPECIFY FIELD AT ALL
@@ -188,8 +188,8 @@ LaBGAS_options.spikes.dvars_threshold = 2; % REQUIRED if spike_def = 'CANlab'
 LaBGAS_options.spikes.spike_additional_vols=0; % OPTIONAL, NOT RECOMMENDED TO TURN ON
 
 % OPTIONS FOR THRESHOLDING AND MASKING FIRST LEVEL IMAGES FOR DISPLAY
-LaBGAS_options.display.plotdesign = true; % NOT RECOMMENDED TO TURN OFF
-LaBGAS_options.display.plotmontages = false; % NOT RECOMMENDED TO TURN OFF
+LaBGAS_options.display.plotdesign = true;
+LaBGAS_options.display.plotmontages = false;
 LaBGAS_options.display.input_threshold = 0.005;
 LaBGAS_options.display.thresh_type = 'unc';
 LaBGAS_options.display.k = 25;
@@ -231,8 +231,8 @@ githubrootdir = '/data/master_github_repos';
 % INPUT
     
     % REQUIRED FIELDS
-    DSGN.metadata = "proj-erythritol_4a first level analysis model 8, i.e. modeling 4 conditions for sucrose, erythritol, sucralose, and water as long events (= duration of solution in mouth), with 24 hmp, canonical hrf, with ar(1)"; % field for annotation with study info, or whatever you like
-    DSGN.modeldir = '/data/proj_erythritol/proj_erythritol_4a/firstlevel/model_8_long_24hmp_can_ar1'; % directory where you want to write first level results for this model
+    DSGN.metadata = "proj-erythritol_4a first level analysis model 14, i.e. modeling 4 conditions for sucrose, erythritol, sucralose, and water as long events (= duration of solution in mouth), with 12 hmp, canonical hrf with derivatives, with ar(1)"; % field for annotation with study info, or whatever you like
+    DSGN.modeldir = '/data/proj_erythritol/proj_erythritol_4a/firstlevel/model_14_long_12hmp_can_deriv_ar1'; % directory where you want to write first level results for this model
         if ~isfield(LaBGAS_options,'subjs2analyze')
             DSGN.subjects = derivsubjdirs';
         elseif ~isempty(LaBGAS_options.subjs2analyze)
@@ -296,14 +296,14 @@ githubrootdir = '/data/master_github_repos';
 %     c=c+1;DSGN.pmods{c}={{}};
 %     c=c+1;DSGN.pmods{c}={{}};
 
-%     DSGN.convolution.type; default hrf, which means canonical hrf - other options: fir, spline (the latter is not yet implemented @LaBGAS, help needed from Tor/Martin/Bogdan)
-%     DSGN.convolution.time; default 0, which means no time derivative
-%     DSGN.convolution.dispersion: default 0, which means no dispersion derivative
+    DSGN.convolution.type='hrf'; % default hrf, which means canonical hrf - other options: fir, spline (the latter is not yet implemented @LaBGAS, help needed from Tor/Martin/Bogdan)
+    DSGN.convolution.time=1; % default 0, which means no time derivative
+    DSGN.convolution.dispersion=1; % default 0, which means no dispersion derivative
     DSGN.ar1 = true; % autoregressive AR(1) to model serial correlations; SPM default is true, CANlab default is false, Tor recommends turning autocorrelation off, because this algorithm pools across the whole brain, and does not perform well in some situations; if you are performing a group analysis, the autocorrelation problem is not as concerning
     DSGN.notimemod = true; % CANlab default: false; if true, turn off time modulation of conditions, i.e. when you do not expect linear trends over time
 %     DSGN.singletrials = {{}}; % a cell array (1 cell per session) of cell arrays (1 cell per condition) of (corresponding to DSGN.conditions) of true/false values indicating whether to convert specified condition to set of single trial conditions
 %     DSGN.singletrialsall = false; % default: false; if true, set DSGN.singletrials to true for all conditions
-    DSGN.modelingfilesdir = 'model_8_long_24hmp_can_ar1'; % name of subfolder which will be created within directory containing functional files where .mat files containing fields of DSGN structure will be saved; typically same as the last part of the path of DSGN.modeldir
+    DSGN.modelingfilesdir = 'model_14_long_12hmp_can_deriv_ar1'; % name of subfolder which will be created within directory containing functional files where .mat files containing fields of DSGN structure will be saved; typically same as the last part of the path of DSGN.modeldir
 %     DSGN.allowemptycond = false; % default:false; if true, allow empty conditions
 %     DSGN.allowmissingcondfiles = false; % default:false; if true, throw warning instead of error when no file(s) are found corresponding to a MAT-file name/wildcard
     DSGN.multireg = 'noise_regs'; % specify name for matfile with noise parameters you want to save
@@ -325,7 +325,7 @@ githubrootdir = '/data/master_github_repos';
     % cell array (one cell per contrast) of contrast definitions
     
     % unmodulated contrasts
-    c=0;
+c=0;
     c=c+1;
     DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'}}; % CON_0001; this regexp will select any beta regressor starting with "sucrose", followed by exactly one white space, but not followed by x - which is only the unmodulated regressors for the sucrose condition
     c=c+1;
@@ -346,6 +346,26 @@ githubrootdir = '/data/master_github_repos';
     DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'} {'.*erythritol{1}\s[^x]'}}; % CON_0009
     c=c+1;
     DSGN.contrasts{c} = {{'.*erythritol{1}\s[^x]'} {'.*sucralose{1}\s[^x]'}}; % CON_0010
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'}}; % CON_0011; this regexp will select any beta regressor starting with "sucrose", followed by exactly one white space, but not followed by x - which is only the unmodulated regressors for the sucrose condition
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*erythritol{1}\s[^x]'}}; % CON_0012
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*sucralose{1}\s[^x]'}}; % CON_0013
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*water{1}\s[^x]'}}; % CON_0014
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'} {'.*water{1}\s[^x]'}}; % CON_0015
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*erythritol{1}\s[^x]'} {'.*water{1}\s[^x]'}}; % CON_0016
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*sucralose{1}\s[^x]'} {'.*water{1}\s[^x]'}}; % CON_0017
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'} {'.*sucralose{1}\s[^x]'}}; % CON_0018
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'} {'.*erythritol{1}\s[^x]'}}; % CON_0019
+    c=c+1;
+    DSGN.contrasts{c} = {{'.*erythritol{1}\s[^x]'} {'.*sucralose{1}\s[^x]'}}; % CON_0020
     
     % OPTIONAL FIELDS
     
@@ -383,4 +403,33 @@ githubrootdir = '/data/master_github_repos';
     c=c+1;
     DSGN.contrastnames{c} = 'erythritol vs sucralose'; % CON_0010
     DSGN.contrastweights{c} = [1 -1];
-    
+    c=c+1;
+    DSGN.contrastnames{c} = 'sucrose_F'; % CON_0011
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
+    c=c+1;
+    DSGN.contrastnames{c} = 'erythritol_F'; % CON_0012
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
+    c=c+1;
+    DSGN.contrastnames{c} = 'sucralose_F'; % CON_0013
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
+    c=c+1;
+    DSGN.contrastnames{c} = 'water_F'; % CON_0014
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
+    c=c+1;
+    DSGN.contrastnames{c} = 'sucrose vs water_F'; % CON_0015
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
+    c=c+1;
+    DSGN.contrastnames{c} = 'erythritol vs water_F'; % CON_0016
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
+    c=c+1;
+    DSGN.contrastnames{c} = 'sucralose vs water_F'; % CON_0017
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
+    c=c+1;
+    DSGN.contrastnames{c} = 'sucrose vs sucralose_F'; % CON_0018
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
+    c=c+1;
+    DSGN.contrastnames{c} = 'sucrose vs erythritol_F'; % CON_0019
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
+    c=c+1;
+    DSGN.contrastnames{c} = 'erythritol vs sucralose_F'; % CON_0020
+    DSGN.contrastweights{c} = eye(1+DSGN.convolution.time+DSGN.convolution.dispersion);
