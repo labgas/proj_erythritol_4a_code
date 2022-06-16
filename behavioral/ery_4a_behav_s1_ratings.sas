@@ -175,6 +175,7 @@ run;
 * CHECK DISTRIBUTIONS;
 * across conditions;
 proc univariate data=work.ratings_all;
+where trial_id_cond_concat = 1;
 var hunger intensity liking concentration;
 histogram hunger intensity liking concentration / normal (mu=est sigma=est) lognormal (sigma=est theta=est zeta=est);
 run;
@@ -182,12 +183,14 @@ run;
 
 * by condition;
 proc univariate data=work.ratings_all;
+where trial_id_cond_concat = 1;
 by trial_type;
 var intensity liking concentration;
 histogram intensity liking concentration / kernel normal (mu=est sigma=est) lognormal (sigma=est theta=est zeta=est);
 run;
 
 proc univariate data=work.ratings_all;
+where trial_id_cond_concat = 1;
 class trial_type;
 var intensity liking concentration;
 histogram intensity liking concentration / kernel overlay;
@@ -196,6 +199,7 @@ run;
 
 * MIXED MODELS;
 proc mixed data=work.ratings_all;
+where trial_id_cond_concat = 1;
 class trial_type participant_id;
 model intensity = trial_type / solution residual influence ddfm=kenwardroger2;
 random participant_id / type=cs g gcorr;
@@ -206,6 +210,7 @@ run;
 
 proc mixed data=work.ratings_all;
 class trial_type participant_id;
+where trial_id_cond_concat = 1;
 model liking = trial_type / solution residual influence ddfm=kenwardroger2;
 random participant_id / type=cs g gcorr;
 lsmeans trial_type;
