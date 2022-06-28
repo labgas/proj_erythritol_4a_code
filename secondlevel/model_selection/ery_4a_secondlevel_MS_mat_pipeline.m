@@ -82,7 +82,7 @@ stat_dir = fullfile(rootdir,'secondlevel','model_selection');
 % list of models
 mod_nams = dir(fullfile(firstleveldir,'model_*'));
 mod_nams = {mod_nams(:).name};
-mod_nams = mod_nams(:,2:end); % study-specific: we exclude the first model here, which is the preregistered model with pmods
+mod_nams = mod_nams(:,~contains(mod_nams,'model_1_conds_pmods')); % study-specific: we exclude the first model here, which is the preregistered model with pmods
 
 
 % list of subjects
