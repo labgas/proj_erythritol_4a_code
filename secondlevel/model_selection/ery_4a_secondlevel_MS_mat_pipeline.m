@@ -73,7 +73,7 @@
 %%% Step 0: Study parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % load LaBGAS standard directory structure
-test_prep_s0_define_directories
+ery_4a_prep_s0_define_directories % study-specific change
 firstleveldir = fullfile(rootdir,'firstlevel');
 
 % output directory
@@ -82,6 +82,8 @@ stat_dir = fullfile(rootdir,'secondlevel','model_selection');
 % list of models
 mod_nams = dir(fullfile(firstleveldir,'model_*'));
 mod_nams = {mod_nams(:).name};
+mod_nams = mod_nams(:,2:end); % study-specific: we exclude the first model here, which is the preregistered model with pmods
+
 
 % list of subjects
 subj_ids = derivsubjs';
@@ -93,8 +95,8 @@ if ~isequal(subj_ids,subj_ids2)
 end
 
 % model space details
-ms_name  =  'MS01';
-ms_suff  =  'test';
+ms_name  =  'MS01_all_models';
+ms_suff  =  'model_wise';
 
 % study dimensions
 N = numel(subj_ids);
