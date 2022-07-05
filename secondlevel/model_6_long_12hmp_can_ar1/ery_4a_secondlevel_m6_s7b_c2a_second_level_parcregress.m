@@ -248,6 +248,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
                             set(region_fig_han{1}, 'Tag', figtitle, 'WindowState','maximized');
                         else
                             set(region_fig_han, 'Tag', figtitle, 'WindowState','maximized');
+                        end
                         drawnow, snapnow;
                             if save_figures
                                 plugin_save_figure;
