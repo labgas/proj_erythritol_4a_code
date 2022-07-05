@@ -1,4 +1,4 @@
-%% prep_2_load_image_data_and_save.m
+%% ery_4a_secondlevel_m6_s4_prep_2_load_image_data_and_save.m
 
 % This script 
 % 1) loads first-level beta/con images into CANlab's fmri_data objects, 
