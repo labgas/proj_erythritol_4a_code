@@ -185,6 +185,7 @@ for c = 1:kc
                         X = ones((size(DAT.imgs{c},1)),1);
                     case 'contrasts'
                         X = ones((size(DAT.gray_white_csf_contrasts{c},1)),1);
+                end
                 groupnames = {'intercept'};
 %             end
                 imgs_nan = [];
