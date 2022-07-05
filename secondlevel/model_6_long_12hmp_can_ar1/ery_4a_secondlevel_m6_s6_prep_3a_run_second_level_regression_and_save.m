@@ -1,4 +1,4 @@
-%%% prep_3a_run_second_level_regression_and_save.m
+%%% ery_4a_secondlevel_m6_s6_prep_3a_run_second_level_regression_and_save.m
 
 % USAGE
 %
@@ -65,7 +65,7 @@
 % options to be specified here
 
 mygroupnamefield = 'contrasts'; 
-results_suffix = ''; % do not delete, leave empty if not needed
+results_suffix = 'OLS'; % do not delete, leave empty if not needed
 
 % options set in a2_set_default_options
 
