@@ -236,19 +236,19 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             % Montage of regions in table (plot and save)
             if ~isempty(r)
-                o3 = montage(r, 'colormap', 'regioncenters', 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
+                o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
                 % Activate, name, and save figure - then close
                 figtitle = sprintf('%s_%s_%1.4f_unc_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
                 region_fig_han = activate_figures(o3);
                 
                     if ~isempty(region_fig_han)
-                        set(region_fig_han, 'Tag', figtitle, 'WindowState','maximized');
+                        set(region_fig_han{1}, 'Tag', figtitle, 'WindowState','maximized');
                         drawnow, snapnow;
                             if save_figures
                                 plugin_save_figure;
                             end
-                        close(region_fig_han), clear o3, clear figtitle
+                        close(region_fig_han{1}), clear o3, clear figtitle
                     else
                         fprintf('\n');
                         warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
