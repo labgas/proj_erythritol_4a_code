@@ -1,4 +1,4 @@
-%%% a2_set_default_options.m
+%% ery_4a_secondlevel_m6_s1_a2_set_default_options.m
 %
 % USAGE
 % Set options used in various core secondlevel scripts included in
@@ -35,7 +35,7 @@ dorobust = false;            % robust statistics for voxel-based GLM [true, fals
 myscaling_glm = 'raw';      % 'raw', 'scaled', or 'scaledcontrasts'; 
                             % 'scaled': use z-scored condition images prior to computing contrasts
                             % 'scaled_contrasts': l2norm contrasts after computing them
-design_matrix_type = 'group';   % 'group', 'custom', or 'onesample'
+design_matrix_type = 'onesample';   % 'group', 'custom', or 'onesample'
                             % 'group': use DAT.BETWEENPERSON.group or 
                             % DAT.BETWEENPERSON.contrasts{c}.group;
                             % @lukasvo76: compare groups without controlling for covariates
