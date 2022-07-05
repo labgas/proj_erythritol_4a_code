@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m2_s3_prep_1b_prep_behavioral_data.m
+%% ery_4a_secondlevel_m6_s3_prep_1b_prep_behavioral_data.m
 %
 % CANLAB NOTES:
 %
