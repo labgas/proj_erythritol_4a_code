@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m2_s3_prep_1_set_conditions_contrasts_colors.m
+%% ery_4a_secondlevel_m6_s2_prep_1_set_conditions_contrasts_colors.m
 %
 % CANLAB NOTES:
 % - Modify to specify image file subdirectories, wildcards to locate images, condition names
