@@ -26,7 +26,8 @@
 % options (from corresponding prep_3a script)
 
 mygroupnamefield = 'contrasts';
-results_suffix = 'OLS';
+results_suffix = 'parcelwise';
+dorobfit_parcelwise = true;
 
 % check scaling
 
