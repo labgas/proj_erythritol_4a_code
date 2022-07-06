@@ -122,7 +122,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
     
     % BETWEEN-SUBJECT REGRESSORS & INTERCEPT: FDR corrected
     % ---------------------------------------------------------------------
-    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
+    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5,'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
     
         for j = 1:num_effects
 
@@ -166,7 +166,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             % Montage of regions in table (plot and save)
             if ~isempty(r)
-                o3 = montage(r, 'colormap', 'regioncenters', 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
+                o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
                 % Activate, name, and save figure - then close
                 figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
@@ -182,7 +182,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
                             if save_figures
                                 plugin_save_figure;
                             end
-                        close(region_fig_han(1)), clear o3, clear figtitle
+                        clear o3, clear figtitle
                     else
                         fprintf('\n');
                         warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
