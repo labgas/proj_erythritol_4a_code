@@ -64,7 +64,7 @@
 
 % options to be specified here
 
-mygroupnamefield = 'contrasts'; 
+mygroupnamefield = 'conditions'; 
 results_suffix = 'parcelwise'; % do not delete, leave empty if not needed
 
 % options set in a2_set_default_options
