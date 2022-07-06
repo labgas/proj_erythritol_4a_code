@@ -122,7 +122,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
     
     % BETWEEN-SUBJECT REGRESSORS & INTERCEPT: FDR corrected
     % ---------------------------------------------------------------------
-    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
+    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
     
         for j = 1:num_effects
 
@@ -169,11 +169,15 @@ for c = 1:size(results, 2) % number of contrasts or conditions
                 o3 = montage(r, 'colormap', 'regioncenters', 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
                 % Activate, name, and save figure - then close
-                figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, q_threshold, names{j}, scaling_string, mask_string);
+                figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
                 region_fig_han = activate_figures(o3);
                 
                     if ~isempty(region_fig_han)
-                        set(region_fig_han(1), 'Tag', figtitle, 'WindowState','maximized');
+                        if iscell(region_fig_han)
+                            set(region_fig_han{1}, 'Tag', figtitle, 'WindowState','maximized');
+                        else
+                            set(region_fig_han, 'Tag', figtitle, 'WindowState','maximized');
+                        end
                         drawnow, snapnow;
                             if save_figures
                                 plugin_save_figure;
