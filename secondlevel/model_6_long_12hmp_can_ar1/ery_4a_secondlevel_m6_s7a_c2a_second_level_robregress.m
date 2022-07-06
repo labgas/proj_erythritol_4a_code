@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s7b_c2a_second_level_parcregress.m
+%%% ery_4a_secondlevel_m6_s7a_c2a_second_level_robregress.m
 
 % USAGE
 %
@@ -26,8 +26,8 @@
 % options (from corresponding prep_3a script)
 
 mygroupnamefield = 'contrasts';
-results_suffix = 'parcelwise';
-dorobfit_parcelwise = true;
+results_suffix = 'robust';
+dorobust = true;
 
 % check scaling
 
