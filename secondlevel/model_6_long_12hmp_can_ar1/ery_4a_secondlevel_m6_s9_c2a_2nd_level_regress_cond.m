@@ -168,27 +168,14 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             if ~isempty(r)
                 o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
-                % Activate, name, and save figure - then close
+                % Activate, name, and save figure
                 figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
                 set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-%                 region_fig_han = activate_figures(o3);
-%                 
-%                     if ~isempty(region_fig_han)
-%                         if iscell(region_fig_han)
-%                             set(region_fig_han{1}, 'Tag', figtitle, 'WindowState','maximized');
-%                         else
-%                             set(region_fig_han, 'Tag', figtitle, 'WindowState','maximized');
-%                         end
-                        drawnow, snapnow;
-                            if save_figures
-                                plugin_save_figure;
-                            end
-                        clear o3, clear figtitle, clear j, clear tj, clear r
-%                     else
-%                         fprintf('\n');
-%                         warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
-%                         fprintf('\n');
-%                     end
+                drawnow, snapnow;
+                    if save_figures
+                        plugin_save_figure;
+                    end
+                clear o3, clear figtitle, clear j, clear tj, clear r
 
             end % conditional montage plot if there are regions to show
             
@@ -243,27 +230,14 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             if ~isempty(r)
                 o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
-                % Activate, name, and save figure - then close
+                % Activate, name, and save figure
                 figtitle = sprintf('%s_%s_%1.4f_unc_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
                 set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-%                 region_fig_han = activate_figures(o3);
-%                 
-%                     if ~isempty(region_fig_han)
-%                         if iscell(region_fig_han)
-%                             set(region_fig_han{1}, 'Tag', figtitle, 'WindowState','maximized');
-%                         else
-%                             set(region_fig_han, 'Tag', figtitle, 'WindowState','maximized');
-%                         end
-                        drawnow, snapnow;
-                            if save_figures
-                                plugin_save_figure;
-                            end
-                        clear o3, clear figtitle, clear j, clear tj, clear r
-%                     else
-%                         fprintf('\n');
-%                         warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
-%                         fprintf('\n');
-%                     end
+                drawnow, snapnow;
+                    if save_figures
+                        plugin_save_figure;
+                    end
+                clear o3, clear figtitle, clear j, clear tj, clear r
 
             end % loop over regions in results
         
