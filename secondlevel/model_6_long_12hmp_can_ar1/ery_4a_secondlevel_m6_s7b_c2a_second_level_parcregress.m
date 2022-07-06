@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s7_c2a_second_level_regression.m
+%%% ery_4a_secondlevel_m6_s7b_c2a_second_level_parcregress.m
 
 % USAGE
 %
