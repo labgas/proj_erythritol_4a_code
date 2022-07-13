@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6_s2_prep_1_set_conditions_contrasts_colors.m
+%% ery_4a_secondlevel_m14_s2_prep_1_set_conditions_contrasts.m
 %
 % CANLAB NOTES:
 % - Modify to specify image file subdirectories, wildcards to locate images, condition names
@@ -72,7 +72,7 @@ DAT = struct();
 % correspond with your first-level condition names defined in
 % DSGN.conditions!
 
-DAT.conditions = {'sucrose' 'erythritol' 'sucralose' 'water'};
+DAT.conditions = {'sucrose' 'erythritol' 'sucralose' 'water' 'sucrose_F' 'erythritol_F' 'sucralose_F' 'water_F'};
 % DAT.conditions = DSGN.conditions{1}; 
 % @lukasvo76: only use if 
 % 1) first-level conditions are the same in every run
@@ -127,7 +127,7 @@ DAT.subfolders = {'*' '*' '*' '*'}; % @lukasvo76: default option for Linux OS, o
 % condition. 
 
 DAT.structural_wildcard = {};
-DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_0004.nii'}; %lukavo76: default option for Linux OS
+DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_0004.nii' 'con_0011.nii' 'con_0012.nii' 'con_0013.nii' 'con_0014.nii'}; %lukavo76: default option for Linux OS
 % DAT.functional_wildcard = {'^con_0001.*\nii$' '^con_0002.*\nii$' '^con_0003.*\nii$' '^con_0004.*\nii$'}; %lukavo76: fallback option for Windows OS, spm_select uses regular expression to filter (like in the GUI)
 
 
@@ -164,11 +164,11 @@ DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_000
 % sets of images, where the ith image is from the ith subject for all
 % conditions).
 
-DAT.contrasts = [1 0 -1 0; 1 -1 0 0; 0 1 -1 0; 1 0 0 -1; 0 1 0 -1; 0 0 1 -1];
+DAT.contrasts = [1 0 -1 0; 1 -1 0 0; 0 1 -1 0; 1 0 0 -1; 0 1 0 -1; 0 0 1 -1; 0 0 0 0 1 0 -1 0; 0 0 0 0 1 -1 0 0; 0 0 0 0 0 1 -1 0; 0 0 0 0 1 0 0 -1; 0 0 0 0 0 1 0 -1; 0 0 0 0 0 0 1 -1];
     
 % Descriptive names for contrasts to be used in plots and tables. Avoid
 % special characters.
-DAT.contrastnames = {'sucrose vs sucralose' 'sucrose vs erythritol' 'erythritol vs sucralose' 'sucrose vs water' 'erythritol vs water' 'sucralose vs water'};
+DAT.contrastnames = {'sucrose vs sucralose' 'sucrose vs erythritol' 'erythritol vs sucralose' 'sucrose vs water' 'erythritol vs water' 'sucralose vs water' 'sucrose_F vs sucralose_F' 'sucrose_F vs erythritol_F' 'erythritol_F vs sucralose_F' 'sucrose_F vs water_F' 'erythritol_F vs water_F' 'sucralose_F vs water_F' };
 
 DAT.contrastnames = format_strings_for_legend(DAT.contrastnames);
 
