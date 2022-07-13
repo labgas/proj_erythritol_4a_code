@@ -164,7 +164,7 @@ DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_000
 % sets of images, where the ith image is from the ith subject for all
 % conditions).
 
-DAT.contrasts = [1 0 -1 0; 1 -1 0 0; 0 1 -1 0; 1 0 0 -1; 0 1 0 -1; 0 0 1 -1; 0 0 0 0 1 0 -1 0; 0 0 0 0 1 -1 0 0; 0 0 0 0 0 1 -1 0; 0 0 0 0 1 0 0 -1; 0 0 0 0 0 1 0 -1; 0 0 0 0 0 0 1 -1];
+DAT.contrasts = [1 0 -1 0 0 0 0 0; 1 -1 0 0 0 0 0 0; 0 1 -1 0 0 0 0 0; 1 0 0 -1 0 0 0 0; 0 1 0 -1 0 0 0 0; 0 0 1 -1 0 0 0 0; 0 0 0 0 1 0 -1 0; 0 0 0 0 1 -1 0 0; 0 0 0 0 0 1 -1 0; 0 0 0 0 1 0 0 -1; 0 0 0 0 0 1 0 -1; 0 0 0 0 0 0 1 -1];
     
 % Descriptive names for contrasts to be used in plots and tables. Avoid
 % special characters.
