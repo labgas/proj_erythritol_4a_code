@@ -192,17 +192,31 @@ id = DAT.BEHAVIOR.behavioral_data_table.participant_id;
 covs = DAT.BEHAVIOR.behavioral_data_table.Properties.VariableNames(contains(DAT.BEHAVIOR.behavioral_data_table.Properties.VariableNames,'intensity') | contains(DAT.BEHAVIOR.behavioral_data_table.Properties.VariableNames,'rating'));
 
 for cond = 1:size(DAT.conditions,2)
-    if cond < size(DAT.conditions,2)
-    DAT.BETWEENPERSON.conditions{cond}.intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{cond}); % we include the intensity ratings for the three non-water conditions here, to be able to include them as covariates in analyses on conditions later;
+    if cond < size(DAT.conditions,2)/2
+        DAT.BETWEENPERSON.conditions{cond}.intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{cond}); % we include the intensity ratings for the three non-water conditions here, to be able to include them as covariates in analyses on conditions later;
+    elseif (cond > size(DAT.conditions,2)/2) && (cond < size(DAT.conditions,2))
+        DAT.BETWEENPERSON.conditions{cond}.intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{cond-size(DAT.conditions,2)/2});  
     end
-    DAT.BETWEENPERSON.conditions{cond}.rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cond+4}); % same for ratings, including water
+    
+    if cond < (size(DAT.conditions,2)/2)+1
+        DAT.BETWEENPERSON.conditions{cond}.rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cond+size(DAT.conditions,2)/2}); % same for ratings, including water
+    else
+       DAT.BETWEENPERSON.conditions{cond}.rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cond});
+    end
 end
 
 for cont = 1:size(DAT.contrasts,1)
-    if cont < 4 % we don't have intensity ratings for water
-        DAT.BETWEENPERSON.contrasts{cont}.delta_intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont});
+    if cont < size(DAT.conditions,2)/2 % we don't have intensity ratings for water
+        DAT.BETWEENPERSON.contrasts{cont}.delta_intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{size(DAT.conditions,2)-1+cont});
+    elseif (cont > size(DAT.conditions,2)-2) && (cont < size(DAT.contrasts,1)-2)
+        DAT.BETWEENPERSON.contrasts{cont}.delta_intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{cont+1});
     end
-    DAT.BETWEENPERSON.contrasts{cont}.delta_rating = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont+3});
+    
+    if cont < (size(DAT.contrasts,1)/2)+1
+        DAT.BETWEENPERSON.contrasts{cont}.delta_rating = DAT.BEHAVIOR.behavioral_data_table.(covs{size(DAT.contrasts,1)-2+cont});
+    else
+        DAT.BETWEENPERSON.contrasts{cont}.delta_rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cont+4});
+    end
 end
 
 %% CANLAB EXAMPLE #1
