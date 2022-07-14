@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s6b_prep_3a_run_second_level_parcregression.m
+%%% ery_4a_secondlevel_m14_s6b_prep_3a_run_second_level_parcregression.m
 
 % USAGE
 %
