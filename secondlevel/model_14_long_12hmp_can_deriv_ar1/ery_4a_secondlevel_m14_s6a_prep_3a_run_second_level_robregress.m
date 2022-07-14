@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s6a_prep_3a_run_second_level_robregression.m
+%%% ery_4a_secondlevel_m14_s6a_prep_3a_run_second_level_robregression.m
 
 % USAGE
 %
