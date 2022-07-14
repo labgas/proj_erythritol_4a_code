@@ -209,7 +209,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             plugin_save_figure;
         end
         
-    clear o2, clear figtitle
+    clear o2, clear figtitle, clear tj, clear j
         
         for j = 1:num_effects
 
