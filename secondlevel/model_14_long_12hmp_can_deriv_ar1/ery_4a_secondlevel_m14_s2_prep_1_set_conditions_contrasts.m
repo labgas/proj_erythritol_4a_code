@@ -127,7 +127,7 @@ DAT.subfolders = {'*' '*' '*' '*' '*' '*' '*' '*'}; % @lukasvo76: default option
 % condition. 
 
 DAT.structural_wildcard = {};
-DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_0004.nii' 'con_0011.nii' 'con_0012.nii' 'con_0013.nii' 'con_0014.nii'}; %lukavo76: default option for Linux OS
+DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_0004.nii' 'ess_0011.nii' 'ess_0012.nii' 'ess_0013.nii' 'ess_0014.nii'}; %lukavo76: default option for Linux OS
 % DAT.functional_wildcard = {'^con_0001.*\nii$' '^con_0002.*\nii$' '^con_0003.*\nii$' '^con_0004.*\nii$'}; %lukavo76: fallback option for Windows OS, spm_select uses regular expression to filter (like in the GUI)
 
 
