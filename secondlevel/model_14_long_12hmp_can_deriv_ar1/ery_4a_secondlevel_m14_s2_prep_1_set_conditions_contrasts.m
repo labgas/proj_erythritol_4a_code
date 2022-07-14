@@ -118,7 +118,7 @@ DAT.conditions = format_strings_for_legend(DAT.conditions);
 % condition. 
 % If you do not have subfolders, it is OK to leave this empty, i.e., DAT.subfolders = {};
 
-DAT.subfolders = {'*' '*' '*' '*'}; % @lukasvo76: default option for Linux OS, one wildcard per condition
+DAT.subfolders = {'*' '*' '*' '*' '*' '*' '*' '*'}; % @lukasvo76: default option for Linux OS, one wildcard per condition
 % DAT.subfolders = {}; % @lukasvo76 fallback option for Windows OS, uses recursive spm_select in prep_2 script to select right con images
 
 % Names of wildcard (expression with *, [1-9], 
