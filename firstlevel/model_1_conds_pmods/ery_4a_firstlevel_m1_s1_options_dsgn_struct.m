@@ -188,6 +188,8 @@ LaBGAS_options.spikes.dvars_threshold = 2; % REQUIRED if spike_def = 'CANlab'
 LaBGAS_options.spikes.spike_additional_vols=0; % OPTIONAL, NOT RECOMMENDED TO TURN ON
 
 % OPTIONS FOR THRESHOLDING AND MASKING FIRST LEVEL IMAGES FOR DISPLAY
+LaBGAS_options.display.plotdesign = true;
+LaBGAS_options.display.plotmontages = true;
 LaBGAS_options.display.input_threshold = 0.005;
 LaBGAS_options.display.thresh_type = 'unc';
 LaBGAS_options.display.k = 25;
@@ -293,10 +295,11 @@ githubrootdir = '/data/master_github_repos';
     c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
     c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
     c=c+1;DSGN.pmods{c}={'liking_sucrose' 'liking_erythritol' 'liking_sucralose'};
+    
 %     DSGN.convolution.type; default hrf, which means canonical hrf - other options: fir, spline (the latter is not yet implemented @LaBGAS, help needed from Tor/Martin/Bogdan)
 %     DSGN.convolution.time; default 0, which means no time derivative
 %     DSGN.convolution.dispersion: default 0, which means no dispersion derivative
-%     DSGN.ar1 = false; % autoregressive AR(1) to model serial correlations; SPM default is true, CANlab default is false, Tor recommends turning autocorrelation off, because this algorithm pools across the whole brain, and does not perform well in some situations; if you are performing a group analysis, the autocorrelation problem is not as concerning
+    DSGN.ar1 = true; % autoregressive AR(1) to model serial correlations; SPM default is true, CANlab default is false, Tor recommends turning autocorrelation off, because this algorithm pools across the whole brain, and does not perform well in some situations; if you are performing a group analysis, the autocorrelation problem is not as concerning
     DSGN.notimemod = true; % CANlab default: false; if true, turn off time modulation of conditions, i.e. when you do not expect linear trends over time
 %     DSGN.singletrials = {{}}; % a cell array (1 cell per session) of cell arrays (1 cell per condition) of (corresponding to DSGN.conditions) of true/false values indicating whether to convert specified condition to set of single trial conditions
 %     DSGN.singletrialsall = false; % default: false; if true, set DSGN.singletrials to true for all conditions
