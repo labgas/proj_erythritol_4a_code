@@ -66,6 +66,7 @@
 
 mygroupnamefield = 'conditions'; 
 results_suffix = 'OLS'; % do not delete, leave empty if not needed
+dorobust = false;
 
 % options set in a2_set_default_options
 
