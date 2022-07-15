@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s8_prep_3a_run_2nd_level_regress_cond.m
+%%% ery_4a_secondlevel_m14_s8_prep_3a_run_2nd_level_regress_cond.m
 
 % USAGE
 %
