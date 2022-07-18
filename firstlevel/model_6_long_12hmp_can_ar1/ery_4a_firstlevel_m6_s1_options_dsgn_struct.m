@@ -189,7 +189,7 @@ LaBGAS_options.spikes.spike_additional_vols=0; % OPTIONAL, NOT RECOMMENDED TO TU
 
 % OPTIONS FOR THRESHOLDING AND MASKING FIRST LEVEL IMAGES FOR DISPLAY
 LaBGAS_options.display.plotdesign = true; % NOT RECOMMENDED TO TURN OFF
-LaBGAS_options.display.plotmontages = false; % NOT RECOMMENDED TO TURN OFF
+LaBGAS_options.display.plotmontages = true; % NOT RECOMMENDED TO TURN OFF
 LaBGAS_options.display.input_threshold = 0.005;
 LaBGAS_options.display.thresh_type = 'unc';
 LaBGAS_options.display.k = 25;
