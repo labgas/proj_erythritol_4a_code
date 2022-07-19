@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s7_c2a_second_level_regression.m
+%%% ery_4a_secondlevel_m1_s7_c2a_second_level_regression.m
 
 % USAGE
 %
@@ -27,6 +27,7 @@
 
 mygroupnamefield = 'contrasts';
 results_suffix = 'OLS';
+dorobust = false;
 
 % check scaling
 
@@ -147,7 +148,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             plugin_save_figure;
         end
         
-    clear o2, clear figtitle
+    clear o2, clear figtitle, clear j, clear tj
     
         for j = 1:num_effects
 
@@ -170,20 +171,12 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
                 % Activate, name, and save figure - then close
                 figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, q_threshold, names{j}, scaling_string, mask_string);
-                region_fig_han = activate_figures(o3);
-                
-                    if ~isempty(region_fig_han)
-                        set(region_fig_han(1), 'Tag', figtitle, 'WindowState','maximized');
-                        drawnow, snapnow;
-                            if save_figures
-                                plugin_save_figure;
-                            end
-                        close(region_fig_han(1)), clear o3, clear figtitle
-                    else
-                        fprintf('\n');
-                        warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
-                        fprintf('\n');
+                set(gcf, 'Tag', figtitle, 'WindowState','maximized');
+                drawnow, snapnow;
+                    if save_figures
+                        plugin_save_figure;
                     end
+                clear o3, clear figtitle, clear j, clear tj, clear r
 
             end % conditional montage plot if there are regions to show
             
@@ -217,7 +210,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             plugin_save_figure;
         end
         
-    clear o2, clear figtitle
+    clear o2, clear figtitle, clear j, clear tj
         
         for j = 1:num_effects
 
@@ -240,20 +233,12 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
                 % Activate, name, and save figure - then close
                 figtitle = sprintf('%s_%s_%1.4f_unc_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
-                region_fig_han = activate_figures(o3);
-                
-                    if ~isempty(region_fig_han)
-                        set(region_fig_han{1}, 'Tag', figtitle, 'WindowState','maximized');
-                        drawnow, snapnow;
-                            if save_figures
-                                plugin_save_figure;
-                            end
-                        close(region_fig_han{1}), clear o3, clear figtitle
-                    else
-                        fprintf('\n');
-                        warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
-                        fprintf('\n');
+                set(gcf, 'Tag', figtitle, 'WindowState','maximized');
+                drawnow, snapnow;
+                    if save_figures
+                        plugin_save_figure;
                     end
+                clear o3, clear figtitle, clear j, clear tj, clear r
 
             end % loop over regions in results
         
