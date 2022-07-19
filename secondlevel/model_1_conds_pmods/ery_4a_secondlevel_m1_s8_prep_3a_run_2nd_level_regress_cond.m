@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s8_prep_3a_run_2nd_level_regress_cond.m
+%%% ery_4a_secondlevel_m1_s8_prep_3a_run_2nd_level_regress_cond.m
 
 % USAGE
 %
@@ -66,6 +66,7 @@
 
 mygroupnamefield = 'conditions'; 
 results_suffix = 'OLS'; % do not delete, leave empty if not needed
+dorobust = false;
 
 % options set in a2_set_default_options
 
