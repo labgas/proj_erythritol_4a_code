@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s9_c2a_2nd_level_regress_cond.m
+%%% ery_4a_secondlevel_m1_s9_c2a_2nd_level_regress_cond.m
 
 % USAGE
 %
@@ -27,6 +27,7 @@
 
 mygroupnamefield = 'conditions';
 results_suffix = 'OLS';
+dorobust = false;
 
 % check scaling
 
