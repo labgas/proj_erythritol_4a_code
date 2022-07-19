@@ -72,7 +72,7 @@ DAT = struct();
 % correspond with your first-level condition names defined in
 % DSGN.conditions!
 
-DAT.conditions = {'sucrose' 'erythritol' 'sucralose' 'water'};
+DAT.conditions = {'sucrose unmodulated' 'erythritol unmodulated' 'sucralose unmodulated' 'water unmodulated' 'sucrose modulated' 'erythritol modulated' 'sucralose modulated' 'water modulated'};
 % DAT.conditions = DSGN.conditions{1}; 
 % @lukasvo76: only use if 
 % 1) first-level conditions are the same in every run
@@ -118,7 +118,7 @@ DAT.conditions = format_strings_for_legend(DAT.conditions);
 % condition. 
 % If you do not have subfolders, it is OK to leave this empty, i.e., DAT.subfolders = {};
 
-DAT.subfolders = {'*' '*' '*' '*'}; % @lukasvo76: default option for Linux OS, one wildcard per condition
+DAT.subfolders = {'*' '*' '*' '*' '*' '*' '*' '*'}; % @lukasvo76: default option for Linux OS, one wildcard per condition
 % DAT.subfolders = {}; % @lukasvo76 fallback option for Windows OS, uses recursive spm_select in prep_2 script to select right con images
 
 % Names of wildcard (expression with *, [1-9], 
@@ -127,7 +127,7 @@ DAT.subfolders = {'*' '*' '*' '*'}; % @lukasvo76: default option for Linux OS, o
 % condition. 
 
 DAT.structural_wildcard = {};
-DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_0004.nii'}; %lukavo76: default option for Linux OS
+DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_0004.nii' 'con_0011.nii' 'con_0012.nii' 'con_0013.nii' 'con_0014.nii'}; %lukavo76: default option for Linux OS
 % DAT.functional_wildcard = {'^con_0001.*\nii$' '^con_0002.*\nii$' '^con_0003.*\nii$' '^con_0004.*\nii$'}; %lukavo76: fallback option for Windows OS, spm_select uses regular expression to filter (like in the GUI)
 
 
@@ -164,11 +164,11 @@ DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_000
 % sets of images, where the ith image is from the ith subject for all
 % conditions).
 
-DAT.contrasts = [1 0 -1 0; 1 -1 0 0; 0 1 -1 0; 1 0 0 -1; 0 1 0 -1; 0 0 1 -1];
+DAT.contrasts = [1 0 -1 0 0 0 0 0; 1 -1 0 0 0 0 0 0; 0 1 -1 0 0 0 0 0; 1 0 0 -1 0 0 0 0; 0 1 0 -1 0 0 0 0; 0 0 1 -1 0 0 0 0; 0 0 0 0 1 0 -1 0; 0 0 0 0 1 -1 0 0; 0 0 0 0 0 1 -1 0; 0 0 0 0 1 0 0 -1; 0 0 0 0 0 1 0 -1; 0 0 0 0 0 0 1 -1];
     
 % Descriptive names for contrasts to be used in plots and tables. Avoid
 % special characters.
-DAT.contrastnames = {'sucrose vs sucralose' 'sucrose vs erythritol' 'erythritol vs sucralose' 'sucrose vs water' 'erythritol vs water' 'sucralose vs water'};
+DAT.contrastnames = {'sucrose unmodulated vs sucralose unmodulated' 'sucrose unmodulated vs erythritol unmodulated' 'erythritol unmodulated vs sucralose unmodulated' 'sucrose unmodulated vs water unmodulated' 'erythritol unmodulated vs water unmodulated' 'sucralose unmodulated vs water unmodulated' 'sucrose modulated vs sucralose modulated' 'sucrose modulated vs erythritol modulated' 'erythritol modulated vs sucralose modulated' 'sucrose modulated vs water modulated' 'erythritol modulated vs water modulated' 'sucralose modulated vs water modulated'};
 
 DAT.contrastnames = format_strings_for_legend(DAT.contrastnames);
 
