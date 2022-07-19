@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s6_prep_3a_run_second_level_regression.m
+%%% ery_4a_secondlevel_m1_s6_prep_3a_run_second_level_regression.m
 
 % USAGE
 %
@@ -66,6 +66,7 @@
 
 mygroupnamefield = 'contrasts'; 
 results_suffix = 'OLS'; % do not delete, leave empty if not needed
+dorobus = false;
 
 % options set in a2_set_default_options
 
@@ -545,7 +546,7 @@ for c = 1:kc
             if save_figures
                 plugin_save_figure;
             end
-        clear o2, clear figtitle
+        clear o2, clear figtitle, clear tj, clear j
 
         % KEEP RESULTS OBJECTS IN CELL ARRAY FOR SAVING
         % ---------------------------------------------------------------------
