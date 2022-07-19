@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6_s3_prep_1b_prep_behavioral_data.m
+%% ery_4a_secondlevel_m1_s3_prep_1b_prep_behavioral_data.m
 %
 % CANLAB NOTES:
 %
@@ -79,63 +79,63 @@
 
 %% READ BEHAVIORAL DATA FROM TSV FILES IN BIDS/PHENOTYPE DIR
 
-phenodir = fullfile(BIDSdir,'phenotype');
-
-% MEAN RATINGS PER RUN, AND OFFLINE RATINGS
-
-behavioral_data_filename = 'ratings_means.tsv';
-behavioral_fname_path = fullfile(phenodir, behavioral_data_filename);
-
-if ~exist(behavioral_fname_path, 'file') 
-    fprintf(1, 'CANNOT FIND FILE: %s\n',behavioral_fname_path); 
-end
-
-behavioral_data_table = readtable(behavioral_fname_path,'TreatAsEmpty','n/a','FileType','text','Delimiter','tab'); % read .tsv file into Matlab table variable
-
-% calculate contrasts between conditions for ratings, and zscore them, for
-% use as second-level covariates in contrast analyses
-% NOTE: respect the order of raw variables in table
-behavioral_data_table.intensity_sucro_sucra = zscore((behavioral_data_table.intensity_sucrose - behavioral_data_table.intensity_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.intensity_sucro_ery = zscore((behavioral_data_table.intensity_sucrose - behavioral_data_table.intensity_erythritol),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.intensity_ery_sucra = zscore((behavioral_data_table.intensity_erythritol - behavioral_data_table.intensity_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.liking_sucro_sucra = zscore((behavioral_data_table.liking_sucrose - behavioral_data_table.liking_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.liking_sucro_ery = zscore((behavioral_data_table.liking_sucrose - behavioral_data_table.liking_erythritol),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.liking_ery_sucra = zscore((behavioral_data_table.liking_erythritol - behavioral_data_table.liking_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.rating_sucro_sucra = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.rating_sucro_ery = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_erythritol),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.rating_ery_sucra = zscore((behavioral_data_table.rating_erythritol - behavioral_data_table.rating_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.rating_sucro_water = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.rating_ery_water = zscore((behavioral_data_table.rating_erythritol - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.rating_sucra_water = zscore((behavioral_data_table.rating_sucralose - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-
-% zscore ratings per condition too, for use as second-level covariates in condition
-% analyses
-behavioral_data_table.intensity_sucrose = zscore(behavioral_data_table.intensity_sucrose,0,'omitnan');
-behavioral_data_table.intensity_erythritol = zscore(behavioral_data_table.intensity_erythritol,0,'omitnan');
-behavioral_data_table.intensity_sucralose = zscore(behavioral_data_table.intensity_sucralose,0,'omitnan');
-behavioral_data_table.liking_sucrose = zscore(behavioral_data_table.liking_sucrose,0,'omitnan');
-behavioral_data_table.liking_erythritol = zscore(behavioral_data_table.liking_erythritol,0,'omitnan');
-behavioral_data_table.liking_sucralose = zscore(behavioral_data_table.liking_sucralose,0,'omitnan');
-behavioral_data_table.rating_sucrose = zscore(behavioral_data_table.rating_sucrose,0,'omitnan');
-behavioral_data_table.rating_erythritol = zscore(behavioral_data_table.rating_erythritol,0,'omitnan');
-behavioral_data_table.rating_sucralose = zscore(behavioral_data_table.rating_sucralose,0,'omitnan');
-behavioral_data_table.rating_water = zscore(behavioral_data_table.rating_water,0,'omitnan');
-
-
-% ONLINE RATINGS PER TRIAL
-% can be used in single trial analyses including 'signature development'
-behavioral_st_data_filename = 'ratings_online.tsv';
-behavioral_st_fname_path = fullfile(phenodir, behavioral_st_data_filename);
-
-if ~exist(behavioral_st_fname_path, 'file') 
-    fprintf(1, 'CANNOT FIND FILE: %s\n',behavioral_st_fname_path); 
-end
-
-behavioral_st_data_table = readtable(behavioral_st_fname_path,'TreatAsEmpty','n/a','FileType','text','Delimiter','tab'); % read .tsv file into Matlab table variable
-
-% Add both to DAT for record, and flexible use later
-DAT.BEHAVIOR.behavioral_data_table = behavioral_data_table;
-DAT.BEHAVIOR.behavioral_st_data_table = behavioral_st_data_table;
+% phenodir = fullfile(BIDSdir,'phenotype');
+% 
+% % MEAN RATINGS PER RUN, AND OFFLINE RATINGS
+% 
+% behavioral_data_filename = 'ratings_means.tsv';
+% behavioral_fname_path = fullfile(phenodir, behavioral_data_filename);
+% 
+% if ~exist(behavioral_fname_path, 'file') 
+%     fprintf(1, 'CANNOT FIND FILE: %s\n',behavioral_fname_path); 
+% end
+% 
+% behavioral_data_table = readtable(behavioral_fname_path,'TreatAsEmpty','n/a','FileType','text','Delimiter','tab'); % read .tsv file into Matlab table variable
+% 
+% % calculate contrasts between conditions for ratings, and zscore them, for
+% % use as second-level covariates in contrast analyses
+% % NOTE: respect the order of raw variables in table
+% behavioral_data_table.intensity_sucro_sucra = zscore((behavioral_data_table.intensity_sucrose - behavioral_data_table.intensity_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.intensity_sucro_ery = zscore((behavioral_data_table.intensity_sucrose - behavioral_data_table.intensity_erythritol),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.intensity_ery_sucra = zscore((behavioral_data_table.intensity_erythritol - behavioral_data_table.intensity_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.liking_sucro_sucra = zscore((behavioral_data_table.liking_sucrose - behavioral_data_table.liking_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.liking_sucro_ery = zscore((behavioral_data_table.liking_sucrose - behavioral_data_table.liking_erythritol),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.liking_ery_sucra = zscore((behavioral_data_table.liking_erythritol - behavioral_data_table.liking_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.rating_sucro_sucra = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.rating_sucro_ery = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_erythritol),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.rating_ery_sucra = zscore((behavioral_data_table.rating_erythritol - behavioral_data_table.rating_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.rating_sucro_water = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.rating_ery_water = zscore((behavioral_data_table.rating_erythritol - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% behavioral_data_table.rating_sucra_water = zscore((behavioral_data_table.rating_sucralose - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+% 
+% % zscore ratings per condition too, for use as second-level covariates in condition
+% % analyses
+% behavioral_data_table.intensity_sucrose = zscore(behavioral_data_table.intensity_sucrose,0,'omitnan');
+% behavioral_data_table.intensity_erythritol = zscore(behavioral_data_table.intensity_erythritol,0,'omitnan');
+% behavioral_data_table.intensity_sucralose = zscore(behavioral_data_table.intensity_sucralose,0,'omitnan');
+% behavioral_data_table.liking_sucrose = zscore(behavioral_data_table.liking_sucrose,0,'omitnan');
+% behavioral_data_table.liking_erythritol = zscore(behavioral_data_table.liking_erythritol,0,'omitnan');
+% behavioral_data_table.liking_sucralose = zscore(behavioral_data_table.liking_sucralose,0,'omitnan');
+% behavioral_data_table.rating_sucrose = zscore(behavioral_data_table.rating_sucrose,0,'omitnan');
+% behavioral_data_table.rating_erythritol = zscore(behavioral_data_table.rating_erythritol,0,'omitnan');
+% behavioral_data_table.rating_sucralose = zscore(behavioral_data_table.rating_sucralose,0,'omitnan');
+% behavioral_data_table.rating_water = zscore(behavioral_data_table.rating_water,0,'omitnan');
+% 
+% 
+% % ONLINE RATINGS PER TRIAL
+% % can be used in single trial analyses including 'signature development'
+% behavioral_st_data_filename = 'ratings_online.tsv';
+% behavioral_st_fname_path = fullfile(phenodir, behavioral_st_data_filename);
+% 
+% if ~exist(behavioral_st_fname_path, 'file') 
+%     fprintf(1, 'CANNOT FIND FILE: %s\n',behavioral_st_fname_path); 
+% end
+% 
+% behavioral_st_data_table = readtable(behavioral_st_fname_path,'TreatAsEmpty','n/a','FileType','text','Delimiter','tab'); % read .tsv file into Matlab table variable
+% 
+% % Add both to DAT for record, and flexible use later
+% DAT.BEHAVIOR.behavioral_data_table = behavioral_data_table;
+% DAT.BEHAVIOR.behavioral_st_data_table = behavioral_st_data_table;
 
 
 %% INITIALIZE GROUP VARIABLE
@@ -188,22 +188,22 @@ DAT.BETWEENPERSON.contrasts = cell(1, length(DAT.contrastnames));
 % be used as regressors.  Variables with only two levels should be effects
 % coded, with [1 -1] values.
 %
-id = DAT.BEHAVIOR.behavioral_data_table.participant_id;
-covs = DAT.BEHAVIOR.behavioral_data_table.Properties.VariableNames(contains(DAT.BEHAVIOR.behavioral_data_table.Properties.VariableNames,'intensity') | contains(DAT.BEHAVIOR.behavioral_data_table.Properties.VariableNames,'rating'));
-
-for cond = 1:size(DAT.conditions,2)
-    if cond < size(DAT.conditions,2)
-    DAT.BETWEENPERSON.conditions{cond}.intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{cond}); % we include the intensity ratings for the three non-water conditions here, to be able to include them as covariates in analyses on conditions later;
-    end
-    DAT.BETWEENPERSON.conditions{cond}.rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cond+4}); % same for ratings, including water
-end
-
-for cont = 1:size(DAT.contrasts,1)
-    if cont < 4 % we don't have intensity ratings for water
-        DAT.BETWEENPERSON.contrasts{cont}.delta_intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont});
-    end
-    DAT.BETWEENPERSON.contrasts{cont}.delta_rating = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont+3});
-end
+% id = DAT.BEHAVIOR.behavioral_data_table.participant_id;
+% covs = DAT.BEHAVIOR.behavioral_data_table.Properties.VariableNames(contains(DAT.BEHAVIOR.behavioral_data_table.Properties.VariableNames,'intensity') | contains(DAT.BEHAVIOR.behavioral_data_table.Properties.VariableNames,'rating'));
+% 
+% for cond = 1:size(DAT.conditions,2)
+%     if cond < size(DAT.conditions,2)
+%     DAT.BETWEENPERSON.conditions{cond}.intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{cond}); % we include the intensity ratings for the three non-water conditions here, to be able to include them as covariates in analyses on conditions later;
+%     end
+%     DAT.BETWEENPERSON.conditions{cond}.rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cond+4}); % same for ratings, including water
+% end
+% 
+% for cont = 1:size(DAT.contrasts,1)
+%     if cont < 4 % we don't have intensity ratings for water
+%         DAT.BETWEENPERSON.contrasts{cont}.delta_intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont});
+%     end
+%     DAT.BETWEENPERSON.contrasts{cont}.delta_rating = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont+3});
+% end
 
 %% CANLAB EXAMPLE #1
 %
