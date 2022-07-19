@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s6b_prep_3a_run_second_level_parcregression.m
+%%% ery_4a_secondlevel_m1_s6b_prep_3a_run_second_level_parcregression.m
 
 % USAGE
 %
@@ -66,6 +66,7 @@
 
 mygroupnamefield = 'contrasts'; 
 results_suffix = 'parcelwise'; % do not delete, leave empty if not needed
+dorobust = false;
 
 % options set in a2_set_default_options
 
@@ -546,7 +547,7 @@ for c = 1:kc
             if save_figures
                 plugin_save_figure;
             end
-        clear o2, clear figtitle
+        clear o2, clear figtitle, clear j, clear tj
 
         % KEEP RESULTS OBJECTS IN CELL ARRAY FOR SAVING
         % ---------------------------------------------------------------------
