@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s9b_c2a_2nd_level_parcregress_cond.m
+%%% ery_4a_secondlevel_m1_s9b_c2a_2nd_level_parcregress_cond.m
 
 % USAGE
 %
