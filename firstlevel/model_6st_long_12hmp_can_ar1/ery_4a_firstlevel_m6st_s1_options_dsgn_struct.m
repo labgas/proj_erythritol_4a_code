@@ -325,27 +325,27 @@ githubrootdir = '/data/master_github_repos';
     % cell array (one cell per contrast) of contrast definitions
     
     % unmodulated contrasts
-    c=0;
+        c=0;
     c=c+1;
-    DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'}}; % CON_0001; this regexp will select any beta regressor starting with "sucrose", followed by exactly one white space, but not followed by x - which is only the unmodulated regressors for the sucrose condition
+    DSGN.contrasts{c} = {{'.*sucrose{1}_[^x]'}}; % CON_0001; this regexp will select any beta regressor starting with "sucrose", followed by exactly one white space, but not followed by x - which is only the unmodulated regressors for the sucrose condition
     c=c+1;
-    DSGN.contrasts{c} = {{'.*erythritol{1}\s[^x]'}}; % CON_0002
+    DSGN.contrasts{c} = {{'.*erythritol{1}_[^x]'}}; % CON_0002
     c=c+1;
-    DSGN.contrasts{c} = {{'.*sucralose{1}\s[^x]'}}; % CON_0003
+    DSGN.contrasts{c} = {{'.*sucralose{1}_[^x]'}}; % CON_0003
     c=c+1;
-    DSGN.contrasts{c} = {{'.*water{1}\s[^x]'}}; % CON_0004
+    DSGN.contrasts{c} = {{'.*water{1}_[^x]'}}; % CON_0004
     c=c+1;
-    DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'} {'.*water{1}\s[^x]'}}; % CON_0005
+    DSGN.contrasts{c} = {{'.*sucrose{1}_[^x]'} {'.*water{1}_[^x]'}}; % CON_0005
     c=c+1;
-    DSGN.contrasts{c} = {{'.*erythritol{1}\s[^x]'} {'.*water{1}\s[^x]'}}; % CON_0006
+    DSGN.contrasts{c} = {{'.*erythritol{1}_[^x]'} {'.*water{1}_[^x]'}}; % CON_0006
     c=c+1;
-    DSGN.contrasts{c} = {{'.*sucralose{1}\s[^x]'} {'.*water{1}\s[^x]'}}; % CON_0007
+    DSGN.contrasts{c} = {{'.*sucralose{1}_[^x]'} {'.*water{1}_[^x]'}}; % CON_0007
     c=c+1;
-    DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'} {'.*sucralose{1}\s[^x]'}}; % CON_0008
+    DSGN.contrasts{c} = {{'.*sucrose{1}_[^x]'} {'.*sucralose{1}_[^x]'}}; % CON_0008
     c=c+1;
-    DSGN.contrasts{c} = {{'.*sucrose{1}\s[^x]'} {'.*erythritol{1}\s[^x]'}}; % CON_0009
+    DSGN.contrasts{c} = {{'.*sucrose{1}_[^x]'} {'.*erythritol{1}_[^x]'}}; % CON_0009
     c=c+1;
-    DSGN.contrasts{c} = {{'.*erythritol{1}\s[^x]'} {'.*sucralose{1}\s[^x]'}}; % CON_0010
+    DSGN.contrasts{c} = {{'.*erythritol{1}_[^x]'} {'.*sucralose{1}_[^x]'}}; % CON_0010
     
     % OPTIONAL FIELDS
     
