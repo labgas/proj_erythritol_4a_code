@@ -111,6 +111,27 @@ cond_identifier = 'trial_type'; % name of condition identifier variable in same 
 vif_threshold = 4; % variance inflation threshold to exclude trials
 
 
+%% C2F_RUN_MVPA_REGRESSION_SINGLE_TRIAL
+%-----------------------------------------------------------------------------------------------------------------------
+
+holdout_set_method_mvpa_reg_st = 'onesample';                   % 'group', or 'onesample'
+                                                                    % 'group': use DAT.BETWEENPERSON.group or 
+                                                                    % DAT.BETWEENPERSON.contrasts{c}.group;
+                                                                    % @lukasvo76: balances holdout sets over groups
+                                                                    % 'onesample': use subject id only
+                                                                    % @lukasvo76: no group factor, stratifies by
+                                                                    % subject (i.e. leave whole subject out)
+nfolds_mvpa_reg_st = 5;                                         % default 5; number of cross-validation folds for kfold
+algorithm_mvpa_reg_st = 'cv_lassopcr';                          % default cv_lassopcr, will be passed into predict function, see help predict for options
+zscore_outcome = true;                                          % default true; zscores behavioral outcome variable (fmri_dat.Y) prior to fitting models
+maskname_mvpa_reg_st = which('gray_matter_mask_sparse.img');    % see above
+myscaling_mvpa_reg_st = 'raw';                                  % options are 'raw', 'centerimages', 'zscoreimages', 'l2norm_images'
+dobootstrap_mvpa_reg_st = false;                                % default false     Takes a lot of time, hence only use true for final analysis, since this takes a lot of time, especially if boot_n is set to the default 10k samples
+boot_n_mvpa_reg_st = 5000;                                      % default 5000      Number of bootstrap samples, reduce number for quick results, increase to 10k for publication
+parallelstr_mvpa_reg_st = 'parallel';                               % parallel proc for boot.   'parallel' or 'noparallel'
+dosavemvparegstats = true;                                      % see saving options above
+
+
 %% prep_3d_run_SVMs_betweenperson_contrasts options
 %---------------------------------------------------------------------
 % see prep_3b & prep_3c options above as well as the following:
@@ -122,22 +143,25 @@ myscaling_svm_between = 'raw'; % see above
 use_scaled_images = false; % @lukasvo76: change to true to use z-scored images - see above
 
 
-%% emosymp_m1_s5_predict_symptom_ratings_lasso_pcr options
-% --------------------------------------------------------------------
-% % see prep_3b options above as well as the following:
-% maskname_pcr = which('gray_matter_mask_sparse.img'); % see above
-% myscaling_pcr = 'raw'; % options are 'raw' or 'scaled'
-% dosavepcrstats = true; % see above
-% % lukasvo76: this refers to a study-specific script for the emosymp study,
-% % need to work on a more generic version
-
-
-%% LaBGASCORE_SECONDLEVEL_RUN_MVPA_REGRESSION_SINGLE_TRIAL
+%% C2F_RUN_MVPA_REGRESSION_SINGLE_TRIAL
 %-----------------------------------------------------------------------------------------------------------------------
-zscore_outcome = true; % zscores behavioral outcome variable (fmri_dat.Y) prior to fitting models
-maskname_mvpa_reg_st = which('gray_matter_mask_sparse.img'); % see above
-myscaling_mvpa_reg_st = 'raw'; % options are 'raw', 'centerimages', 'zscoreimages', 'l2norm_images'
-dosavemvparegstats = true; % see above
+
+holdout_set_method_mvpa_reg_st = 'onesample';                   % 'group', or 'onesample'
+                                                                    % 'group': use DAT.BETWEENPERSON.group or 
+                                                                    % DAT.BETWEENPERSON.contrasts{c}.group;
+                                                                    % @lukasvo76: balances holdout sets over groups
+                                                                    % 'onesample': use subject id only
+                                                                    % @lukasvo76: no group factor, stratifies by
+                                                                    % subject (i.e. leave whole subject out)
+nfolds_mvpa_reg_st = 5;                                         % default 5; number of cross-validation folds for kfold
+algorithm_mvpa_reg_st = 'cv_lassopcr';                          % default cv_lassopcr, will be passed into predict function, see help predict for options
+zscore_outcome = true;                                          % default true; zscores behavioral outcome variable (fmri_dat.Y) prior to fitting models
+maskname_mvpa_reg_st = which('gray_matter_mask_sparse.img');    % see above
+myscaling_mvpa_reg_st = 'raw';                                  % options are 'raw', 'centerimages', 'zscoreimages', 'l2norm_images'
+dobootstrap_mvpa_reg_st = false;                                % default false     Takes a lot of time, hence only use true for final analysis, since this takes a lot of time, especially if boot_n is set to the default 10k samples
+boot_n_mvpa_reg_st = 5000;                                      % default 5000      Number of bootstrap samples, reduce number for quick results, increase to 10k for publication
+parallelstr_mvpa_reg_st = 'parallel';                               % parallel proc for boot.   'parallel' or 'noparallel'
+dosavemvparegstats = true;                                      % see saving options above
 
 
 %% z_batch_publish_everything, z_batch_publish_analyses options 
