@@ -27,6 +27,7 @@ proc import
 	replace;
 run;
 
+/* not needed anymore after correction decimal separator and data type in excel file
 data work.ratings_all;
 set work.ratings_all;
  liking_numeric = input(liking,3.);
@@ -38,6 +39,19 @@ set work.ratings_all;
  liking = liking_numeric;
  drop liking_numeric;
 run;
+
+data work.ratings_all;
+set work.ratings_all;
+ intensity_numeric = input(intensity,3.);
+ drop intensity;
+run;
+
+data work.ratings_all;
+set work.ratings_all;
+ intensity = intensity_numeric;
+ drop intensity_numeric;
+run;
+*/
 
 * Z-score concentrations within conditions;
 proc sort data=work.ratings_all;
