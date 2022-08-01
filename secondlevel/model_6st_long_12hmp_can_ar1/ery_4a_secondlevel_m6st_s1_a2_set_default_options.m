@@ -116,7 +116,7 @@ vif_threshold = 4; % variance inflation threshold to exclude trials
 
 % GENERAL OPTIONS
 %----------------
-ml_method_mvpa_reg_st = 'oofmridataobj';                            % 'oofmridataobj', or 'predict'
+ml_method_mvpa_reg_st = 'oofmridataobj';                        % 'oofmridataobj', or 'predict'
                                                                     % 'oofmridataobj':
                                                                     % use @bogpetre's object-oriented method
                                                                     % https://github.com/canlab/ooFmriDataObjML
@@ -142,10 +142,15 @@ dobootstrap_mvpa_reg_st = false;                                % default false 
 boot_n_mvpa_reg_st = 5000;                                      % default 5000      number of bootstrap samples, reduce number for quick results, increase to 10k for publication
 doperm_mvpa_reg_st = false;                                     % default false     permutation testing; takes a lot of time
 perm_n_mvpa_reg_st = 5000;                                      % default 5000      number of permutations
+perm_sidedness = 'both';                                        % default both      tails for permutation test, 'both','smaller', or 'larger'
 parallelstr_mvpa_reg_st = 'parallel';                           % parallel proc for boot.   'parallel' or 'noparallel'
 dosavemvparegstats = true;                                      % see saving options above
 q_threshold_mvpa_reg_st = .05;                                  % default .05       threshold for FDR-corrected display items
 k_threshold_mvpa_reg_st = 10;                                   % default 10        extent threshold for FDR-corrected display items
+
+% OPTIONS IF ML_METHOD == OOFMRIDATAOBJ
+%--------------------------------------
+opt_method_mvpa_reg_st = 'bayes';                               % default bayes     'bayes' or 'gridsearch'  
 
 
 %% prep_3d_run_SVMs_betweenperson_contrasts options
