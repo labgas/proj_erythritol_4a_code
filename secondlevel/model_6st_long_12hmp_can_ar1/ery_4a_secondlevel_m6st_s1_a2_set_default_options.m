@@ -116,7 +116,7 @@ vif_threshold = 4; % variance inflation threshold to exclude trials
 
 % GENERAL OPTIONS
 %----------------
-ml_method_mvpa_reg_st = 'oofmridataobj';                        % 'oofmridataobj', or 'predict'
+ml_method_mvpa_reg_st = 'predict';                              % 'oofmridataobj', or 'predict'
                                                                     % 'oofmridataobj':
                                                                     % use @bogpetre's object-oriented method
                                                                     % https://github.com/canlab/ooFmriDataObjML
@@ -138,11 +138,13 @@ myscaling_mvpa_reg_st = 'raw';                                  % options are 'r
 % OPTIONS IF ML_METHOD == PREDICT
 %--------------------------------
 algorithm_mvpa_reg_st = 'cv_pcr';                               % default cv_lassopcr, will be passed into predict function, see help predict for options
-dobootstrap_mvpa_reg_st = false;                                % default false     bootstrapping; takes a lot of time, hence only use true for final analysis, since this takes a lot of time, especially if boot_n is set to 10k samples
-boot_n_mvpa_reg_st = 5000;                                      % default 5000      number of bootstrap samples, reduce number for quick results, increase to 10k for publication
-doperm_mvpa_reg_st = false;                                     % default false     permutation testing; takes a lot of time
-perm_n_mvpa_reg_st = 5000;                                      % default 5000      number of permutations
+dobootstrap_mvpa_reg_st = true;                                 % default false     bootstrapping; takes a lot of time, hence only use true for final analysis, since this takes a lot of time, especially if boot_n is set to 10k samples
+boot_n_mvpa_reg_st = 50;                                        % default 5000      number of bootstrap samples, reduce number for quick results, increase to 10k for publication
+doperm_mvpa_reg_st = true;                                      % default false     permutation testing; takes a lot of time
+perm_n_mvpa_reg_st = 50;                                        % default 5000      number of permutations
 perm_sidedness = 'both';                                        % default both      tails for permutation test, 'both','smaller', or 'larger'
+dosourcerecon_mvpa_reg_st = true;                               % default false     source reconstruction/"structure coefficients", i.e. regressing each voxel's activity onto yhat - see Haufe et al NeuroImage 2014
+dosourcerecon_perm_mvpa_reg_st = true;                          % default false     permutation testing on source recon images; takes a very long time despite implementation of parfor loop
 parallelstr_mvpa_reg_st = 'parallel';                           % parallel proc for boot.   'parallel' or 'noparallel'
 dosavemvparegstats = true;                                      % see saving options above
 q_threshold_mvpa_reg_st = .05;                                  % default .05       threshold for FDR-corrected display items
