@@ -89,7 +89,7 @@ dosavesvmstats = true;      % default true      Save statistics and weight map o
 dobootstrap = false;        % default false     Takes a lot of time, hence only use true for final analysis, since this takes a lot of time, especially if boot_n is set to the default 10k samples
     boot_n = 10000;             % default number of bootstrap samples       Reduce number for quick results
 parallelstr = 'parallel';   % parallel proc for boot.   'parallel' or 'noparallel'
-dosearchlight_svm = 'false';                            % default false     perform searchlight SVM analysis 
+dosearchlight_svm = false;                            % default false     perform searchlight SVM analysis 
     searchlight_svm_radius = 3;                              % default 3         radius for searchlight sphere
 
 
