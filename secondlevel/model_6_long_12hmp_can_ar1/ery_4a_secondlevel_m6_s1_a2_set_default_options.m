@@ -90,7 +90,7 @@ dobootstrap = false;        % default false     Takes a lot of time, hence only 
     boot_n = 10000;             % default number of bootstrap samples       Reduce number for quick results
 parallelstr = 'parallel';   % parallel proc for boot.   'parallel' or 'noparallel'
 dosearchlight_svm = false;                            % default false     perform searchlight SVM analysis 
-    searchlight_svm_radius = 3;                              % default 3         radius for searchlight sphere
+    searchlight_radius_svm = 3;                              % default 3         radius for searchlight sphere
 
 
 %% C2_SVM_CONTRASTS_MASKED
