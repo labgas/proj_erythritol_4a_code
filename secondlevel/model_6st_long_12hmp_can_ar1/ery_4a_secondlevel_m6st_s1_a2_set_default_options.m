@@ -134,6 +134,7 @@ nfolds_mvpa_reg_st = 5;                                         % default 5; num
 zscore_outcome = true;                                          % default true; zscores behavioral outcome variable (fmri_dat.Y) prior to fitting models
 maskname_mvpa_reg_st = which('gray_matter_mask_sparse.img');    % see above
 myscaling_mvpa_reg_st = 'raw';                                  % options are 'raw', 'centerimages', 'zscoreimages', 'l2norm_images'
+domultilevel_mvpa_reg_st = false;
 
 % OPTIONS IF ML_METHOD == PREDICT
 %--------------------------------
