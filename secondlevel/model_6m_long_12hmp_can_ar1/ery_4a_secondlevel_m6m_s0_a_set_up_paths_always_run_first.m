@@ -57,7 +57,7 @@ end
 % STUDY-SPECIFIC: replace LaBGAScore with study name and add model index in code below
 
 if ~exist('DSGN','var')
-    warning('\nDSGN variable not found in Matlab workspace, running ery_4a_firstlevel_m6_s1_options_dsgn_struct.m before proceeding')
+    warning('\nDSGN variable not found in Matlab workspace, running ery_4a_firstlevel_m6m_s1_options_dsgn_struct.m before proceeding')
     ery_4a_firstlevel_m6_s1_options_dsgn_struct;
 end
 
@@ -222,7 +222,7 @@ htmlsavedir = fullfile(resultsdir,'html');
 %% SET USER OPTIONS
 % --------------------------------------------------------
 
-a2_set_default_options;
+ery_4a_secondlevel_m6m_s1_a2_set_default_options;
 
     
 %% DISPLAY HELPER FUNCTION CALLED BY LATER SCRIPTS

@@ -28,7 +28,7 @@
 %--------------------------------------------------------------------------
 
 maskname = 'ery_4a_m6_mask_all_regions';
-maskdir = '/data/proj_erythritol/proj_erythritol_4a/secondlevel/model_6_long_12hmp_can_ar1/masks';
+maskdir = '/data/proj_erythritol/proj_erythritol_4a/secondlevel/model_6m_long_12hmp_can_ar1/masks';
 
 % NOTE: in default LaBGAS file organization this is a model-specific dir in
 % rootdir/secondlevel/model_xxx, but you can obviously specify any dir here
