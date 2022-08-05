@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6_s5_prep_3_calc_univariate_contrast_maps_and_save.m
+%% ery_4a_secondlevel_m6m_s5_prep_3_calc_univariate_contrast_maps_and_save.m
 
 % This script allows us to test within-person contrasts.
 % We can include image sets with different
