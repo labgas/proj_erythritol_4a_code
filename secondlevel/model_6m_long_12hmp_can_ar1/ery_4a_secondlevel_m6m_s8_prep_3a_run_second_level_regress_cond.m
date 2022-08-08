@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s8_prep_3a_run_2nd_level_regress_cond.m
+%%% ery_4a_secondlevel_m6m_s8_prep_3a_run_second_level_regress_cond.m
 
 % USAGE
 %
@@ -415,7 +415,7 @@ for c = 1:kc
         
         t = regression_stats.t;
             if maskname_glm
-                t = apply_mask(t,maskname_glm);
+                t = apply_mask(t, maskname_glm);
             end
         orthviews(t);
             for kk = 1:length(regression_stats.variable_names)

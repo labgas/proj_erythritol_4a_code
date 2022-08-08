@@ -415,7 +415,7 @@ for c = 1:kc
         
         t = regression_stats.t;
             if maskname_glm
-                t = apply_mask(t,maskname_glm);
+                t = apply_mask(t, maskname_glm);
             end
         orthviews(t);
             for kk = 1:length(regression_stats.variable_names)
