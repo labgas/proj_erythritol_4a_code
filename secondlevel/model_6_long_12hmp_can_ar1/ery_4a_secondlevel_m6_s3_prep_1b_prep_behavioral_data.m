@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6_s3_prep_1b_prep_behavioral_data.m
+%% prep_1b_prep_behavioral_data.m
 %
 % CANLAB NOTES:
 %
@@ -27,12 +27,6 @@
 %
 % - If you have no binary group variable,  it is OK to leave the .group
 % field empty. 
-%
-% - If you have continuous variable(s) instead of a binary group variable,
-% you can enter a continuous variable in .group (for now!) -- this script
-% uses that continuous variable:  (it may cause problems with other scripts
-% that assume binary .group data, and may be changed in future versions):
-% prep_3a_run_second_level_regression_and_save
 %
 % - Instead of a single .group variable to be tested with all
 % conditions/contrasts, you can also enter different variables for each
@@ -104,9 +98,6 @@ behavioral_data_table.liking_ery_sucra = zscore((behavioral_data_table.liking_er
 behavioral_data_table.rating_sucro_sucra = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
 behavioral_data_table.rating_sucro_ery = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_erythritol),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
 behavioral_data_table.rating_ery_sucra = zscore((behavioral_data_table.rating_erythritol - behavioral_data_table.rating_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.rating_sucro_water = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.rating_ery_water = zscore((behavioral_data_table.rating_erythritol - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
-behavioral_data_table.rating_sucra_water = zscore((behavioral_data_table.rating_sucralose - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
 
 % zscore ratings per condition too, for use as second-level covariates in condition
 % analyses
@@ -195,13 +186,11 @@ for cond = 1:size(DAT.conditions,2)
     if cond < size(DAT.conditions,2)
     DAT.BETWEENPERSON.conditions{cond}.intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{cond}); % we include the intensity ratings for the three non-water conditions here, to be able to include them as covariates in analyses on conditions later;
     end
-    DAT.BETWEENPERSON.conditions{cond}.rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cond+4}); % same for ratings, including water
+    DAT.BETWEENPERSON.conditions{cond}.rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cond+4}); % same for ratings
 end
 
 for cont = 1:size(DAT.contrasts,1)
-    if cont < 4 % we don't have intensity ratings for water
-        DAT.BETWEENPERSON.contrasts{cont}.delta_intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont});
-    end
+    DAT.BETWEENPERSON.contrasts{cont}.delta_intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont});
     DAT.BETWEENPERSON.contrasts{cont}.delta_rating = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont+3});
 end
 
@@ -315,12 +304,12 @@ end
 %
 %% CANLAB EXAMPLE #2
 %
-% see 
+% see "mastergithubrepo"/CANlab_help_examples/Second_level_analysis_template_scripts/b_copy_to_local_scripts_dir_and_modify/prep_1b_prep_behavioral_data_example2.m
 %
 %
-%% LABGAS EXAMPLE
+%% LABGAS EXAMPLES
 %
-% see 
+% see github.com/labgas
 
 %% Check DAT, print warnings, save DAT structure
 
@@ -337,7 +326,7 @@ else
     disp('prep_2/3/4 scripts should be run before generating results.');
 end
 
-printhdr('Save DSGN & DAT structures, helper function, and directory names');
+printhdr('Save DSGN & DAT structures and directory names in image_names_and_setup.mat');
 
 savefilename = fullfile(resultsdir, 'image_names_and_setup.mat');
 save(savefilename, 'dashes','printstr','printhdr','DSGN', 'DAT', 'basedir', 'datadir', 'maskdir', 'resultsdir', 'scriptsdir', 'figsavedir', 'htmlsavedir', '-v7.3');
