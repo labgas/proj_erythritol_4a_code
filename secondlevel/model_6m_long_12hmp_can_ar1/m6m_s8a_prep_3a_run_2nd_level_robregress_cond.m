@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6m_s6b_prep_3a_run_second_level_parcregression.m
+%%% ery_4a_secondlevel_m6m_s8a_prep_3a_run_2nd_level_robregress_cond.m
 
 % USAGE
 %
@@ -64,16 +64,16 @@
 
 % options to be specified here
 
-mygroupnamefield = 'contrasts'; 
-results_suffix = 'parcelwise'; % do not delete, leave empty if not needed
+mygroupnamefield = 'conditions'; 
+results_suffix = 'robust'; % do not delete, leave empty if not needed
 
 % options set in a2_set_default_options
 
 options_needed = {'dorobust', 'myscaling_glm', 'design_matrix_type'};
 options_exist = cellfun(@exist, options_needed); 
+dorobust = true;
 
 option_default_values = {true, 'raw', 'onesample'}; % defaults if we cannot find info in a2_set_default_options at all ; @lukasvo76: changed the defaults to align with a2_set_default_options
-dorobfit_parcelwise = true; % lukasvo76: overwrites option set in a2_set_default_options
 
 plugin_get_options_for_analysis_script
 

@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6m_s6a_prep_3a_run_second_level_robregression.m
+%%% ery_4a_secondlevel_m6m_s6a_prep_3a_run_second_level_robregress.m
 
 % USAGE
 %
@@ -73,7 +73,6 @@ options_needed = {'dorobust', 'myscaling_glm', 'design_matrix_type'};
 options_exist = cellfun(@exist, options_needed); 
 
 option_default_values = {true, 'raw', 'onesample'}; % defaults if we cannot find info in a2_set_default_options at all ; @lukasvo76: changed the defaults to align with a2_set_default_options
-dorobust = true; % lukasvo76: overwrites option set in a2_set_default_options
 
 plugin_get_options_for_analysis_script
 

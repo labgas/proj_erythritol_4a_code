@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s9a_c2a_2nd_level_robregress_cond.m
+%%% ery_4a_secondlevel_m6m_s9b_c2a_second_level_parcregress_cond.m
 
 % USAGE
 %
@@ -16,8 +16,8 @@
 % date:   Dartmouth, May, 2022
 %
 %__________________________________________________________________________
-% @(#)% c2a_second_level_regression.m         v2.0
-% last modified: 2022/05/28
+% @(#)% c2a_second_level_regression.m         v2.4
+% last modified: 2022/07/28
 
 
 %% LOAD REGRESSION RESULTS IF NEEDED
@@ -26,9 +26,8 @@
 % options (from corresponding prep_3a script)
 
 mygroupnamefield = 'conditions';
-results_suffix = 'robust';
-dorobust = true;
-
+results_suffix = 'parcelwise';
+dorobfit_parcelwise = true;
 
 % check scaling
 
@@ -59,7 +58,7 @@ if ~dorobfit_parcelwise
     analysis_type = 'voxel-wise';
 else
     resultsvarname = 'parcelwise_stats_results';
-    resultsstring = 'parcelwise_stats_and_maps';
+    resultsstring = 'parcelwise_stats_and_maps_';
     analysis_type = 'parcel-wise';
 end
     
@@ -69,7 +68,7 @@ if ~exist(resultsvarname, 'var')
             fprintf('\nLoading %s regression results and maps from %s\n\n', analysis_type, savefilenamedata);
             load(savefilenamedata, resultsvarname);
         else
-            fprintf('\nNo saved results file %s. Skipping this analysis.', savefilenamedata)
+            fprintf('\nNo saved results file %s. Skipping this analysis.', savefilenamedata);
             fprintf('\nRun prep_3a_run_second_level_regression_and_save.m to get %s regression results first.\n', analysis_type); 
             return
         end
@@ -87,18 +86,18 @@ end
 %% MASKING
 %--------------------------------------------------------------------------
 
-if exist(maskname_glm, 'file')
+if exist('maskname_glm', 'var') && ~isempty(maskname_glm) && exist(maskname_glm, 'file')
     apply_mask_before_fdr = true;
     [~,maskname_short] = fileparts(maskname_glm);
     mask_string = sprintf('within_%s', maskname_short);
-    mask = fmri_data_st(maskname_glm, 'noverbose'); 
+    glmmask = fmri_mask_image(maskname_glm, 'noverbose'); 
 else
     apply_mask_before_fdr = false;
     mask_string = sprintf('without_masking');
 end  
 
 
-%% RUN MASS UNIVARIATE GLM
+%% DISPLAY MASS UNIVARIATE GLM
 %--------------------------------------------------------------------------
 
 for c = 1:size(results, 2) % number of contrasts or conditions
@@ -124,7 +123,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
     
     % BETWEEN-SUBJECT REGRESSORS & INTERCEPT: FDR corrected
     % ---------------------------------------------------------------------
-    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5,'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
+    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
     
         for j = 1:num_effects
 
@@ -132,7 +131,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             tj = get_wh_image(t, j);
                 if apply_mask_before_fdr
-                    tj = apply_mask(tj, mask);
+                    tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, q_threshold, 'fdr', 'k', k_threshold); 
 
@@ -157,7 +156,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             tj = get_wh_image(t, j);
                 if apply_mask_before_fdr
-                    tj = apply_mask(tj, mask);
+                    tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, q_threshold, 'fdr', 'k', k_threshold); 
 
@@ -171,7 +170,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
                 o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
                 % Activate, name, and save figure
-                figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
+                figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, q_threshold, names{j}, scaling_string, mask_string);
                 set(gcf, 'Tag', figtitle, 'WindowState','maximized');
                 drawnow, snapnow;
                     if save_figures
@@ -186,7 +185,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
     
     % BETWEEN-SUBJECT REGRESSORS & INTERCEPT: uncorrected
     % ---------------------------------------------------------------------    
-    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
+    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5,'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
     
         for j = 1:num_effects
 
@@ -194,7 +193,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             tj = get_wh_image(t, j);
                 if apply_mask_before_fdr
-                    tj = apply_mask(tj, mask);
+                    tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, p_threshold, 'unc', 'k', k_threshold); 
 
@@ -219,7 +218,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             tj = get_wh_image(t, j);
                 if apply_mask_before_fdr
-                    tj = apply_mask(tj, mask);
+                    tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, p_threshold, 'unc', 'k', k_threshold); 
 

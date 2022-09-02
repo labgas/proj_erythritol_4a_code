@@ -1,4 +1,4 @@
-%%% prep_3c_run_SVMs_on_contrasts_masked.m
+%%% ery_4a_secondlevel_m6_s10_prep_3c_run_SVMs_on_contrasts_masked.m
 %
 % USAGE
 %
@@ -92,7 +92,7 @@ results_suffix = ''; % adds a suffix of your choice to .mat file with results th
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6_s0_a_set_up_paths_always_run_first;
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT!
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
 

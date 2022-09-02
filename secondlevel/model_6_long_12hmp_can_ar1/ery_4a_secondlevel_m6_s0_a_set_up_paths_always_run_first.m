@@ -1,4 +1,4 @@
-%% a_set_up_paths_always_run_first.m
+%%% ery_4a_secondlevel_m6_s0_a_set_up_paths_always_run_first.m
 %
 % Always run this first before you run other second level scripts.
 %
@@ -48,7 +48,7 @@
 
 if ~exist('rootdir','var')
     warning('\nrootdir variable not found in Matlab workspace, running LaBGAScore_prep_s0_define_directories before proceeding')
-    LaBGAScore_prep_s0_define_directories;
+    ery_4a_prep_s0_define_directories;
     cd(rootdir);
 else
     cd(rootdir);
@@ -59,7 +59,7 @@ end
 
 if ~exist('DSGN','var')
     warning('\nDSGN variable not found in Matlab workspace, running LaBGAScore_firstlevel_s1_options_dsgn_struct.m before proceeding')
-    LaBGAScore_firstlevel_s1_options_dsgn_struct;
+    ery_4a_firstlevel_m6_s1_options_dsgn_struct;
 end
 
 [~,modelname] = fileparts(DSGN.modeldir); 
@@ -223,7 +223,7 @@ htmlsavedir = fullfile(resultsdir,'html');
 % --------------------------------------------------------
 % STUDY-SPECIFIC: add study name and model name to script name
 
-a2_set_default_options;
+ery_4a_secondlevel_m6_s1_a2_set_default_options;
 
     
 %% DISPLAY HELPER FUNCTION CALLED BY LATER SCRIPTS

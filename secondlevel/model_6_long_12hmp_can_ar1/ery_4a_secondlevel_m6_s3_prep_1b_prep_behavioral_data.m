@@ -1,4 +1,4 @@
-%% prep_1b_prep_behavioral_data.m
+%%% ery_4a_secondlevel_m6_s3_prep_1b_prep_behavioral_data.m
 %
 % CANLAB NOTES:
 %
@@ -98,6 +98,9 @@ behavioral_data_table.liking_ery_sucra = zscore((behavioral_data_table.liking_er
 behavioral_data_table.rating_sucro_sucra = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
 behavioral_data_table.rating_sucro_ery = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_erythritol),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
 behavioral_data_table.rating_ery_sucra = zscore((behavioral_data_table.rating_erythritol - behavioral_data_table.rating_sucralose),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+behavioral_data_table.rating_sucro_water = zscore((behavioral_data_table.rating_sucrose - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+behavioral_data_table.rating_ery_water = zscore((behavioral_data_table.rating_erythritol - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
+behavioral_data_table.rating_sucra_water = zscore((behavioral_data_table.rating_sucralose - behavioral_data_table.rating_water),0,'omitnan'); % respect the order of DAT.contrastnames defined in prep_1
 
 % zscore ratings per condition too, for use as second-level covariates in condition
 % analyses
@@ -186,11 +189,13 @@ for cond = 1:size(DAT.conditions,2)
     if cond < size(DAT.conditions,2)
     DAT.BETWEENPERSON.conditions{cond}.intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{cond}); % we include the intensity ratings for the three non-water conditions here, to be able to include them as covariates in analyses on conditions later;
     end
-    DAT.BETWEENPERSON.conditions{cond}.rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cond+4}); % same for ratings
+    DAT.BETWEENPERSON.conditions{cond}.rating = DAT.BEHAVIOR.behavioral_data_table.(covs{cond+4}); % same for ratings, including water
 end
 
 for cont = 1:size(DAT.contrasts,1)
-    DAT.BETWEENPERSON.contrasts{cont}.delta_intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont});
+    if cont < 4 % we don't have intensity ratings for water
+        DAT.BETWEENPERSON.contrasts{cont}.delta_intensity = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont});
+    end
     DAT.BETWEENPERSON.contrasts{cont}.delta_rating = DAT.BEHAVIOR.behavioral_data_table.(covs{(size(DAT.conditions,2)*2)-1+cont+3});
 end
 

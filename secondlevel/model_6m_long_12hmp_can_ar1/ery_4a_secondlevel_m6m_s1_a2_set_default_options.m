@@ -32,7 +32,7 @@ dozipimages = false;        % default false to avoid load on data upload/downloa
 %% PREP_3A_RUN_SECOND_LEVEL_REGRESSION_AND_SAVE
 % --------------------------------------------
 
-dorobust = false;            % robust statistics for voxel-based GLM [true, false] -- default true
+dorobust = true;            % robust statistics for voxel-based GLM [true, false] -- default true
 maskname_glm = which('ery_4a_m6_mask_all_regions.nii'); %lukasvo76 edited: default use of sparse gray matter mask; maskdir now defined in a_set_up_paths_always_run_first script; if you do not want to mask, change to []; if you want to use a custom mask, put it in maskdir and change name here.
 myscaling_glm = 'raw';      % 'raw', 'scaled', or 'scaledcontrasts'; 
                             % 'scaled': use z-scored condition images prior to computing contrasts
@@ -48,7 +48,7 @@ design_matrix_type = 'onesample';   % 'group', 'custom', or 'onesample'
                             % @lukasvo76: no group factor, no covariates -
                             % one sample t-test with robust option
                             % (contrary to c_univariate_contrast_maps.m)
-dorobfit_parcelwise = false;  % true runs robust parcelwise regression (CANlab's robfit_parcelwise() function) rather than voxel-based GLM (CANlab's regress() function) % added by @lukasvo76 May 2022
+dorobfit_parcelwise = true;  % true runs robust parcelwise regression (CANlab's robfit_parcelwise() function) rather than voxel-based GLM (CANlab's regress() function) % added by @lukasvo76 May 2022
     % robfit_parcelwise options
     csf_wm_covs = false; % true adds global wm & csf regressors at second level
     remove_outliers = false; % true removes outlier images/subjects based on mahalanobis distance 

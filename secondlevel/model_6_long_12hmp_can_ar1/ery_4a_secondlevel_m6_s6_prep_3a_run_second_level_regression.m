@@ -1,5 +1,5 @@
-%%% prep_3a_run_second_level_regression_and_save.m
-%
+%% ery_4a_secondlevel_m6_s6_prep_3a_run_second_level_regression_and_save.m
+
 %
 % USAGE
 %
@@ -79,7 +79,7 @@
 
 
 %% GET AND SET OPTIONS
-%--------------------------------------------------------------------------
+% -------------------------------------------------------------------------
 
 % SET MANDATORY OPTIONS
 
@@ -90,7 +90,7 @@ results_suffix = ''; % adds a suffix of your choice to .mat file with results th
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6_s0_a_set_up_paths_always_run_first;
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
 
@@ -143,7 +143,7 @@ end
 
 
 %% MASKING
-%--------------------------------------------------------------------------
+% -------------------------------------------------------------------------
 
 fprintf('\n\n');
 printhdr('MASKING IMAGES IF REQUESTED IN OPTIONS');

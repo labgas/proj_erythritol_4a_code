@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6_s7_c2a_second_level_regression.m
+%% ery_4a_secondlevel_m6_s7_c2a_second_level_parcregress.m
 
 
 % USAGE
@@ -63,6 +63,7 @@ mygroupnamefield = 'contrasts';
 results_suffix = ''; % suffix of your choice added to .mat file with saved results
 myscaling_glm = 'raw';
 maskname_glm = which('gray_matter_mask_sparse.img'); % applied in this script before fdr thresholding
+dorobfit_parcelwise = true;
 
 % SET CUSTOM OPTIONS
 

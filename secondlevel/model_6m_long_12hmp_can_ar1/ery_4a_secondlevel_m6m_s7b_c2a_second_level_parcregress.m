@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s7b_c2a_second_level_parcregress.m
+%%% ery_4a_secondlevel_m6m_s7b_c2a_second_level_parcregress.m
 
 % USAGE
 %
@@ -16,8 +16,8 @@
 % date:   Dartmouth, May, 2022
 %
 %__________________________________________________________________________
-% @(#)% c2a_second_level_regression.m         v2.1
-% last modified: 2022/07/06
+% @(#)% c2a_second_level_regression.m         v2.4
+% last modified: 2022/07/28
 
 
 %% LOAD REGRESSION RESULTS IF NEEDED
@@ -68,7 +68,7 @@ if ~exist(resultsvarname, 'var')
             fprintf('\nLoading %s regression results and maps from %s\n\n', analysis_type, savefilenamedata);
             load(savefilenamedata, resultsvarname);
         else
-            fprintf('\nNo saved results file %s. Skipping this analysis.', savefilenamedata)
+            fprintf('\nNo saved results file %s. Skipping this analysis.', savefilenamedata);
             fprintf('\nRun prep_3a_run_second_level_regression_and_save.m to get %s regression results first.\n', analysis_type); 
             return
         end
@@ -86,18 +86,18 @@ end
 %% MASKING
 %--------------------------------------------------------------------------
 
-if exist(maskname_glm, 'file')
+if exist('maskname_glm', 'var') && ~isempty(maskname_glm) && exist(maskname_glm, 'file')
     apply_mask_before_fdr = true;
     [~,maskname_short] = fileparts(maskname_glm);
     mask_string = sprintf('within_%s', maskname_short);
-    mask = fmri_data_st(maskname_glm, 'noverbose'); 
+    glmmask = fmri_mask_image(maskname_glm, 'noverbose'); 
 else
     apply_mask_before_fdr = false;
     mask_string = sprintf('without_masking');
 end  
 
 
-%% RUN MASS UNIVARIATE GLM
+%% DISPLAY MASS UNIVARIATE GLM
 %--------------------------------------------------------------------------
 
 for c = 1:size(results, 2) % number of contrasts or conditions
@@ -131,7 +131,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             tj = get_wh_image(t, j);
                 if apply_mask_before_fdr
-                    tj = apply_mask(tj, mask);
+                    tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, q_threshold, 'fdr', 'k', k_threshold); 
 
@@ -148,7 +148,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             plugin_save_figure;
         end
         
-    clear o2, clear figtitle
+    clear o2, clear figtitle, clear j, clear tj
     
         for j = 1:num_effects
 
@@ -156,7 +156,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             tj = get_wh_image(t, j);
                 if apply_mask_before_fdr
-                    tj = apply_mask(tj, mask);
+                    tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, q_threshold, 'fdr', 'k', k_threshold); 
 
@@ -167,24 +167,16 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             % Montage of regions in table (plot and save)
             if ~isempty(r)
-                o3 = montage(r, 'colormap', 'regioncenters', 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
+                o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
-                % Activate, name, and save figure - then close
+                % Activate, name, and save figure
                 figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, q_threshold, names{j}, scaling_string, mask_string);
-                region_fig_han = activate_figures(o3);
-                
-                    if ~isempty(region_fig_han)
-                        set(region_fig_han(1), 'Tag', figtitle, 'WindowState','maximized');
-                        drawnow, snapnow;
-                            if save_figures
-                                plugin_save_figure;
-                            end
-                        close(region_fig_han(1)), clear o3, clear figtitle
-                    else
-                        fprintf('\n');
-                        warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
-                        fprintf('\n');
+                set(gcf, 'Tag', figtitle, 'WindowState','maximized');
+                drawnow, snapnow;
+                    if save_figures
+                        plugin_save_figure;
                     end
+                clear o3, clear figtitle, clear j, clear tj, clear r
 
             end % conditional montage plot if there are regions to show
             
@@ -193,7 +185,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
     
     % BETWEEN-SUBJECT REGRESSORS & INTERCEPT: uncorrected
     % ---------------------------------------------------------------------    
-    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
+    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5,'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
     
         for j = 1:num_effects
 
@@ -201,7 +193,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             tj = get_wh_image(t, j);
                 if apply_mask_before_fdr
-                    tj = apply_mask(tj, mask);
+                    tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, p_threshold, 'unc', 'k', k_threshold); 
 
@@ -218,7 +210,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             plugin_save_figure;
         end
         
-    clear o2, clear figtitle
+    clear o2, clear figtitle, clear j, clear tj
         
         for j = 1:num_effects
 
@@ -226,7 +218,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             tj = get_wh_image(t, j);
                 if apply_mask_before_fdr
-                    tj = apply_mask(tj, mask);
+                    tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, p_threshold, 'unc', 'k', k_threshold); 
 
@@ -239,26 +231,14 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             if ~isempty(r)
                 o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
-                % Activate, name, and save figure - then close
+                % Activate, name, and save figure
                 figtitle = sprintf('%s_%s_%1.4f_unc_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
-                region_fig_han = activate_figures(o3);
-                
-                    if ~isempty(region_fig_han)
-                        if iscell(region_fig_han)
-                            set(region_fig_han{1}, 'Tag', figtitle, 'WindowState','maximized');
-                        else
-                            set(region_fig_han, 'Tag', figtitle, 'WindowState','maximized');
-                        end
-                        drawnow, snapnow;
-                            if save_figures
-                                plugin_save_figure;
-                            end
-                        clear o3, clear figtitle
-                    else
-                        fprintf('\n');
-                        warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
-                        fprintf('\n');
+                set(gcf, 'Tag', figtitle, 'WindowState','maximized');
+                drawnow, snapnow;
+                    if save_figures
+                        plugin_save_figure;
                     end
+                clear o3, clear figtitle, clear j, clear tj, clear r
 
             end % loop over regions in results
         

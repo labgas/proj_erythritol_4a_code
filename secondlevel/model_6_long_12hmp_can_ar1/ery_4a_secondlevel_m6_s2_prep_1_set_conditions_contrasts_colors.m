@@ -1,4 +1,4 @@
-%% prep_1_set_conditions_contrasts_colors.m
+%%% ery_4a_secondlevel_m6_s2_prep_1_set_conditions_contrasts_colors.m
 %
 % CANLAB NOTES:
 % - Modify to specify image file subdirectories, wildcards to locate images, condition names
@@ -164,11 +164,11 @@ DAT.functional_wildcard = {'con_0001.nii' 'con_0002.nii' 'con_0003.nii' 'con_000
 % sets of images, where the ith image is from the ith subject for all
 % conditions).
 
-DAT.contrasts = [1 0 -1 0; 1 -1 0 0; 0 1 -1 0];
+DAT.contrasts = [1 0 -1 0; 1 -1 0 0; 0 1 -1 0; 1 0 0 -1; 0 1 0 -1; 0 0 1 -1];
     
 % Descriptive names for contrasts to be used in plots and tables. Avoid
 % special characters.
-DAT.contrastnames = {'sucrose vs sucralose' 'sucrose vs erythritol' 'erythritol vs sucralose'};
+DAT.contrastnames = {'sucrose vs sucralose' 'sucrose vs erythritol' 'erythritol vs sucralose' 'sucrose vs water' 'erythritol vs water' 'sucralose vs water'};
 
 DAT.contrastnames = format_strings_for_legend(DAT.contrastnames);
 
