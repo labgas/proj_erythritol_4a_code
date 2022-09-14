@@ -90,7 +90,7 @@ results_suffix = ''; % adds a suffix of your choice to .mat file with results th
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
 
@@ -99,7 +99,7 @@ a_set_up_paths_always_run_first;
 options_needed = {'dorobust', 'dorobfit_parcelwise', 'myscaling_glm', 'design_matrix_type', 'maskname_glm'};
 options_exist = cellfun(@exist, options_needed); 
 
-option_default_values = {false, false, 'raw', 'onesample', which('gray_matter_mask_sparse.img')};
+option_default_values = {false, false, 'raw', 'onesample', which('ery_4a_m6_mask_all_regions.nii')};
 
 plugin_get_options_for_analysis_script;
 
@@ -150,7 +150,7 @@ printhdr('MASKING IMAGES IF REQUESTED IN OPTIONS');
 fprintf('\n\n');
 
 if exist('maskname_glm', 'var') && ~isempty(maskname_glm) && exist(maskname_glm, 'file')
-    [~,maskname_short] = fileparts(maskname_glm);
+    [~, maskname_short] = fileparts(maskname_glm);
     mask_string = sprintf('masked with %s', maskname_short);
     glmmask = fmri_mask_image(maskname_glm, 'noverbose'); 
     fprintf('\nMasking results visualization with %s\n\n', maskname_short);
@@ -624,7 +624,7 @@ for c = 1:kc
         figtitle = sprintf('%s_05_unc_montage_%s_%s_%s', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
         set(gcf, 'Tag', figtitle, 'WindowState','maximized');
         drawnow, snapnow;
-            if save_figures
+            if save_figures % corrected save_figures into save_figures_glm
                 plugin_save_figure;
             end
         clear o2, clear figtitle, clear j, clear tj

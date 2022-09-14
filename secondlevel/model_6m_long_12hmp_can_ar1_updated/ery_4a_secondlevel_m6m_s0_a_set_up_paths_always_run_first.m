@@ -55,8 +55,8 @@
 % STUDY-SPECIFIC: replace LaBGAScore with study name in code below
 
 if ~exist('rootdir','var')
-    warning('\nrootdir variable not found in Matlab workspace, running LaBGAScore_prep_s0_define_directories before proceeding')
-    LaBGAScore_prep_s0_define_directories;
+    warning('\nrootdir variable not found in Matlab workspace, running ery_4a_prep_s0_define_directories before proceeding')
+    ery_4a_prep_s0_define_directories;
     cd(rootdir);
 else
     cd(rootdir);
@@ -66,11 +66,12 @@ end
 % STUDY-SPECIFIC: replace LaBGAScore with study name and add model index in code below
 
 if ~exist('DSGN','var')
-    warning('\nDSGN variable not found in Matlab workspace, running LaBGAScore_firstlevel_s1_options_dsgn_struct.m before proceeding')
-    LaBGAScore_firstlevel_s1_options_dsgn_struct;
+    warning('\nDSGN variable not found in Matlab workspace, running ery_4a_firstlevel_m6m_s1_options_dsgn_struct.m before proceeding')
+    ery_4a_firstlevel_m6_s1_options_dsgn_struct;
 end
 
 [~,modelname] = fileparts(DSGN.modeldir); 
+modelname_second = 'model_6m_long_12hmp_can_ar1';
 
 
 %% SET DEFAULT USER OPTIONS
@@ -78,7 +79,7 @@ end
 
 % STUDY-SPECIFIC: add study name and model name to script name
 
-a2_set_default_options;
+ery_4a_secondlevel_m6m_s1_a2_set_default_options;
 
     
 %% MAKE SURE DEPENDENCIES ARE ON MATLAB PATH
@@ -195,7 +196,7 @@ spmtoolboxdir = fullfile(spmrootdir,'toolbox');
 
 % Base directory for second level model
 
-basedir = fullfile(rootdir,'secondlevel',modelname);
+basedir = fullfile(rootdir,'secondlevel',modelname_second);
 
     if ~exist(basedir, 'dir')
         mkdir(basedir); 
@@ -207,14 +208,14 @@ basedir = fullfile(rootdir,'secondlevel',modelname);
 
 datadir = fullfile(rootdir,'firstlevel',modelname); %lukasvo76: contrary to the original CANlab script, we want to keep firstlevel data in the model-specific dir of the firstlevel subdataset
     if ~exist(datadir, 'dir')
-        error('\nfirstleveldir for modelname %s does not exist, please check naming and consistency with %s',modelname, fullfile(rootdir,'firstlevel')) 
+        error('\nfirstleveldir for modelname %s does not exist, please check naming and consistency with %s',modelname_second, fullfile(rootdir,'firstlevel')) 
     end
 maskdir = fullfile(basedir,'masks');
     if ~exist(maskdir, 'dir')
         mkdir(maskdir); 
     end
     addpath(genpath(maskdir),'-end');
-scriptsdir = fullfile(codedir,'secondlevel',modelname); %lukasvo76: contrary to the original CANlab script, we want our scripts to live in the code subdataset
+scriptsdir = fullfile(codedir,'secondlevel',modelname_second); %lukasvo76: contrary to the original CANlab script, we want our scripts to live in the code subdataset
     if ~exist(scriptsdir, 'dir')
         mkdir(scriptsdir); 
     end
