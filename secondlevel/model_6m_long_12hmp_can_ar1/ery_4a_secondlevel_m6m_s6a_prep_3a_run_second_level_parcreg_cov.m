@@ -1,4 +1,4 @@
-%% prep_3a_run_second_level_regression_and_save.m
+%% prep_3a_run_second_level_regression_and_save_parcelregression_covariates_ratings.m
 %
 %
 % USAGE
@@ -221,9 +221,10 @@ for c = 1:kc
             % Define design matrix X "design_matrix"
             % Use custom matrix for each condition/contrast
             if c < 4
-            table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c}(:,2);
+                table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c}(:,2);
             else
-            table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c};    
+                table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c}; 
+            end
             groupnames = table_obj.Properties.VariableNames;
             X = table2array(table_obj);
             idx_nan = ~isnan(X);

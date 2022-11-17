@@ -1,4 +1,4 @@
-% c2a_second_level_regression.m
+% c2a_second_level_regression_covariates_intensity.m
 %
 %
 % USAGE
@@ -60,10 +60,10 @@ ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
 % SET/COPY MANDATORY OPTIONS FROM CORRESPONDING PREP_3a_ SCRIPT
 
 mygroupnamefield = 'contrasts'; 
-results_suffix = 'covariate_rating'; % suffix of your choice added to .mat file with saved results
+results_suffix = 'covintensity_rating'; % suffix of your choice added to .mat file with saved results
 myscaling_glm = 'raw';
 maskname_glm = which('ery_4a_m6_mask_all_regions.nii'); % applied in this script before fdr thresholding
-dorobfit_parcelwise = true;
+
 
 % SET CUSTOM OPTIONS
 

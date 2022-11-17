@@ -1,4 +1,4 @@
-%% prep_3a_run_second_level_regression_and_save.m
+%% prep_3a_run_second_level_regression_and_save_parcelregression_covariates_intensity.m
 %
 %
 % USAGE
@@ -84,7 +84,7 @@
 % SET MANDATORY OPTIONS
 
 mygroupnamefield = 'contrasts'; 
-results_suffix = 'covariate_rating'; % adds a suffix of your choice to .mat file with results that will be saved
+results_suffix = 'covintensity_rating'; % adds a suffix of your choice to .mat file with results that will be saved
 % NOTE: do NOT delete the latter option, leave empty if not needed
 % NOTE: do NOT use to add a suffix specifying the regressors, scaling or masking option, this will be added automatically
 
@@ -221,9 +221,10 @@ for c = 1:kc
             % Define design matrix X "design_matrix"
             % Use custom matrix for each condition/contrast
             if c < 4
-            table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c}(:,2);
+                table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c}(:,1);
             else
-            table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c};    
+                table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c}; 
+            end
             groupnames = table_obj.Properties.VariableNames;
             X = table2array(table_obj);
             idx_nan = ~isnan(X);

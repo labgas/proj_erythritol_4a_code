@@ -1,4 +1,4 @@
-% c2a_second_level_regression.m
+% c2a_second_level_parcelregression_covariates_ratings.m
 %
 %
 % USAGE

@@ -1,4 +1,4 @@
-%% prep_3a_run_second_level_regression_and_save.m
+%% prep_3a_run_second_level_regression_and_save_covariates_ratings.m
 %
 %
 % USAGE
@@ -109,15 +109,36 @@ plugin_get_options_for_analysis_script;
 % than the defaults you set in your model-specific version of a2_set_default_options.m
 
 % dorobust = true/false;
-dorobfit_parcelwise = true;
+% dorobfit_parcelwise = true/false;
 %   csf_wm_covs = true/false;
 %   remove_outliers = true/false;
 % myscaling_glm = 'raw'/'scaled'/'scaled_contrasts';
-design_matrix_type = 'custom';
+ design_matrix_type = 'custom';
 
+%% LOAD NECESSARY VARIABLES IF NEEDED
+% -------------------------------------------------------------------------
+
+if ~exist('DSGN','var') || ~exist('DAT','var')
+    
+    load(fullfile(resultsdir,'image_names_and_setup.mat'));
+    
+end
+
+if ~exist('DATA_OBJ','var') || ~exist('DATA_OBJsc','var')
+    
+    load(fullfile(resultsdir,'data_objects.mat'));
+    load(fullfile(resultsdir,'data_objects_scaled.mat'));
+    
+end
+
+if ~exist('DATA_OBJ_CON','var') || ~exist('DATA_OBJ_CONsc','var') || ~exist('DATA_OBJ_CONscc','var')
+    
+    load(fullfile(resultsdir,'contrast_data_objects.mat'));
+    
+end
 
 %% CHECK REQUIRED DAT FIELDS
-% -------------------------------------------------------------------------
+ % -------------------------------------------------------------------------
 
 % List required fields in DAT, in cell array
 
@@ -221,9 +242,10 @@ for c = 1:kc
             % Define design matrix X "design_matrix"
             % Use custom matrix for each condition/contrast
             if c < 4
-            table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c}(:,2);
+                table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c}(:,2);
             else
-            table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c};    
+                table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c};
+            end
             groupnames = table_obj.Properties.VariableNames;
             X = table2array(table_obj);
             idx_nan = ~isnan(X);
@@ -627,7 +649,7 @@ for c = 1:kc
         figtitle = sprintf('%s_05_unc_montage_%s_%s_%s', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
         set(gcf, 'Tag', figtitle, 'WindowState','maximized');
         drawnow, snapnow;
-            if save_figures_glm % corrected save_figures into save_figures_glm
+            if save_figures % corrected save_figures into save_figures_glm
                 plugin_save_figure;
             end
         clear o2, clear figtitle, clear j, clear tj
