@@ -39,7 +39,7 @@ dozipimages = false;        % default false to avoid load on data upload/downloa
 % --------------------------------------------
 
 dorobust = false;           % robust statistics for voxel-based GLM [true, false] -- default true
-maskname_glm = [];
+maskname_glm = which('gray_matter_mask_sparse.img');
                             % default use of sparse gray matter mask
                             % model-specific maskdir defined in a_set_up_paths_always_run_first script
                             % if you do not want to mask, change to []
@@ -97,7 +97,7 @@ holdout_set_method_svm = 'onesample';                   % 'group', or 'onesample
                                                             % subject (i.e. leave whole subject out)
 holdout_set_type_svm = 'kfold';                         % default kfold     cross-validation method: 'kfold' or 'leave_one_subject_out' - the latter is not recommended
     nfolds_svm = 5;                                         % default 5         number of cross-validation folds for kfold
-maskname_svm = [];    % default use of sparse gray matter mask; maskdir now defined in a_set_up_paths_always_run_first script; if you do not want to mask, change to []; if you want to use a custom mask, put it in maskdir and change name here.
+maskname_svm = which('gray_matter_mask_sparse.img');    % default use of sparse gray matter mask; maskdir now defined in a_set_up_paths_always_run_first script; if you do not want to mask, change to []; if you want to use a custom mask, put it in maskdir and change name here.
 myscaling_svm = 'raw';                                  % options are 'raw','subjectnorm','imagenorm','zscoreimages','zscorevoxels'
                                                             % subjectnorm: normalize_each_subject_by_l2norm; normalizes images for each subject by L2 norm of Condition 1 image; can help with numerical scaling and inter-subject scaling diffs
                                                             % imagenorm: normalize_images_by_l2norm; normalizes each image separately, not each subject/pair
@@ -129,7 +129,7 @@ myscaling_svm_between = 'raw'; % see above
 %% PREP_3F_CREATE_FMRI_DATA_SINGLE_TRIAL_OBJECT
 % ---------------------------------------------
 
-cons2exclude = {}; % cell array of condition names to exclude, separated by commas (or blanks)
+cons2exclude = {'water'}; % cell array of condition names to exclude, separated by commas (or blanks)
 behav_outcome = 'rating'; % name of outcome variable in DAT.BEHAVIOR.behavioral_data_table_st
 subj_identifier = 'participant_id'; % name of subject identifier variable in same table
 cond_identifier = 'trial_type'; % name of condition identifier variable in same table

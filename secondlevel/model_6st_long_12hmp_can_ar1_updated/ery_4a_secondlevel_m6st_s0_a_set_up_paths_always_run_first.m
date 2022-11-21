@@ -71,7 +71,7 @@ if ~exist('DSGN','var')
 end
 
 [~,modelname] = fileparts(DSGN.modeldir); 
-modelname_second = 'model_6mst_long_12hmp_can_ar1';
+modelname_second = 'model_6st_long_12hmp_can_ar1_updated';
 
 
 %% SET DEFAULT USER OPTIONS
@@ -79,7 +79,7 @@ modelname_second = 'model_6mst_long_12hmp_can_ar1';
 
 % STUDY-SPECIFIC: add study name and model name to script name
 
-ery_4a_secondlevel_m6mst_s1_a2_set_default_options;
+ery_4a_secondlevel_m6st_s1_a2_set_default_options;
 
     
 %% MAKE SURE DEPENDENCIES ARE ON MATLAB PATH

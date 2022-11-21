@@ -52,7 +52,7 @@ results_suffix = ''; % adds a suffix of your choice to .mat file with results th
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6st_s0_a_set_up_paths_always_run_first;
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT!
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
 
