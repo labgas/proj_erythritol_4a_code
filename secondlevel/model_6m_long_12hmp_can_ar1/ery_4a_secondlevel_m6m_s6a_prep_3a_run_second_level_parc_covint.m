@@ -167,13 +167,13 @@ switch mygroupnamefield
     
     case 'contrasts'
 
-        kc = size(DAT.contrasts, 1);
+%         kc = 3;
        
         fprintf('\nRUNNING SECOND LEVEL REGRESSIONS ON FIRST LEVEL CONTRASTS\n\n');
         
     case 'conditions'
         
-        kc = size(DAT.conditions, 2);
+%         kc = 3;
        
         fprintf('\nRUNNING SECOND LEVEL REGRESSIONS ON FIRST LEVEL CONDITIONS\n\n');
         
@@ -184,12 +184,12 @@ switch mygroupnamefield
 end
 
 if ~dorobfit_parcelwise
-    regression_stats_results = cell(1, kc);
+    regression_stats_results = cell(1, 3);
 else
-    parcelwise_stats_results = cell(1,kc);
+    parcelwise_stats_results = cell(1, 3);
 end
 
-for c = 1:kc
+for c = 1:3
     
     % GET DESIGN MATRIX FOR THIS CONTRAST OR CONDITION
     % ---------------------------------------------------------------------
@@ -615,7 +615,7 @@ for c = 1:kc
         for j = 1:num_effects
 
             tj = get_wh_image(parcelwise_stats.t_obj, j);
-                if maskname_short
+                if exist('maskname_short','var')
                     tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, .05, 'unc'); 
