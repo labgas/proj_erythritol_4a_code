@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6st_s4_prep_3f_create_fmri_data_st_obj.m
+%% ery_4a_secondlevel_m6st_s4_prep_3f_create_fmri_data_st_obj.m
 %
 % This script creates an fmri_data_st object from the single trial con
 % images written in rootdir/firstlevel/model_x_yyy/sub-zz by

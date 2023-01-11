@@ -1,4 +1,4 @@
-%% prep_3a_run_second_level_regression_and_save_covariates_intensity.m
+%% ery_4a_secondlevel_m6m_s6_prep_3a_run_second_level_reg_covint.m
 %
 %
 % USAGE

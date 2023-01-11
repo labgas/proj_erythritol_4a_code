@@ -1,4 +1,4 @@
-%% prep_3c_run_SVMs_on_contrasts_masked.m
+%% ery_4a_secondlevel_m6m_s10_prep_3c_run_SVMs_on_contrasts_masked.m
 %
 %
 % USAGE

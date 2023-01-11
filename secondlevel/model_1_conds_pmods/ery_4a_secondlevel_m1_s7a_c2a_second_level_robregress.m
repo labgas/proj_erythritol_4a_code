@@ -1,4 +1,4 @@
-%%% ery_4a_secondlevel_m6_s9a_c2a_2nd_level_robregress_cond.m
+%%% ery_4a_secondlevel_m1_s7a_c2a_second_level_robregress.m
 
 % USAGE
 %
@@ -16,8 +16,8 @@
 % date:   Dartmouth, May, 2022
 %
 %__________________________________________________________________________
-% @(#)% c2a_second_level_regression.m         v2.0
-% last modified: 2022/05/28
+% @(#)% c2a_second_level_regression.m         v2.1
+% last modified: 2022/07/06
 
 
 %% LOAD REGRESSION RESULTS IF NEEDED
@@ -25,10 +25,9 @@
 
 % options (from corresponding prep_3a script)
 
-mygroupnamefield = 'conditions';
+mygroupnamefield = 'contrasts';
 results_suffix = 'robust';
 dorobust = true;
-
 
 % check scaling
 
@@ -59,7 +58,7 @@ if ~dorobfit_parcelwise
     analysis_type = 'voxel-wise';
 else
     resultsvarname = 'parcelwise_stats_results';
-    resultsstring = 'parcelwise_stats_and_maps';
+    resultsstring = 'parcelwise_stats_and_maps_';
     analysis_type = 'parcel-wise';
 end
     
@@ -124,7 +123,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
     
     % BETWEEN-SUBJECT REGRESSORS & INTERCEPT: FDR corrected
     % ---------------------------------------------------------------------
-    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5,'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
+    o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
     
         for j = 1:num_effects
 
@@ -149,7 +148,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             plugin_save_figure;
         end
         
-    clear o2, clear figtitle, clear j, clear tj
+    clear o2, clear figtitle
     
         for j = 1:num_effects
 
@@ -168,16 +167,24 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             % Montage of regions in table (plot and save)
             if ~isempty(r)
-                o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
+                o3 = montage(r, 'colormap', 'regioncenters', 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
-                % Activate, name, and save figure
-                figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
-                set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                drawnow, snapnow;
-                    if save_figures
-                        plugin_save_figure;
+                % Activate, name, and save figure - then close
+                figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s_%s', analysisname, results_suffix, q_threshold, names{j}, scaling_string, mask_string);
+                region_fig_han = activate_figures(o3);
+                
+                    if ~isempty(region_fig_han)
+                        set(region_fig_han(1), 'Tag', figtitle, 'WindowState','maximized');
+                        drawnow, snapnow;
+                            if save_figures
+                                plugin_save_figure;
+                            end
+                        close(region_fig_han(1)), clear o3, clear figtitle
+                    else
+                        fprintf('\n');
+                        warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
+                        fprintf('\n');
                     end
-                clear o3, clear figtitle, clear j, clear tj, clear r
 
             end % conditional montage plot if there are regions to show
             
@@ -211,7 +218,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             plugin_save_figure;
         end
         
-    clear o2, clear figtitle, clear j, clear tj
+    clear o2, clear figtitle
         
         for j = 1:num_effects
 
@@ -232,14 +239,26 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             if ~isempty(r)
                 o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
-                % Activate, name, and save figure
+                % Activate, name, and save figure - then close
                 figtitle = sprintf('%s_%s_%1.4f_unc_regions_%s_%s_%s', analysisname, results_suffix, p_threshold, names{j}, scaling_string, mask_string);
-                set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                drawnow, snapnow;
-                    if save_figures
-                        plugin_save_figure;
+                region_fig_han = activate_figures(o3);
+                
+                    if ~isempty(region_fig_han)
+                        if iscell(region_fig_han)
+                            set(region_fig_han{1}, 'Tag', figtitle, 'WindowState','maximized');
+                        else
+                            set(region_fig_han, 'Tag', figtitle, 'WindowState','maximized');
+                        end
+                        drawnow, snapnow;
+                            if save_figures
+                                plugin_save_figure;
+                            end
+                        clear o3, clear figtitle
+                    else
+                        fprintf('\n');
+                        warning('Cannot find figure - Tag field was not set or figure was closed. Skipping save operation.');
+                        fprintf('\n');
                     end
-                clear o3, clear figtitle, clear j, clear tj, clear r
 
             end % loop over regions in results
         

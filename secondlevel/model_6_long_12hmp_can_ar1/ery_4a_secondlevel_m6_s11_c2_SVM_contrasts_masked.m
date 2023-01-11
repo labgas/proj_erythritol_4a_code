@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6m_s11_c2_SVM_contrasts_masked.m
+%% ery_4a_secondlevel_m6_s11_c2_SVM_contrasts_masked.m
 %
 %
 % USAGE
@@ -45,7 +45,7 @@
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
+a_set_up_paths_always_run_first;
 
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
@@ -54,7 +54,7 @@ ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
 
 results_suffix = ''; % suffix of your choice added to .mat file with saved results
 myscaling_svm = 'raw';
-maskname_svm = which('ery_4a_m6_mask_all_regions.nii'); % mask applied by prep_3c script
+maskname_svm = which('gray_matter_mask_sparse.img'); % mask applied by prep_3c script
 
 % SET CUSTOM OPTIONS
 
