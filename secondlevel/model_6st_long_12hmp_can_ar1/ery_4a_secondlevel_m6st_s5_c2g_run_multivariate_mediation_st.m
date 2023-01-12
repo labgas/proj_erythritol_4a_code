@@ -1,4 +1,4 @@
-%% c2g_run_multivariate_mediation_single_trial.m
+%% ery_4a_secondlevel_m6st_c2g_run_multivariate_mediation_single_trial.m
 %
 %
 % USAGE

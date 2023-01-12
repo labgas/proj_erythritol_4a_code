@@ -1,4 +1,4 @@
-%% prep_3f_create_fmri_data_single_trial_object
+%% ery_4a_secondlevel_m6st_s4_prep_3f_create_fmri_data_single_trial_object
 %
 %
 % USAGE

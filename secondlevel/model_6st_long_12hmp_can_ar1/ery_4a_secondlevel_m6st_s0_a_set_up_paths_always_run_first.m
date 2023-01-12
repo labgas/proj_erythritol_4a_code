@@ -1,8 +1,13 @@
 %% ery_4a_secondlevel_m6st_s0_a_set_up_paths_always_run_first.m
 %
-% Always run this first before you run other second level scripts.
+% 
+% USAGE
+% 
+% Always run this first before you run other CANlab_help_examples second level batch scripts.
 %
-% CANLAB NOTES:
+%
+% CANLAB NOTES
+%
 % - standard folders and variable names are created by these scripts
 %
 % - in "prep_" scripts: 
@@ -27,8 +32,11 @@
 %   figures
 %   html report with figures and stats, in "published_output"
 %
-% LaBGAS NOTES:
+%
+% LaBGAS NOTES
+%
 % - script to be run from rootdir of superdataset for your study
+% - DO NOT FORGET TO MAKE STUDY-SPECIFIC CHANGES INDICATED BELOW
 %
 %__________________________________________________________________________
 %
@@ -36,11 +44,12 @@
 % date:   Dartmouth, May, 2022
 %
 %__________________________________________________________________________
-% @(#)% a_set_up_paths_always_run_first.m         v1.0
-% last modified: 2022/05/16
+% @(#)% a_set_up_paths_always_run_first.m         v1.1
+% last modified: 2022/09/02
 
 
 %% RUN PREP AND FIRST LEVEL DESIGN SCRIPT
+% -------------------------------------------------------------------------
 
 % check whether LaBGAScore_prep_s0_define_directories has been run
 % STUDY-SPECIFIC: replace LaBGAScore with study name in code below
@@ -57,14 +66,24 @@ end
 % STUDY-SPECIFIC: replace LaBGAScore with study name and add model index in code below
 
 if ~exist('DSGN','var')
-    warning('\nDSGN variable not found in Matlab workspace, running ery_4a_firstlevel_s1_options_dsgn_struct.m before proceeding')
+    warning('\nDSGN variable not found in Matlab workspace, running ery_4a_firstlevel_m6m_s1_options_dsgn_struct.m before proceeding')
     ery_4a_firstlevel_m6st_s1_options_dsgn_struct;
 end
 
 [~,modelname] = fileparts(DSGN.modeldir); 
+modelname_second = 'model_6st_long_12hmp_can_ar1_updated';
 
 
+%% SET DEFAULT USER OPTIONS
+% -------------------------------------------------------------------------
+
+% STUDY-SPECIFIC: add study name and model name to script name
+
+ery_4a_secondlevel_m6st_s1_a2_set_default_options;
+
+    
 %% MAKE SURE DEPENDENCIES ARE ON MATLAB PATH
+% -------------------------------------------------------------------------
 
 % check whether spm subdirs are on path, add if needed
 
@@ -173,11 +192,11 @@ spmtoolboxdir = fullfile(spmrootdir,'toolbox');
 
         
 %% SET BASE DIRECTORY AND CREATE STANDARD SUBDIR STRUCTURE
-% --------------------------------------------------------
+% -------------------------------------------------------------------------
 
 % Base directory for second level model
 
-basedir = fullfile(rootdir,'secondlevel',modelname);
+basedir = fullfile(rootdir,'secondlevel',modelname_second);
 
     if ~exist(basedir, 'dir')
         mkdir(basedir); 
@@ -189,14 +208,14 @@ basedir = fullfile(rootdir,'secondlevel',modelname);
 
 datadir = fullfile(rootdir,'firstlevel',modelname); %lukasvo76: contrary to the original CANlab script, we want to keep firstlevel data in the model-specific dir of the firstlevel subdataset
     if ~exist(datadir, 'dir')
-        error('\nfirstleveldir for modelname %s does not exist, please check naming and consistency with %s',modelname, fullfile(rootdir,'firstlevel')) 
+        error('\nfirstleveldir for modelname %s does not exist, please check naming and consistency with %s',modelname_second, fullfile(rootdir,'firstlevel')) 
     end
 maskdir = fullfile(basedir,'masks');
     if ~exist(maskdir, 'dir')
         mkdir(maskdir); 
     end
     addpath(genpath(maskdir),'-end');
-scriptsdir = fullfile(codedir,'secondlevel',modelname); %lukasvo76: contrary to the original CANlab script, we want our scripts to live in the code subdataset
+scriptsdir = fullfile(codedir,'secondlevel',modelname_second); %lukasvo76: contrary to the original CANlab script, we want our scripts to live in the code subdataset
     if ~exist(scriptsdir, 'dir')
         mkdir(scriptsdir); 
     end
@@ -218,14 +237,8 @@ htmlsavedir = fullfile(resultsdir,'html');
     end
 
     
-%% SET USER OPTIONS
-% --------------------------------------------------------
-
-ery_4a_secondlevel_m6st_s1_a2_set_default_options;
-
-    
-%% DISPLAY HELPER FUNCTION CALLED BY LATER SCRIPTS
-% --------------------------------------------------------
+%% DEFINE HELPER FUNCTION CALLED BY LATER SCRIPTS
+% -------------------------------------------------------------------------
 
 dashes = '----------------------------------------------';
 printstr = @(dashes) disp(dashes);
