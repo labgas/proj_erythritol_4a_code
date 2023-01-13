@@ -71,7 +71,7 @@ if ~exist('DSGN','var')
 end
 
 [~,modelname] = fileparts(DSGN.modeldir); 
-modelname_second = 'model_6st_long_12hmp_can_ar1_updated';
+modelname_second = 'model_6st_long_12hmp_can_ar1';
 
 
 %% SET DEFAULT USER OPTIONS

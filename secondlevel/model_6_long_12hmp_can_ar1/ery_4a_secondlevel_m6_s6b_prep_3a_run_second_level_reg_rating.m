@@ -1,4 +1,4 @@
-%% prep_3a_run_second_level_regression_and_save.m
+%% ery_4a_m6_prep_3a_run_second_level_reg_rating.m
 %
 %
 % USAGE
@@ -51,13 +51,10 @@
 %       - if you want to use a custom mask, put it in maskdir and change name here
 %       - only used for visualization of uncorrected results in this script
 % - design_matrix_type: 'group', 'custom', or 'onesample'
-%                       Group: use DAT.BETWEENPERSON.group
+%                       Group: use DAT.BETWEENPERSON.group or DAT.BETWEENPERSON.(mygroupfieldname){c}.group
 %                       Custom: use all columns of table object DAT.BETWEENPERSON.(mygroupnamefield){c}
-%                               NOTE: you can flexibly use the columns as
-%                                       covariates by editing line 272 in the code below
-%                               EXAMPLE: if you only want to use the first
-%                                       column, you can change to
-%                                   table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c}(:,1);
+%                               NOTE: you can flexibly use one or more of these columns as
+%                                       covariates by specifying the covs2use option below
 %                       Onesample: use constant (i.e. intercept) only
 %
 %       - 'group' option 
@@ -91,7 +88,7 @@
 %     mvpa_reg_covariate options
 %       algorithm_mvpa_reg_cov = 'cv_pcr': will be passed into predict function (help fmri_data.predict for options)
 %       holdout_set_method_mvpa_reg_cov: 'group', or 'no_group'
-%                                        group: use DAT.BETWEENPERSON.group to balance holdout sets over groups
+%                                        group: use DAT.BETWEENPERSON.group or DAT.BETWEENPERSON.(mygroupfieldname){c}.group to balance holdout sets over groups
 %                                        no_group: no group factor, stratifies by subject (i.e.leave whole subject out) since data is purely between-subject
 %       nfolds_mvpa_reg_cov: number of cross-validation folds for kfold
 %       zscore_outcome_mvpa_reg_cov: zscores behavioral outcome variable (fmri_dat.Y) prior to fitting models
@@ -104,10 +101,17 @@
 % - mygroupfieldname: 'contrasts' or 'conditions'
 % - results_suffix: name to add to results file to specify in case of multiple versions of model, e.g. 'covariate_rating'
 % 
-% MANDATORY OPTIONS TO BE SPECIFIED IN THIS SCRIPT ONLY IF DOMVPA_REG_COV = true
+% OPTIONS TO BE SPECIFIED IN THIS SCRIPT IF DESIGN_MATRIX_TYPE = CUSTOM IN
 %
-% - behav_outcome: variable name in DAT.BETWEENPERSON.(mygroupnamefield){:}
-% - group_identifier = name of group identifier variable in same table 
+% - covs2use: variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} to be used as covariates in GLM and, if domvpa_reg_cov = true, outcome in MVPA regression
+%
+% NOTE: only use this option if you don't want to use all variables in the above table as covariate, otherwise delete or comment out below
+%
+% OPTIONS TO BE SPECIFIED IN THIS SCRIPT IF DESIGN_MATRIX_TYPE = GROUP
+%
+% - group_id = name of group identifier variable in same table
+%
+% NOTE: not needed if DAT.BETWEENPERSON.group contains group identifier, in that case delete or comment out
 %
 %
 %__________________________________________________________________________
@@ -116,8 +120,8 @@
 % date:   Dartmouth, May, 2022
 %
 %__________________________________________________________________________
-% @(#)% prep_3a_run_second_level_regression_and_save.m         v4.0
-% last modified: 2023/01/12
+% @(#)% prep_3a_run_second_level_regression_and_save.m         v4.1
+% last modified: 2023/01/13
 
 
 %% GET AND SET OPTIONS
@@ -126,18 +130,26 @@
 % SET MANDATORY OPTIONS
 
 mygroupnamefield = 'contrasts'; 
-results_suffix = ''; % adds a suffix of your choice to .mat file with results that will be saved
+results_suffix = 'test_allcov'; % adds a suffix of your choice to .mat file with results that will be saved
 
 % NOTE: do NOT delete the latter option, leave empty if not needed
 % NOTE: do NOT use to add a suffix specifying the regressors, scaling or masking option, this will be added automatically
 
-% MANDATORY OPTIONS IF DOMVPA_COV_REG = true
+% OPTIONS IF DESIGN_MATRIX_TYPE = CUSTOM
 
-behav_outcome = {'delta_intensity','delta_rating'}; % needs to correspond to variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} AND TO THE ORDER IN WHICH THEY APPEAR THERE
+% covs2use = {'delta_rating'}; % needs to correspond to variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} AND THE ORDER IN WHICH THEY APPEAR THERE
+
+% NOTE: if you want to use all variables in DAT.BETWEENPERSON.(mygroupnamefield){:} as covariates, comment this option out
+
+% OPTIONS IF DESIGN_MATRIX_TYPE = GROUP
+
+group_id = {'group'}; % needs to correspond to variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} AND THE ORDER IN WHICH THEY APPEAR THERE
+
+% NOTE: not needed if DAT.BETWEENPERSON.group contains group identifier, in that case delete or comment out
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6_s0_a_set_up_paths_always_run_first;
 
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
@@ -161,13 +173,13 @@ plugin_get_options_for_analysis_script;
 %   csf_wm_covs = true/false;
 %   remove_outliers = true/false;
 % myscaling_glm = 'raw'/'scaled'/'scaled_contrasts';
-% design_matrix_type = 'onesample'/'group'/'custom';
-% doBayes = true/false;
-% domvpa_reg_cov = true/false;
-%   algorithm_mvpa_reg_cov = ;
-%   holdout_set_mvpa_reg_cov = 'group'/'no_group';
-%   nfolds_mvpa_reg_cov = x;
-%   zscore_outcome_mvpa_reg_cov = true/false;
+design_matrix_type = 'custom';
+doBayes = true;
+domvpa_reg_cov = true;
+  algorithm_mvpa_reg_cov = 'cv_pcr';
+  holdout_set_method_mvpa_reg_cov = 'no_group';
+  nfolds_mvpa_reg_cov = 6;
+  zscore_outcome_mvpa_reg_cov = false;
 
 % SANITY CHECK
 
@@ -306,6 +318,20 @@ for c = 1:kc
             % Use custom matrix for each condition/contrast
             table_obj = DAT.BETWEENPERSON.(mygroupnamefield){c};
             groupnames = table_obj.Properties.VariableNames;
+            
+                if exist('covs2use','var')
+            
+                    idx_covar = ismember(groupnames,covs2use);
+
+                        if sum(idx_covar) == 0
+                            error('\nOne or more covariates defined in covs2use not present in DAT.BETWEENPERSON.%s{%d}, please correct before proceeding\n',mygroupnamefield,c);
+                        end
+
+                    table_obj = table_obj(:,idx_covar);
+                    groupnames = groupnames(idx_covar);
+
+                end
+                    
             X = table2array(table_obj);
             idx_nan = ~isnan(X);
             idx_nan = ~(sum(idx_nan,2) < size(idx_nan,2)); % at least one column of X contains NaN
@@ -313,22 +339,25 @@ for c = 1:kc
             imgs_nan = imgs_nan(idx_nan');
             X = X(idx_nan,:);
             
-            for name = 1:size(groupnames,2)
-                groupnames_string = [groupnames_string, ' ', groupnames{name}];
-            end
+                for name = 1:size(groupnames,2)
+                    groupnames_string = [groupnames_string, ' ', groupnames{name}];
+                end
             
         case 'group'
             
             % Use 'groups' single regressor
             if ~isempty(DAT.BETWEENPERSON.group)
                 group = DAT.BETWEENPERSON.group;
-                groupnames = {'group'};
+            elseif ismember(DAT.BETWEENPERSON.(mygroupnamefield){c}.Properties.VariableNames,group_id{1})
+                group = DAT.BETWEENPERSON.(mygroupnamefield){c}.(group_id{1});
+            else
+                error('\nGroup not defined in DAT.BETWEENPERSON.group nor DAT.BETWEENPERSON.%s.{%d}, which is required for option "%s" defined in design_matrix_type\n', mygroupnamefield,c,design_matrix_type);
+            end
+            
+            groupnames = {'group'};
                 X = group;
                 imgs_nan = [];
-                groupnames_string = [groupnames_string, ' ', groupnames];
-            else
-                error('\nGroup not defined in DAT.BETWEENPERSON.group, which is required for option "%s" defined in design_matrix_type\n', design_matrix_type);
-            end
+                groupnames_string = [groupnames_string, ' ', groupnames{1}];
 
         case 'onesample'
             
@@ -488,15 +517,19 @@ for c = 1:kc
     % ---------------------------------------------------------------------
     
     if ~strcmpi(design_matrix_type,'onesample')
+        
+        for col = 1:size(cat_obj.X,2)
     
-        if all(cat_obj.X > 0) || all(cat_obj.X < 0)
-            % Only positive or negative weights - nothing to compare
+            if all(cat_obj.X(:,col) > 0) || all(cat_obj.X(:, col) < 0)
+                % Only positive or negative weights - nothing to compare
 
-            fprintf('\n');
-            warning('Only positive or negative regressor values - bad design, please check');
-            fprintf('\n');
+                fprintf('\n');
+                warning('Only positive or negative regressor values - bad design, please check');
+                fprintf('\n');
+
+                continue
+            end
             
-            continue
         end
         
     end
@@ -506,22 +539,13 @@ for c = 1:kc
     
     if domvpa_reg_cov
         
-        for covar = 1:size(behav_outcome,2)
-            if ~ismember(behav_outcome{covar},table_obj.Properties.VariableNames)
-                error('\nCovariate "%s" defined in behav_outcome not present in DAT.BETWEENPERSON.(mygroupfield){%d}, please correct before proceeding\n',behav_outcome{covar},covar);
-            end
-            
-            if ~strcmp(behav_outcome{covar},table_obj.Properties.VariableNames{covar})
-                error('\norder of covariates in behav_outcome not consistent with DAT.BETWEENPERSON.(mygroupfield){%d}, please correct before proceeding\n');
-            end
+        for covar = 1:size(cat_obj.X,2)
             
             mvpa_data_objects{covar} = cat_obj;
-            mvpa_data_objects{covar}.Y = table2array(table_obj(:,covar));
-            mvpa_data_objects{covar}.Y_names = behav_outcome{covar};
+            mvpa_data_objects{covar}.Y = cat_obj.X(:,covar);
+            mvpa_data_objects{covar}.Y_names = groupnames{covar};
             
         end
-        
-        clear covar
         
     end
         
@@ -577,9 +601,15 @@ for c = 1:kc
             fprintf('\n\n');
             
             N = single(sum(~(isnan(cat_obj.dat') | cat_obj.dat' == 0) , 1)); % code from fmri_data.ttest to correct N in regressions_stat.t to make estimateBayesFactor function work on regress() output
-            t_for_Bayes = regression_stats.t;
-            t_for_Bayes.N = N';
-            regression_stats.BF = estimateBayesFactor(t_for_Bayes,'t');
+            
+            for reg = 1:size(regression_stats.t.dat,2)
+                
+                t_for_Bayes = get_wh_image(regression_stats.t, reg);
+                t_for_Bayes.N = N';
+                regression_stats.BF(reg) = estimateBayesFactor(t_for_Bayes,'t');
+            
+            end
+            
         end
 
         % add analysis name, regressor names and other meta-data
@@ -610,7 +640,9 @@ for c = 1:kc
             if maskname_short
                 t = apply_mask(t,glmmask);
             end
+            
         orthviews(t);
+        
             for kk = 1:length(regression_stats.variable_names)
                 switch mygroupnamefield
                     case 'contrasts'
@@ -623,21 +655,21 @@ for c = 1:kc
         
         if doBayes
             fprintf ('\nORTHVIEWS BAYESIAN GLM RESULTS AT |BF| > 3, EFFECT: %s, REGRESSOR(S): %s, %s, SCALING: %s\n\n', regression_stats.analysis_name, groupnames_string, mask_string, scaling_string);
-        
-            BF = threshold(regression_stats.BF,[-2.1972 2.1972],'raw-outside');
-                if maskname_short
-                    BF = apply_mask(BF,glmmask);
-                end
-            orthviews(BF);
-                for kk = 1:length(regression_stats.variable_names)
+            
+            for img = 1:size(regression_stats.BF,2)
+                BF = threshold(regression_stats.BF(1,img),[-2.1972 2.1972],'raw-outside');
+                    if maskname_short
+                        BF = apply_mask(BF,glmmask);
+                    end
+                orthviews(BF);
                     switch mygroupnamefield
                         case 'contrasts'
-                            spm_orthviews_name_axis([regression_stats.variable_names{kk},' ',DAT.contrastnames{c}], kk);
+                            spm_orthviews_name_axis([regression_stats.variable_names{img},' ',DAT.contrastnames{c}], 1);
                         case 'conditions'
-                            spm_orthviews_name_axis([regression_stats.variable_names{kk},' ',DAT.conditions{c}], kk);
+                            spm_orthviews_name_axis([regression_stats.variable_names{img},' ',DAT.conditions{c}], 1);
                     end
-                end
-        drawnow;snapnow;
+                drawnow;snapnow;
+            end
             
         end
 
@@ -678,11 +710,16 @@ for c = 1:kc
             fprintf('\n\n');
             printhdr('Calculating Bayes Factor maps');
             fprintf('\n\n');
-            
+           
             N = single(size(cat_obj.dat,2).*(ones(size(parcelwise_stats.t_obj.dat,1),1))); % code from fmri_data.ttest to correct N in regressions_stat.t to make estimateBayesFactor function work on regress() output
-            t_for_Bayes = parcelwise_stats.t_obj;
-            t_for_Bayes.N = N;
-            parcelwise_stats.BF = estimateBayesFactor(t_for_Bayes,'t');
+            
+            for reg = 1:size(parcelwise_stats.t.dat,2)
+                
+                t_for_Bayes = get_wh_image(parcelwise_stats.t_obj, reg);
+                t_for_Bayes.N = N;
+                parcelwise_stats.BF(reg) = estimateBayesFactor(t_for_Bayes,'t');
+            
+            end
             
         end
         
@@ -788,20 +825,18 @@ for c = 1:kc
            
             fprintf ('\nMONTAGE BAYESIAN PARCELWISE GLM RESULTS AT |BF| > 3, EFFECT: %s, REGRESSOR(S): %s, %s, SCALING: %s\n\n', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
         
-            num_effects = size(parcelwise_stats.BF.dat, 2); % number of regressors
             o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
-
-            for j = 1:num_effects
-
-                BFj = get_wh_image(parcelwise_stats.BF, j);
+            
+            for img = 1:size(parcelwise_stats.BF,2)
+                
+                BF = threshold(parcelwise_stats.BF(1,img),[-2.1972 2.1972],'raw-outside');
                     if maskname_short
-                        BFj = apply_mask(BFj, glmmask);
+                        BF = apply_mask(BF,glmmask);
                     end
-                BFj = threshold(BFj,[-2.1972 2.1972],'raw-outside'); 
-
-                o2 = addblobs(o2, region(BFj), 'wh_montages', (2*j)-1:2*j);
-                o2 = title_montage(o2, 2*j, [parcelwise_stats.analysis_name ' ' parcelwise_stats.variable_names{j} ' ' mask_string ' ' scaling_string]);
-
+                    
+                o2 = addblobs(o2, region(BF), 'wh_montages', (2*img)-1:2*img);
+                o2 = title_montage(o2, 2*j, [parcelwise_stats.analysis_name ' ' parcelwise_stats.variable_names{img} ' ' mask_string ' ' scaling_string]);
+            
             end
 
             figtitle = sprintf('%s_BF_3_montage_%s_%s_%s', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
@@ -875,8 +910,8 @@ for c = 1:kc
                 hold off;
                 b1=histogram(mvpa_dat.Y);
                 box off
-                title(['Histogram of ' behav_outcome{covar}]);
-                xlabel(behav_outcome{covar});
+                title(['Histogram of ' groupnames{covar}]);
+                xlabel(groupnames{covar});
                 ylabel('n(observations)');
                 set(gcf,'WindowState','Maximized');
                 drawnow, snapnow;
@@ -903,9 +938,11 @@ for c = 1:kc
                         clear subj
 
                     case 'group'
-
+                        
                         if ~isempty(DAT.BETWEENPERSON.group)
                             group = DAT.BETWEENPERSON.group;
+                        elseif ismember(DAT.BETWEENPERSON.(mygroupnamefield){c}.Properties.VariableNames,group_id{1})
+                            group = DAT.BETWEENPERSON.(mygroupnamefield){c}.(group_id{1});
                         else
                             error('\nGroup not defined in DAT.BETWEENPERSON.group, which is required for option "%s" chosen in holdout_set_method_mvpa_reg_cov\n', holdout_set_method_mvpa_reg_cov);
                         end
@@ -950,7 +987,7 @@ for c = 1:kc
                 figure
                 
                 plot(mdl);
-                xlabel({['Observed ' behav_outcome{covar}]}); ylabel({['Estimated ' behav_outcome{covar}],'(cross validated)'})
+                xlabel({['Observed ' groupnames{covar}]}); ylabel({['Estimated ' groupnames{covar}],'(cross validated)'})
 
                 set(gcf,'WindowState','Maximized');
                 drawnow, snapnow;
@@ -982,7 +1019,7 @@ for c = 1:kc
                     
             % KEEP RESULTS IN CELL ARRAY FOR SAVING
 
-            mvpa_stats_and_maps{c,covar} = mvpa_stats;
+            mvpa_stats_results{c,covar} = mvpa_stats;
 
         end % for loop over covariates
 
