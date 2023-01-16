@@ -120,8 +120,8 @@
 % date:   Dartmouth, May, 2022
 %
 %__________________________________________________________________________
-% @(#)% prep_3a_run_second_level_regression_and_save.m         v4.1
-% last modified: 2023/01/13
+% @(#)% prep_3a_run_second_level_regression_and_save.m         v4.2
+% last modified: 2023/01/16
 
 
 %% GET AND SET OPTIONS
@@ -169,9 +169,9 @@ plugin_get_options_for_analysis_script;
 % than the defaults you set in your model-specific version of a2_set_default_options.m
 
 % dorobust = true/false;
-% dorobfit_parcelwise = true/false;
-%   csf_wm_covs = true/false;
-%   remove_outliers = true/false;
+% dorobfit_parcelwise = true;
+%   csf_wm_covs = false;
+%   remove_outliers = false;
 % myscaling_glm = 'raw'/'scaled'/'scaled_contrasts';
 design_matrix_type = 'custom';
 doBayes = true;
@@ -305,7 +305,7 @@ for c = 1:kc
     end
       
     fprintf('\n\n');
-    printhdr('Building design matrix');
+    printhdr('BUILDING DESIGN MATRIX');
     fprintf('\n\n');
     
     groupnames_string = 'intercept';
@@ -383,7 +383,7 @@ for c = 1:kc
     % ---------------------------------------------------------------------
     
     fprintf('\n\n');
-    printhdr('Scaling data if requested in options');
+    printhdr('SCALING DATA IF REQUESTED IN OPTIONS');
     fprintf('\n\n');
     
     switch mygroupnamefield
@@ -456,7 +456,7 @@ for c = 1:kc
     % ---------------------------------------------------------------------
     
     fprintf('\n\n');
-    printhdr('Checking design matrix');
+    printhdr('CHECKING DESIGN MATRIX');
     fprintf('\n\n');
     
     if ~strcmpi(design_matrix_type,'onesample')
@@ -565,7 +565,7 @@ for c = 1:kc
         end
         
         fprintf('\n\n');
-        printhdr(['Running voxel-wise ', robuststring ' regression']);
+        printhdr(['RUNNING VOXEL-WISE ', upper(robuststring) ' REGRESSION']);
         fprintf('\n\n');
 
         if ~strcmpi(design_matrix_type,'onesample')
@@ -597,7 +597,7 @@ for c = 1:kc
         if doBayes
             
             fprintf('\n\n');
-            printhdr('Calculating Bayes Factor maps');
+            printhdr('Calculating voxel-wise Bayes Factor maps');
             fprintf('\n\n');
             
             N = single(sum(~(isnan(cat_obj.dat') | cat_obj.dat' == 0) , 1)); % code from fmri_data.ttest to correct N in regressions_stat.t to make estimateBayesFactor function work on regress() output
@@ -633,8 +633,12 @@ for c = 1:kc
 
         % PLOT ORTHVIEWS (MASKED IF SPECIFIED IN MASKNAME_GLM OPTION)
         % --------------------------------------------------------------------
+
+        fprintf('\n\n');
+        printhdr('Plotting voxel-wise GLM results');
+        fprintf('\n\n');
         
-        fprintf ('\nORTHVIEWS GLM RESULTS AT UNCORRECTED p < 0.05, EFFECT: %s, REGRESSOR(S): %s, %s, SCALING: %s\n\n', regression_stats.analysis_name, groupnames_string, mask_string, scaling_string);
+        fprintf ('\nORTHVIEWS GLM RESULTS AT UNCORRECTED p < 0.05, EFFECT: %s, REGRESSOR(S): %s, MASK: %s, SCALING: %s\n\n', regression_stats.analysis_name, groupnames_string, mask_string, scaling_string);
         
         t = threshold(regression_stats.t,.05,'unc');
             if maskname_short
@@ -646,15 +650,20 @@ for c = 1:kc
             for kk = 1:length(regression_stats.variable_names)
                 switch mygroupnamefield
                     case 'contrasts'
-                        spm_orthviews_name_axis([regression_stats.variable_names{kk},' ',DAT.contrastnames{c}], kk);
+                        spm_orthviews_name_axis(regression_stats.variable_names{kk}, kk);
                     case 'conditions'
-                        spm_orthviews_name_axis([regression_stats.variable_names{kk},' ',DAT.conditions{c}], kk);
+                        spm_orthviews_name_axis(regression_stats.variable_names{kk}, kk);
                 end
             end
         drawnow;snapnow;
         
         if doBayes
-            fprintf ('\nORTHVIEWS BAYESIAN GLM RESULTS AT |BF| > 3, EFFECT: %s, REGRESSOR(S): %s, %s, SCALING: %s\n\n', regression_stats.analysis_name, groupnames_string, mask_string, scaling_string);
+            
+            fprintf('\n\n');
+            printhdr('Plotting voxel-wise Bayesian GLM results');
+            fprintf('\n\n');
+            
+            fprintf ('\nORTHVIEWS BAYESIAN GLM RESULTS AT |BF| > 3, EFFECT: %s, REGRESSOR(S): %s, MASK: %s, SCALING: %s\n\n', regression_stats.analysis_name, groupnames_string, mask_string, scaling_string);
             
             for img = 1:size(regression_stats.BF,2)
                 BF = threshold(regression_stats.BF(1,img),[-2.1972 2.1972],'raw-outside');
@@ -664,9 +673,9 @@ for c = 1:kc
                 orthviews(BF);
                     switch mygroupnamefield
                         case 'contrasts'
-                            spm_orthviews_name_axis([regression_stats.variable_names{img},' ',DAT.contrastnames{c}], 1);
+                            spm_orthviews_name_axis(regression_stats.variable_names{img}, 1);
                         case 'conditions'
-                            spm_orthviews_name_axis([regression_stats.variable_names{img},' ',DAT.conditions{c}], 1);
+                            spm_orthviews_name_axis(regression_stats.variable_names{img}, 1);
                     end
                 drawnow;snapnow;
             end
@@ -691,7 +700,7 @@ for c = 1:kc
     else
         
         fprintf('\n\n');
-        printhdr('Running parcel-wise robust regression');
+        printhdr('RUNNING PARCEL-WISE ROBUST REGRESSION');
         fprintf('\n\n');
         
         if csf_wm_covs && remove_outliers
@@ -708,12 +717,12 @@ for c = 1:kc
         if doBayes
             
             fprintf('\n\n');
-            printhdr('Calculating Bayes Factor maps');
+            printhdr('Calculating parcel-wise Bayes Factor maps');
             fprintf('\n\n');
            
             N = single(size(cat_obj.dat,2).*(ones(size(parcelwise_stats.t_obj.dat,1),1))); % code from fmri_data.ttest to correct N in regressions_stat.t to make estimateBayesFactor function work on regress() output
             
-            for reg = 1:size(parcelwise_stats.t.dat,2)
+            for reg = 1:size(parcelwise_stats.t_obj.dat,2)
                 
                 t_for_Bayes = get_wh_image(parcelwise_stats.t_obj, reg);
                 t_for_Bayes.N = N;
@@ -747,7 +756,9 @@ for c = 1:kc
         
         % PLOT PARCELWISE SPECIFIC WEIGHTS AND DIAGNOSTICS
         % --------------------------------------------------------------------
-        fprintf('\nPlotting parcel weights and diagnostics\n\n');
+        fprintf('\n\n');
+        printhdr('Plotting parcel-wise weights and diagnostics');
+        fprintf('\n\n');
         
         create_figure('parcelwise weights and metrics', 2, 2);
         set(gcf, 'WindowState','maximized');
@@ -795,7 +806,11 @@ for c = 1:kc
         % PLOT MONTAGE (MASKED IF SPECIFIED IN MASKNAME_GLM OPTION)
         % ---------------------------------------------------------------------
         
-        fprintf ('\nMONTAGE PARCELWISE GLM RESULTS AT UNCORRECTED p < 0.05, EFFECT: %s, REGRESSOR(S): %s, %s, SCALING: %s\n\n', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
+        fprintf('\n\n');
+        printhdr('Plotting parcel-wise GLM results');
+        fprintf('\n\n');
+        
+        fprintf ('\nMONTAGE PARCELWISE GLM RESULTS AT UNCORRECTED p < 0.05, EFFECT: %s, REGRESSOR(S): %s, MASK: %s, SCALING: %s\n\n', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
         
         num_effects = size(parcelwise_stats.t_obj.dat, 2); % number of regressors
         o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
@@ -816,14 +831,18 @@ for c = 1:kc
         figtitle = sprintf('%s_05_unc_montage_%s_%s_%s', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
         set(gcf, 'Tag', figtitle, 'WindowState','maximized');
         drawnow, snapnow;
-            if save_figures
+            if exist('save_figures','var')
                 plugin_save_figure;
             end
         clear o2, clear figtitle, clear j, clear tj
         
         if doBayes
+            
+            fprintf('\n\n');
+            printhdr('Plotting parcel-wise Bayesian GLM results');
+            fprintf('\n\n');
            
-            fprintf ('\nMONTAGE BAYESIAN PARCELWISE GLM RESULTS AT |BF| > 3, EFFECT: %s, REGRESSOR(S): %s, %s, SCALING: %s\n\n', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
+            fprintf ('\nMONTAGE BAYESIAN PARCELWISE GLM RESULTS AT |BF| > 3, EFFECT: %s, REGRESSOR(S): %s, MASK: %s, SCALING: %s\n\n', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
         
             o2 = canlab_results_fmridisplay([], 'multirow', num_effects, 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
             
@@ -835,17 +854,17 @@ for c = 1:kc
                     end
                     
                 o2 = addblobs(o2, region(BF), 'wh_montages', (2*img)-1:2*img);
-                o2 = title_montage(o2, 2*j, [parcelwise_stats.analysis_name ' ' parcelwise_stats.variable_names{img} ' ' mask_string ' ' scaling_string]);
+                o2 = title_montage(o2, 2*img, [parcelwise_stats.analysis_name ' ' parcelwise_stats.variable_names{img} ' ' mask_string ' ' scaling_string]);
             
             end
 
             figtitle = sprintf('%s_BF_3_montage_%s_%s_%s', parcelwise_stats.analysis_name, groupnames_string, mask_string, scaling_string);
             set(gcf, 'Tag', figtitle, 'WindowState','maximized');
             drawnow, snapnow;
-                if save_figures
+                if exist('save_figures','var')
                     plugin_save_figure;
                 end
-            clear o2, clear figtitle, clear j, clear BFj
+            clear o2, clear figtitle, clear img, clear BF
             
         end
 
@@ -866,14 +885,22 @@ for c = 1:kc
     
     if domvpa_reg_cov
         
+        fprintf('\n\n');
+        printhdr('RUNNING VOXEL-WISE MVPA REGRESSION ANALYSIS');
+        fprintf('\n\n');
+        
         for covar = 1:size(mvpa_data_objects,2)
             
             mvpa_dat = mvpa_data_objects{covar};
             
+            fprintf('\n\n');
+            printhdr(['COVARIATE #', num2str(covar), ': ', upper(mvpa_dat.Y_names)]);
+            fprintf('\n\n');
+            
             % DATA VISUALIZATION
             
             fprintf('\n\n');
-            printhdr('PLOTTING DATA');
+            printhdr('Plotting X (brain) and Y (behavioural outcome) data');
             fprintf('\n\n');
 
                 % con images
@@ -892,7 +919,7 @@ for c = 1:kc
                     end
 
                 box off
-                title('Distribution of con weights');
+                title(['Distribution of con weights for ' groupnames{covar}]);
                 xlabel('\beta');
                 ylabel('Subject');
                 hold off
@@ -919,6 +946,10 @@ for c = 1:kc
             % RUN MODEL
             
                 % cross-validation fold selection
+                
+                fprintf('\n\n');
+                printhdr('Cross-validation fold selection');
+                fprintf('\n\n');
 
                 switch holdout_set_method_mvpa_reg_cov
 
@@ -957,25 +988,29 @@ for c = 1:kc
                 end % switch holdout set method
 
                 % fit model
+                
+                fprintf('\n\n');
+                printhdr('Fit MVPA regression model');
+                fprintf('\n\n');
 
                 t0 = tic;
 
                 [mvpa_cverr, mvpa_stats, mvpa_optout] = predict(mvpa_dat, 'algorithm_name', algorithm_mvpa_reg_cov, ...
                             'nfolds', fold_labels, 'error_type', 'mse', 'parallel', 'verbose', 0);
 
-                t_end = toc(t0);  
+                t_end = toc(t0); 
+                
+                mvpa_stats.Y_names{covar} = mvpa_dat.Y_names;
             
             % VISUALIZE UNTHRESHOLDED RESULTS
             
             fprintf('\n\n');
-            printhdr('VISUALIZING RESULTS');
+            printhdr('Plotting MVPA regression results');
             fprintf('\n\n');
 
                 % plot observed versus predicted
 
-                fprintf('\n\n');
-                printhdr('Plotting observed versus predicted');
-                fprintf('\n\n');
+                fprintf('\nPLOTTING OBSERVED VERSUS PREDICTED\n');
 
                 fprintf('\n%s r = %0.3f\n\n', algorithm_mvpa_reg_cov, corr(mvpa_stats.yfit, mvpa_dat.Y));
                 
@@ -994,13 +1029,11 @@ for c = 1:kc
 
                 % plot montage of unthresholded weights
 
-                fprintf('\n\n');
-                printhdr('Plotting unthresholded weight maps');
-                fprintf('\n\n');
+                fprintf('\nPLOTTTING UNTHRESHOLDED WEIGHT MAPS\n');
 
                 whmontage = 5;
 
-                fprintf ('\nSHOWING UNTHRESHOLDED %s RESULTS, %s, SCALING: %s\n\n', upper(algorithm_mvpa_reg_st), mask_string, myscaling_mvpa_reg_st);
+                fprintf ('\nSHOWING UNTHRESHOLDED %s RESULTS, EFFECT: %s, MASK: %s, SCALING: %s\n\n', upper(algorithm_mvpa_reg_st), mvpa_stats.Y_names{covar}, mask_string, myscaling_glm);
 
                 figure
 
@@ -1009,9 +1042,9 @@ for c = 1:kc
                 w = region(mvpa_stats.weight_obj);
 
                 o2 = addblobs(o2, w);
-                o2 = title_montage(o2, whmontage, [algorithm_mvpa_reg_st ' unthresholded ' mask_string]);
+                o2 = title_montage(o2, whmontage, [algorithm_mvpa_reg_st ' unthresholded ' mvpa_stats.Y_names{covar} ' ' mask_string ' ' myscaling_glm]);
 
-                figtitle = sprintf('%s_unthresholded_montage_%s_%s', algorithm_mvpa_reg_st, myscaling_mvpa_reg_st, mask_string);
+                figtitle = sprintf('%s_unthresholded_montage_%s_%s', algorithm_mvpa_reg_st, myscaling_glm, mask_string);
                 set(gcf, 'Tag', figtitle, 'WindowState','maximized');
                 drawnow, snapnow;
 
@@ -1057,4 +1090,3 @@ save(savefilenamedata_mvpa, 'mvpa_stats_results', '-v7.3');
 fprintf('\nSaved mvpa_stats_results for %s\n', mygroupnamefield);
 
 fprintf('\nFilename: %s\n', savefilenamedata_mvpa);
-
