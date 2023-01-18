@@ -1050,6 +1050,7 @@ for c = 1:kc
             % KEEP RESULTS IN CELL ARRAY FOR SAVING
 
             mvpa_stats_results{c,covar} = mvpa_stats;
+            mvpa_dats{c,covar} = mvpa_dat;
 
         end % for loop over covariates
 
@@ -1083,7 +1084,7 @@ printhdr('SAVING MVPA RESULTS');
 fprintf('\n\n');
 
 savefilenamedata_mvpa = fullfile(resultsdir, ['mvpa_stats_and_maps_', mygroupnamefield, '_', scaling_string, '_', results_suffix, '.mat']);
-save(savefilenamedata_mvpa, 'mvpa_stats_results', '-v7.3');
+save(savefilenamedata_mvpa, 'mvpa_stats_results', 'mvpa_dats', '-v7.3');
 fprintf('\nSaved mvpa_stats_results for %s\n', mygroupnamefield);
 
 fprintf('\nFilename: %s\n', savefilenamedata_mvpa);
