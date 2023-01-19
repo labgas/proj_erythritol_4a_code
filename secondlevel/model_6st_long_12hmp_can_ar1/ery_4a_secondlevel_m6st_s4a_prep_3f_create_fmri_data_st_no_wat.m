@@ -1,4 +1,4 @@
-%% prep_3f_create_fmri_data_single_trial_object
+%% ery_4a_secondlevel_m6st_s4a_prep_3f_create_fmri_data_st_no_wat
 %
 %
 % USAGE
@@ -46,13 +46,13 @@
 
 % SET MANDATORY OPTIONS
 
-results_suffix = ''; % adds a suffix of your choice to .mat file with results that will be saved
+results_suffix = 'no_water'; % adds a suffix of your choice to .mat file with results that will be saved
 % NOTE: do NOT delete the latter option, leave empty if not needed
 % NOTE: do NOT use to add a suffix specifying the behavioral outcome nor excluded conditions, this will be added automatically
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6st_s0_a_set_up_paths_always_run_first;
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT!
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
 
@@ -61,7 +61,7 @@ a_set_up_paths_always_run_first;
 % NOTE: only specify if you want to run multiple versions of your model with different options
 % than the defaults you set in your model-specific version of a2_set_default_options.m
 
-% cons2exclude_dat_st = {'varname1'}; % cell array of condition names to exclude, separated by commas (or blanks)
+cons2exclude_dat_st = {'water'}; % cell array of condition names to exclude, separated by commas (or blanks)
 % behav_outcome_dat_st = 'varname2'; % name of outcome variable in DAT.BEHAVIOR.behavioral_data_table_st
 % subj_identifier_dat_st = 'varname3'; % name of subject identifier variable in same table
 % cond_identifier_dat_st = 'varname4'; % name of condition identifier variable in same table
@@ -299,9 +299,12 @@ title('vif values over all trials');
 xlabel('trial');
 ylabel('variance inflation factor');
 
+set(gcf,'WindowState','Maximized');
+drawnow, snapnow;
+
 good_trials_idx = fmri_dat.metadata_table.vifvalue < vif_threshold_dat_st;
 bad_trials_perc = sum(~good_trials_idx)./size(fmri_dat.metadata_table.vifvalue,1).*100;
-sprintf('%4.2f percent of trials exceeds a vif threshold of %d, indicating multicollinearity with noise regressors; script will remove them',bad_trials_perc,vif_threshold_dat_st)
+sprintf('%4.2f percent of trials exceeds a vif threshold of %d, indicating multicollinearity with noise regressors; script will remove them',bad_trials_perc,vif_threshold_dat_st);
 
 % per subject
 
@@ -326,6 +329,9 @@ v2=figure;
         ylabel('vif');
         
     end
+    
+set(gcf,'WindowState','Maximized');
+drawnow, snapnow;
 
 % REMOVE CON IMAGES CORRESPONDING TO TRIALS EXCEEDING VIF THRESHOLDS FROM
 % DATA OBJECT

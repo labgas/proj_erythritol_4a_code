@@ -1,4 +1,4 @@
-%% a2_set_default_options.m
+%% ery_4a_secondlevel_m6_s1_a2_set_default_options.m
 %
 %
 % USAGE
@@ -58,13 +58,13 @@ design_matrix_type = 'onesample';   % 'group', 'custom', or 'onesample'
                                     % @lukasvo76: no group factor, no covariates -
                                     % one sample t-test with robust option
                                     % (contrary to c_univariate_contrast_maps.m)
-dorobust = true;                    % robust statistics for voxel-based GLM [true, false] -- default true
+dorobust = false;                   % robust statistics for voxel-based GLM [true, false] -- default true
 dorobfit_parcelwise = false;        % true runs robust parcelwise regression (CANlab's robfit_parcelwise() function) rather than voxel-based GLM (CANlab's regress() function)
     % robfit_parcelwise options
     csf_wm_covs = false;                % true adds global wm & csf regressors at second level
     remove_outliers = false;            % true removes outlier images/subjects based on mahalanobis distance 
 doBayes = true;                     % converts t-maps into Bayes Factor maps -- default true
-domvpa_reg_cov = false;             % run MVPA regression model to predict covariate levels from (between-subject) brain data using CANlab's predict() function
+domvpa_reg_cov = false;              % run MVPA regression model to predict covariate levels from (between-subject) brain data using CANlab's predict() function
     % mvpa_reg_covariate options
     algorithm_mvpa_reg_cov = 'cv_pcr';              % default cv_pcr, will be passed into predict function (help fmri_data.predict for options)
     holdout_set_method_mvpa_reg_cov = 'no_group';   % 'no_group', or 'group'
@@ -95,9 +95,9 @@ BF_threshold_glm = 10; % threshold for Bayes Factor maps, |BF| > 10 indicates st
 
 % MVPA OPTIONS
 % ------------
-dobootstrap_mvpa_reg_cov = false;                                % default false     bootstrapping; takes a lot of time, hence only use true for final analysis, since this takes a lot of time, especially if boot_n is set to 10k samples
+dobootstrap_mvpa_reg_cov = true;                                % default false     bootstrapping; takes a lot of time, hence only use true for final analysis, since this takes a lot of time, especially if boot_n is set to 10k samples
     % mvpa bootstrapping options
-    boot_n_mvpa_reg_cov = 5000;                                      % default 5000      number of bootstrap samples, reduce number for quick results, increase to 10k for publication
+    boot_n_mvpa_reg_cov = 1000;                                      % default 5000      number of bootstrap samples, reduce number for quick results, increase to 10k for publication
     parallelstr_mvpa_reg_cov = 'parallel';                           % parallel proc for boot.   'parallel' or 'noparallel'
     % mvpa thresholding options
     q_threshold_mvpa_reg_cov = .05;                                  % default .05       threshold for FDR-corrected display items

@@ -130,20 +130,20 @@
 % SET MANDATORY OPTIONS
 
 mygroupnamefield = 'contrasts'; 
-results_suffix = 'test_allcov'; % adds a suffix of your choice to .mat file with results that will be saved
+results_suffix = 'rating'; % adds a suffix of your choice to .mat file with results that will be saved
 
 % NOTE: do NOT delete the latter option, leave empty if not needed
 % NOTE: do NOT use to add a suffix specifying the regressors, scaling or masking option, this will be added automatically
 
 % OPTIONS IF DESIGN_MATRIX_TYPE = CUSTOM
 
-% covs2use = {'delta_rating'}; % needs to correspond to variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} AND THE ORDER IN WHICH THEY APPEAR THERE
+covs2use = {'delta_rating'}; % needs to correspond to variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} AND THE ORDER IN WHICH THEY APPEAR THERE
 
 % NOTE: if you want to use all variables in DAT.BETWEENPERSON.(mygroupnamefield){:} as covariates, comment this option out
 
 % OPTIONS IF DESIGN_MATRIX_TYPE = GROUP
 
-group_id = {'group'}; % needs to correspond to variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} AND THE ORDER IN WHICH THEY APPEAR THERE
+% group_id = {'group'}; % needs to correspond to variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} AND THE ORDER IN WHICH THEY APPEAR THERE
 
 % NOTE: if DAT.BETWEENPERSON.group contains group identifier, you can comment this out
 
