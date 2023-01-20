@@ -1,4 +1,4 @@
-%% c2a_second_level_regression.m
+%% ery_4a_secondlevel_m6m_s7a_c2a_2nd_lvl_parcreg_cov_rat.m
 %
 %
 % USAGE
@@ -44,8 +44,8 @@
 % date:   Dartmouth, May, 2022
 %
 %__________________________________________________________________________
-% @(#)% c2a_second_level_regression.m         v4.0
-% last modified: 2023/01/17
+% @(#)% c2a_second_level_regression.m         v4.1
+% last modified: 2023/01/20
 
 
 %% GET AND SET OPTIONS
@@ -53,28 +53,60 @@
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
 
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
 
-% SET/COPY MANDATORY OPTIONS FROM CORRESPONDING PREP_3a_ SCRIPT
+% COPY OPTIONS FROM CORRESPONDING PREP_3a_ SCRIPT
+
+% Mandatory options
 
 mygroupnamefield = 'contrasts'; 
-results_suffix = ''; % suffix of your choice added to .mat file with saved results
-myscaling_glm = 'raw';
-maskname_glm = which('gray_matter_mask_sparse.img'); % applied in this script before fdr thresholding
+results_suffix = 'cov_rating'; % suffix of your choice added to .mat file with saved results
 
-% SET CUSTOM OPTIONS
+% Options to copy if specified in prep_3a script
+
+covs2use = {'delta_rating'};
+% group_id = {'varname'};
+
+% Custom options
+
+% dorobust = true/false;
+dorobfit_parcelwise = true;
+  csf_wm_covs = false;
+  remove_outliers = false;
+% myscaling_glm = 'raw'/'scaled'/'scaled_contrasts';
+design_matrix_type = 'custom';
+% doBayes = true/false;
+% domvpa_reg_cov = true/false;
+%   algorithm_mvpa_reg_cov = 'cv_pcr';
+%   holdout_set_method_mvpa_reg_cov = 'no_group'/'group';
+%   nfolds_mvpa_reg_cov = x;
+%   zscore_outcome_mvpa_reg_cov = true/false;
+
+% SET CUSTOM OPTIONS FOR CURRENT SCRIPT
 
 % NOTE: only specify if you want to run a second version of your model with different options
 % than the defaults you set in your model-specific version of a2_set_default_options.m
+
+% GLM options
 
 % save_figures_glm = true/false;
 % q_threshold_glm = .x;
 % p_threshold_glm = .yyy;
 % k_threshold_glm = zz;
 % BF_threshold_glm = x;
+
+% MVPA options
+
+% dobootstrap_mvpa_reg_cov = true/false;
+    % mvpa bootstrapping options
+%     boot_n_mvpa_reg_cov = x;                                      
+%     parallelstr_mvpa_reg_cov = 'parallel'/'noparallel';                           
+    % mvpa thresholding options
+%     q_threshold_mvpa_reg_cov = .yy;                                  
+%     k_threshold_mvpa_reg_cov = z; 
 
 % GET SCALING OPTION
 
@@ -164,27 +196,28 @@ if domvpa_reg_cov
     mvpa_resultsvarname = 'mvpa_stats_results';
     mvpa_resultsstring = 'mvpa_stats_and_maps_';
     mvpa_analysis_type = algorithm_mvpa_reg_cov;
-end
 
-if ~exist('mvpa_resultsvarname','var')
-    
-    fprintf('\n\n');
-    printhdr('LOADING MVPA DATA');
-    fprintf('\n\n');
-    
-    savefilenamedata_mvpa = fullfile(resultsdir, ['mvpa_stats_and_maps_', mygroupnamefield, '_', scaling_string, '_', results_suffix, '.mat']);
+    if ~exist('mvpa_resultsvarname','var')
 
-    if exist(savefilenamedata,'file')
-        fprintf('\nLoading %s mvpa regression results and maps from %s\n\n', mvpa_analysis_type, savefilenamedata_mvpa);
-        load(savefilenamedata_mvpa, mvpa_resultsvarname);
+        fprintf('\n\n');
+        printhdr('LOADING MVPA DATA');
+        fprintf('\n\n');
+
+        savefilenamedata_mvpa = fullfile(resultsdir, ['mvpa_stats_and_maps_', mygroupnamefield, '_', scaling_string, '_', results_suffix, '.mat']);
+
+        if exist(savefilenamedata,'file')
+            fprintf('\nLoading %s mvpa regression results and maps from %s\n\n', mvpa_analysis_type, savefilenamedata_mvpa);
+            load(savefilenamedata_mvpa, mvpa_resultsvarname);
+        else
+            fprintf('\nNo saved results file %s. Skipping this analysis.', savefilenamedata_mvpa);
+            fprintf('\nRun prep_3a_run_second_level_regression_and_save.m to get %s regression results first.\n', mvpa_analysis_type); 
+            return
+        end
+
     else
-        fprintf('\nNo saved results file %s. Skipping this analysis.', savefilenamedata_mvpa);
-        fprintf('\nRun prep_3a_run_second_level_regression_and_save.m to get %s regression results first.\n', mvpa_analysis_type); 
-        return
-    end
+        fprintf('\n%s %s found, displaying results\n\n', mvpa_resultsvarname, mvpa_analysis_type);
 
-else
-    fprintf('\n%s %s found, displaying results\n\n', mvpa_resultsvarname, mvpa_analysis_type);
+    end
 
 end
     
@@ -193,7 +226,7 @@ end
 
 for c = 1:size(results, 2) % number of contrasts or conditions
 
-    analysisname = results{c}.analysis_name;
+    analysisname = results{c}.contrastname;
     names = results{c}.variable_names;
     
     names_string = names{1};

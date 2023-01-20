@@ -1,4 +1,4 @@
-%% prep_3a_run_second_level_regression_and_save.m
+%% ery_4a_secondlevel_m6m_s6_prep_3a_run_second_lvl_reg_cov_int.m
 %
 %
 % USAGE
@@ -130,14 +130,14 @@
 % SET MANDATORY OPTIONS
 
 mygroupnamefield = 'contrasts'; 
-results_suffix = ''; % adds a suffix of your choice to .mat file with results that will be saved
+results_suffix = 'cov_intensity'; % adds a suffix of your choice to .mat file with results that will be saved
 
 % NOTE: do NOT delete the latter option, leave empty if not needed
 % NOTE: do NOT use to add a suffix specifying the regressors, scaling or masking option, this will be added automatically
 
 % OPTIONS IF DESIGN_MATRIX_TYPE = CUSTOM
 
-% covs2use = {'delta_rating'}; % needs to correspond to variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} AND THE ORDER IN WHICH THEY APPEAR THERE
+covs2use = {'delta_intensity'}; % needs to correspond to variable name(s) in DAT.BETWEENPERSON.(mygroupnamefield){:} AND THE ORDER IN WHICH THEY APPEAR THERE
 
 % NOTE: if you want to use all variables in DAT.BETWEENPERSON.(mygroupnamefield){:} as covariates, comment this option out
 
@@ -149,7 +149,7 @@ results_suffix = ''; % adds a suffix of your choice to .mat file with results th
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
 
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
@@ -173,9 +173,9 @@ plugin_get_options_for_analysis_script;
 %   csf_wm_covs = true/false;
 %   remove_outliers = true/false;
 % myscaling_glm = 'raw'/'scaled'/'scaled_contrasts';
-% design_matrix_type = 'custom'/'group'/'onesample';
+design_matrix_type = 'custom';
 % doBayes = true/false;
-% domvpa_reg_cov = true/false;
+domvpa_reg_cov = true;
 %   algorithm_mvpa_reg_cov = 'cv_pcr';
 %   holdout_set_method_mvpa_reg_cov = 'no_group'/'group';
 %   nfolds_mvpa_reg_cov = x;
@@ -280,12 +280,12 @@ switch mygroupnamefield
 end
 
 if ~dorobfit_parcelwise
-    regression_stats_results = cell(1, kc);
+    regression_stats_results = cell(1, 3); % changed kc to 3 here and in the following lines because contrasts 4-6 do not have intensity ratings as they include water
 else
-    parcelwise_stats_results = cell(1,kc);
+    parcelwise_stats_results = cell(1, 3);
 end
 
-for c = 1:kc
+for c = 1:3
     
     % GET DESIGN MATRIX FOR THIS CONTRAST OR CONDITION
     % ---------------------------------------------------------------------
@@ -639,7 +639,7 @@ for c = 1:kc
         fprintf ('\nORTHVIEWS GLM RESULTS AT UNCORRECTED p < 0.05, EFFECT: %s, REGRESSOR(S): %s, MASK: %s, SCALING: %s\n\n', regression_stats.contrastname, groupnames_string, mask_string, scaling_string);
         
         t = threshold(regression_stats.t,.05,'unc');
-            if maskname_short
+            if exist('maskname_short','var')
                 t = apply_mask(t,glmmask);
             end
             
@@ -665,7 +665,7 @@ for c = 1:kc
             
             for img = 1:size(regression_stats.BF,2)
                 BF = threshold(regression_stats.BF(1,img),[-2.1972 2.1972],'raw-outside');
-                    if maskname_short
+                    if exist('maskname_short','var')
                         BF = apply_mask(BF,glmmask);
                     end
                 orthviews(BF);
@@ -814,7 +814,7 @@ for c = 1:kc
         for j = 1:num_effects
 
             tj = get_wh_image(parcelwise_stats.t_obj, j);
-                if maskname_short
+                if exist('maskname_short','var')
                     tj = apply_mask(tj, glmmask);
                 end
             tj = threshold(tj, .05, 'unc'); 
@@ -845,7 +845,7 @@ for c = 1:kc
             for img = 1:size(parcelwise_stats.BF,2)
                 
                 BF = threshold(parcelwise_stats.BF(1,img),[-2.1972 2.1972],'raw-outside');
-                    if maskname_short
+                    if exist('maskname_short','var')
                         BF = apply_mask(BF,glmmask);
                     end
                     
@@ -1036,7 +1036,13 @@ for c = 1:kc
 
                 o2 = canlab_results_fmridisplay([], 'compact', 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
 
-                w = region(mvpa_stats.weight_obj);
+                w = mvpa_stats.weight_obj;
+                
+                    if exist('maskname_short','var')
+                        w = apply_mask(w,glmmask);
+                    end
+                    
+                w = region(w);
 
                 o2 = addblobs(o2, w);
                 o2 = title_montage(o2, whmontage, [algorithm_mvpa_reg_st ' unthresholded ' mvpa_stats.Y_names ' ' mask_string ' ' myscaling_glm]);

@@ -1,4 +1,4 @@
-%% a2_set_default_options.m
+%% ery_4a_secondlevel_m6m_s1_a2_set_default_options.m
 %
 %
 % USAGE
@@ -38,7 +38,7 @@ dozipimages = false;        % default false to avoid load on data upload/downloa
 %% PREP_3A_RUN_SECOND_LEVEL_REGRESSION_AND_SAVE
 % ---------------------------------------------
 
-maskname_glm = which('gray_matter_mask_sparse.img');
+maskname_glm = which('ery_4a_m6_mask_all_regions.nii');
                                     % default use of sparse gray matter mask
                                     % model-specific maskdir defined in a_set_up_paths_always_run_first script
                                     % if you do not want to mask, change to []
@@ -122,7 +122,7 @@ holdout_set_method_svm = 'onesample';                   % 'group', or 'onesample
                                                             % subject (i.e. leave whole subject out)
 holdout_set_type_svm = 'kfold';                         % default kfold     cross-validation method: 'kfold' or 'leave_one_subject_out' - the latter is not recommended
     nfolds_svm = 5;                                         % default 5         number of cross-validation folds for kfold
-maskname_svm = which('gray_matter_mask_sparse.img');    % default use of sparse gray matter mask; maskdir now defined in a_set_up_paths_always_run_first script; if you do not want to mask, change to []; if you want to use a custom mask, put it in maskdir and change name here.
+maskname_svm = which('ery_4a_m6_mask_all_regions.nii');    % default use of sparse gray matter mask; maskdir now defined in a_set_up_paths_always_run_first script; if you do not want to mask, change to []; if you want to use a custom mask, put it in maskdir and change name here.
 myscaling_svm = 'raw';                                  % options are 'raw','subjectnorm','imagenorm','zscoreimages','zscorevoxels'
                                                             % subjectnorm: normalize_each_subject_by_l2norm; normalizes images for each subject by L2 norm of Condition 1 image; can help with numerical scaling and inter-subject scaling diffs
                                                             % imagenorm: normalize_images_by_l2norm; normalizes each image separately, not each subject/pair
@@ -185,7 +185,7 @@ holdout_set_method_mvpa_reg_st = 'onesample';                   % 'group', or 'o
                                                                     % subject (i.e. leave whole subject out)
 nfolds_mvpa_reg_st = 5;                                         % default 5; number of cross-validation folds for kfold
 zscore_outcome_mvpa_reg_st = false;                             % default false; zscores behavioral outcome variable (fmri_dat.Y) prior to fitting models
-maskname_mvpa_reg_st = which('gray_matter_mask_sparse.img');    % see above
+maskname_mvpa_reg_st = which('ery_4a_m6_mask_all_regions.nii');    % see above
 myscaling_mvpa_reg_st = 'raw';                                  % options are 'raw', 'centerimages', 'zscoreimages', 'l2normimages', 'zscorevoxels'
 
 % STATISTICS AND RESULTS VISUALIZATION OPTIONS
@@ -213,7 +213,7 @@ domultilevel_mvpa_reg_st = false;                               % default false;
 
 save_figures_pdm = false;                                        % default false; % true saves .svg files of all figures (slow, takes up space)
 zscore_outcome_pdm = false;                                     % default false; zscores behavioral outcome variable (fmri_dat.Y) prior to fitting models
-maskname_pdm = which('gray_matter_mask_sparse.img');            % see above
+maskname_pdm = which('ery_4a_m6_mask_all_regions.nii');            % see above
 myscaling_pdm = 'raw';                                          % options are 'raw', 'centerimages', 'zscoreimages', 'l2normimages', 'zscorevoxels'
 
 % STATISTICS AND RESULTS VISUALIZATION OPTIONS
