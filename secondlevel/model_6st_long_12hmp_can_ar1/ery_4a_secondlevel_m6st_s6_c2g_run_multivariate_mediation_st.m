@@ -333,7 +333,7 @@ clear sub
 %% SET UP AND RUN MULTIVARIATE MEDIATION
 % -------------------------------------------------------------------------
 
-for cont = 1:size(contrastnames2include,2)
+for cont = 4:size(contrastnames2include,2)
     
     fprintf('\n\n');
     printhdr(['CONTRAST #', num2str(cont), ': ',upper(contrastnames2include{cont})]);
