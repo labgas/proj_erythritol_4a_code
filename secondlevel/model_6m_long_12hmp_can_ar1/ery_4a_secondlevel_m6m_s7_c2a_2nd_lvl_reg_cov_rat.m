@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6m_s7a_c2a_2nd_lvl_parcreg_cov_rat.m
+%% ery_4a_secondlevel_m6m_s7_c2a_2nd_lvl_reg_cov_rat.m
 %
 %
 % USAGE
@@ -88,14 +88,15 @@ covs2use = {'delta_rating'};
 % Custom options
 
 % dorobust = true/false;
-dorobfit_parcelwise = true;
-%   csf_wm_covs = false;
-%   remove_outliers = false;
-%   atlasname_glm = 'atlas_name';
+% dorobfit_parcelwise = true/false;
+%   csf_wm_covs = true/false;
+%   remove_outliers = true/false;
+% atlasname_glm = 'atlas_name';
+% maskname_glm = 'mask_name';
 % myscaling_glm = 'raw'/'scaled'/'scaled_contrasts';
 % design_matrix_type = 'group'/'custom'/'onesample';
 % doBayes = true/false;
-% domvpa_reg_cov = true/false;
+domvpa_reg_cov = true;
 %   algorithm_mvpa_reg_cov = 'cv_pcr';
 %   holdout_set_method_mvpa_reg_cov = 'no_group'/'group';
 %   nfolds_mvpa_reg_cov = x;
@@ -123,7 +124,7 @@ dorobfit_parcelwise = true;
     % mvpa bootstrapping options
 %     boot_n_mvpa_reg_cov = x;                                      
 %     parallelstr_mvpa_reg_cov = 'parallel'/'noparallel';   
-%     cons2boot = [contrast_indices];
+%     cons2boot = [];
     % mvpa thresholding options
 %     q_threshold_mvpa_reg_cov = .yy;                                  
 %     k_threshold_mvpa_reg_cov = z; 
@@ -271,14 +272,13 @@ end
 % MVPA
 % -------------------------------------------------------------------------
 
-if domvpa_reg_cov
+if dobootstrap_mvpa_reg_cov
     
     mvpa_resultsvarname = 'mvpa_stats_results';
     mvpa_resultsstring = 'mvpa_stats_and_maps_';
     mvpa_analysis_type = algorithm_mvpa_reg_cov;
-    mvpa_bs_stats_results = cell(1,size(results,2));
 
-    if ~exist('mvpa_resultsvarname','var')
+    if ~exist(mvpa_resultsvarname,'var')
 
         fprintf('\n\n');
         printhdr('LOADING MVPA DATA');
@@ -340,7 +340,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             
         else
             
-            t = results{c}.t_obj; % NOTE: this statistic_object is thresholded at FDR q < 0.05 AND masked!
+            t = results{c}.t_obj; % NOTE: this statistic_object is thresholded at FDR q < 0.05, resampled to the space of the fmri_data_object and masked in the previous script!
             
         end
         
@@ -351,21 +351,16 @@ for c = 1:size(results, 2) % number of contrasts or conditions
         if ~dorobfit_parcelwise
             
             if apply_mask_before_fdr
-                BF = apply_mask(BF, glmmask);
+                
+                for j = 1:size(BF,2)
+                    BF(j) = apply_mask(BF(j), glmmask);
+                    
+                end
             end
             
         end
         
-    end
-    
-    if domvpa_reg_cov
-        
-        for covar = 1:size(mvpa_stats_results,2)
-            mvpa_results{covar} = mvpa_stats_results{c,covar};
-            mvpa_fmri_dats{covar} = mvpa_dats{c,covar};
-        end
-        
-    end
+    end 
     
     fprintf('\n\n');
     printhdr(['CONTRAST #', num2str(c), ': ', upper(analysisname)]);
@@ -452,8 +447,14 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             r = region(tj, 'noverbose');
             r(cat(1, r.numVox) < k_threshold_glm) = [];
-            [rpos, rneg] = table(r,'atlas_obj',combined_atlas);       % add labels
-            r = [rpos rneg];               % re-concatenate labeled regions
+            
+                if exist('combined_atlas','var')
+                    [rpos, rneg] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
+                else
+                    [rpos, rneg] = table(r);                            % add labels from default canlab_2018 atlas                               
+                end
+                
+            r = [rpos rneg];                                        % re-concatenate labeled regions
             
             if ~dorobfit_parcelwise % in parcelwise case, these region_objects are already stored in parcelwise_stats.region_objects
                 region_fdr{j} = r;
@@ -531,8 +532,14 @@ for c = 1:size(results, 2) % number of contrasts or conditions
 
             r = region(tj, 'noverbose');
             r(cat(1, r.numVox) < k_threshold_glm) = [];
-            [rpos, rneg] = table(r,'atlas_obj',combined_atlas);       % add labels
-            r = [rpos rneg];               % re-concatenate labeled regions
+            
+                if exist('combined_atlas','var')
+                    [rpos, rneg] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
+                else
+                    [rpos, rneg] = table(r);                            % add labels from default canlab_2018 atlas                               
+                end
+            
+            r = [rpos rneg];                                        % re-concatenate labeled regions
             
             region_unc{j} = r;
 
@@ -605,9 +612,15 @@ for c = 1:size(results, 2) % number of contrasts or conditions
                 BFj = threshold(BFj, [-2*(log(BF_threshold_glm)) 2*(log(BF_threshold_glm))], 'raw-outside'); 
 
                 r = region(BFj, 'noverbose');
+                
                 r(cat(1, r.numVox) < k_threshold_glm) = [];
-                [rpos, rneg] = table(r,'atlas_obj',combined_atlas);       % add labels
-                r = [rpos rneg];               % re-concatenate labeled regions
+                    if exist('combined_atlas','var')
+                        [rpos, rneg] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
+                    else
+                        [rpos, rneg] = table(r);                            % add labels from default canlab_2018 atlas                               
+                    end
+                    
+                r = [rpos rneg];                                        % re-concatenate labeled regions
                 region_Bayes{j} = r;
 
                 % Montage of regions in table (plot and save)
@@ -639,6 +652,13 @@ for c = 1:size(results, 2) % number of contrasts or conditions
     % ---------------------------------------------------------------------
     
     if dobootstrap_mvpa_reg_cov
+        
+        mvpa_bs_stats_results = cell(1,size(results,2));
+        
+        for covar = 1:size(mvpa_stats_results,2)
+            mvpa_results{covar} = mvpa_stats_results{c,covar};
+            mvpa_fmri_dats{covar} = mvpa_dats{c,covar};
+        end
         
         if isempty(cons2boot) || ismember(c,cons2boot)
         

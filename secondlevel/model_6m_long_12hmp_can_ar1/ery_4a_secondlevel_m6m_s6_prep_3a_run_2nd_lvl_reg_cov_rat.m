@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6m_s6a_prep_3a_run_2nd_lvl_parcreg_cov_rat.m
+%% ery_4a_secondlevel_m6m_s6a_prep_3a_run_2nd_lvl_reg_cov_rat.m
 %
 %
 % USAGE
@@ -185,13 +185,13 @@ plugin_get_options_for_analysis_script;
 % maskname_glm = 'mask_name';
 % atlasname_glm = 'atlas_name';
 % dorobust = true/false;
-dorobfit_parcelwise = true;
+% dorobfit_parcelwise = true/false;
 %   csf_wm_covs = true/false;
-%   remove_outliers = true/false;
+%   remove_outliers = true/falsefalse;
 % myscaling_glm = 'raw'/'scaled'/'scaled_contrasts';
 % design_matrix_type = 'group'/'custom'/'onesample';
 % doBayes = true/false;
-% domvpa_reg_cov = true/false;
+domvpa_reg_cov = true;
 %   algorithm_mvpa_reg_cov = 'cv_pcr';
 %   holdout_set_method_mvpa_reg_cov = 'no_group'/'group';
 %   nfolds_mvpa_reg_cov = x;
