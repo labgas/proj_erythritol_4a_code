@@ -72,8 +72,8 @@ results_suffix = ''; % suffix added to .mat file with saved results
 % maskname_svm: which('maskname');
 dobootstrap_svm = true;
       cons2boot_svm = [4:6];
-% - dosearchlight_svm: true/false
-%       cons2searchlight_svm: [x y z]
+dosearchlight_svm = true;
+      cons2searchlight_svm = [4:6];
 
 % SET CUSTOM OPTIONS FOR THIS SCRIPT
 
@@ -258,6 +258,20 @@ rocpairstring = 'twochoice';  % 'twochoice' or 'unpaired'
 %% CROSS-VALIDATED ACCURACY, ROC PLOTS, AND MONTAGES FOR EACH CONTRAST
 % -------------------------------------------------------------------------
 
+if dobootstrap_svm
+    
+    region_objs_bs_fdr = cell(1,kc);
+    region_objs_bs_unc = cell(1,kc);
+    
+end
+
+if dosearchlight_svm
+    
+    region_objs_sl_fdr = cell(1,kc);
+    region_objs_sl_unc = cell(1,kc);
+    
+end
+
 for c = 1:kc
     
     analysisname = DAT.contrastnames{c};
@@ -342,6 +356,7 @@ for c = 1:kc
                 r(cat(1, r.numVox) < k_threshold_svm) = [];
                 [rpos, rneg] = table(r);       % add labels
                 r = [rpos rneg];               % re-concatenate labeled regions
+                region_objs_bs_fdr{c} = r;
 
                 if ~isempty(r)
 
@@ -394,10 +409,11 @@ for c = 1:kc
                 r(cat(1, r.numVox) < k_threshold_svm) = [];
                 [rpos, rneg] = table(r);       % add labels
                 r = [rpos rneg];               % re-concatenate labeled regions
+                region_objs_bs_unc{c} = r;
 
                 if ~isempty(r)
 
-                    fprintf ('\nMONTAGE REGIONCENTERS SVM RESULTS AT UNCORRECTED p < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', q_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
+                    fprintf ('\nMONTAGE REGIONCENTERS SVM RESULTS AT UNCORRECTED p < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', p_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
 
                     o3 = montage(r, 'colormap', 'regioncenters', 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]});
 
@@ -442,10 +458,12 @@ for c = 1:kc
                 fprintf ('\nMONTAGE SVM SEARCHLIGHT ACCURACY RESULTS AT FDR q < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', q_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
 
                 p = sl_stats.stat_img_obj;
-                p = threshold(t, q_threshold_svm, 'fdr', 'k', k_threshold_svm); 
+                p = threshold(p, q_threshold_svm, 'fdr', 'k', k_threshold_svm); 
                 r = region(p,'noverbose');
+                
+                figure;
 
-                o2 = montage(p, 'maxcolor', [1 1 0], 'mincolor', [1 0 0], 'cmaprange', [min(sl_stats.stat_img_obj.dat) max(sl_stats.stat_img_obj.dat)]);
+                o2 = montage(r, 'maxcolor', [0.94 0.98 0.13], 'mincolor', [0.47 0.11 0.43], 'cmaprange', [min(p.dat(logical(p.sig))) max(p.dat)]); % colormap ~ inferno in MRIcroGL
                 o2 = title_montage(o2, whmontage, [analysisname ' searchlight accuracy FDR ' num2str(q_threshold_svm) ' ' mask_string ' ' scaling_string]);
 
                 figtitle = sprintf('%s_%s_%1.4f_FDR_searchlight_montage_%s_%s', analysisname, results_suffix, q_threshold_svm, mask_string, scaling_string);
@@ -464,12 +482,13 @@ for c = 1:kc
                 r(cat(1, r.numVox) < k_threshold_svm) = [];
                 [rpos, rneg] = table(r);       % add labels
                 r = [rpos rneg];               % re-concatenate labeled regions
+                region_objs_sl_fdr{c} = r;
 
                 if ~isempty(r)
 
                     fprintf ('\nMONTAGE REGIONCENTERS SVM SEARCHLIGHT ACCURACY RESULTS AT FDR q < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', q_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
 
-                    o3 = montage(r, 'maxcolor', [1 1 0], 'mincolor', [1 0 0], 'regioncenters', 'cmaprange', [min(sl_stats.stat_img_obj.dat) max(sl_stats.stat_img_obj.dat)]);
+                    o3 = montage(r, 'maxcolor', [0.94 0.98 0.13], 'mincolor', [0.47 0.11 0.43], 'regioncenters', 'cmaprange', [min(p.dat(logical(p.sig))) max(p.dat)]);
 
                     % Activate, name, and save figure
                     figtitle = sprintf('%s_%s_%1.4f_FDR_searchlight_regions_%s_%s', analysisname, results_suffix, q_threshold_svm, mask_string, scaling_string);
@@ -479,14 +498,14 @@ for c = 1:kc
                             plugin_save_figure;
                         end
 
-                    clear o3, clear figtitle, clear t, clear r
+                    clear o3, clear figtitle, clear p, clear r
 
                 end % conditional montage plot if there are regions to show
 
             % uncorrected
 
             fprintf('\n\n');
-            printhdr('FDR-corrected searchlight results');
+            printhdr('uncorrected searchlight results');
             fprintf('\n\n');
 
                 % montage
@@ -496,10 +515,12 @@ for c = 1:kc
                 fprintf ('\nMONTAGE SVM SEARCHLIGHT ACCURACY RESULTS AT UNCORRECTED p < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', p_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
 
                 p = sl_stats.stat_img_obj;
-                p = threshold(t, p_threshold_svm, 'unc', 'k', k_threshold_svm); 
+                p = threshold(p, p_threshold_svm, 'unc', 'k', k_threshold_svm); 
                 r = region(p,'noverbose');
+                
+                figure;
 
-                o2 = montage(p, 'maxcolor', [1 1 0], 'mincolor', [1 0 0], 'cmaprange', [min(sl_stats.stat_img_obj.dat) max(sl_stats.stat_img_obj.dat)]);
+                o2 = montage(p, 'maxcolor', [0.94 0.98 0.13], 'mincolor', [0.47 0.11 0.43], 'cmaprange', [min(p.dat(logical(p.sig))) max(p.dat)]);
                 o2 = title_montage(o2, whmontage, [analysisname ' searchlight accuracy unc ' num2str(p_threshold_svm) ' ' mask_string ' ' scaling_string]);
 
                 figtitle = sprintf('%s_%s_%1.4f_unc_searchlight_montage_%s_%s', analysisname, results_suffix, p_threshold_svm, mask_string, scaling_string);
@@ -518,12 +539,13 @@ for c = 1:kc
                 r(cat(1, r.numVox) < k_threshold_svm) = [];
                 [rpos, rneg] = table(r);       % add labels
                 r = [rpos rneg];               % re-concatenate labeled regions
+                region_objs_bs_unc{c} = r;
 
                 if ~isempty(r)
 
                     fprintf ('\nMONTAGE REGIONCENTERS SVM SEARCHLIGHT ACCURACY RESULTS AT UNCORRECTED p < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', p_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
 
-                    o3 = montage(r, 'maxcolor', [1 1 0], 'mincolor', [1 0 0], 'regioncenters', 'cmaprange', [min(sl_stats.stat_img_obj.dat) max(sl_stats.stat_img_obj.dat)]);
+                    o3 = montage(r, 'maxcolor', [0.94 0.98 0.13], 'mincolor', [0.47 0.11 0.43], 'regioncenters', 'cmaprange', [min(p.dat(logical(p.sig))) max(p.dat)]);
 
                     % Activate, name, and save figure
                     figtitle = sprintf('%s_%s_%1.4f_unc_searchlight_regions_%s_%s', analysisname, results_suffix, p_threshold_svm, mask_string, scaling_string);
@@ -533,7 +555,7 @@ for c = 1:kc
                             plugin_save_figure;
                         end
 
-                    clear o3, clear figtitle, clear t, clear r
+                    clear o3, clear figtitle, clear p, clear r
 
                 end % conditional montage plot if there are regions to show
             
@@ -542,6 +564,34 @@ for c = 1:kc
     end % if loop searchlight
     
 end  % loop over contrasts
+
+
+%% APPEND REGION OBJECTS TO SAVED RESULTS
+%--------------------------------------------------------------------------
+
+if dosavesvmstats
+    
+    fprintf('\n\n');
+    printhdr('APPENDING REGION OBJECTS TO SAVED SVM RESULTS');
+    fprintf('\n\n');
+    
+    if exist('maskname_short', 'var')
+        savefilenamedata = fullfile(resultsdir, ['svm_stats_results_contrasts_', scaling_string, '_', maskname_short, '_', results_suffix,'.mat']);
+    else
+        savefilenamedata = fullfile(resultsdir, ['svm_stats_results_contrasts_', scaling_string, '_', results_suffix,'.mat']);
+    end
+    
+    if dosearchlight_svm
+        save(savefilenamedata, 'region_objs_sl_fdr', 'region_objs_sl_unc','-append');
+        fprintf('\nAdded searchlight results to saved svm_stats_results\n');
+    end
+    
+    if dobootstrap_svm
+        save(savefilenamedata, 'region_objs_bs_fdr', 'region_objs_bs_unc', '-append');
+        fprintf('\nAdded bootstrapped results to saved svm_stats_results\n');
+    end
+    
+end
 
 
 %% CROSS-CLASSIFICATION MATRIX

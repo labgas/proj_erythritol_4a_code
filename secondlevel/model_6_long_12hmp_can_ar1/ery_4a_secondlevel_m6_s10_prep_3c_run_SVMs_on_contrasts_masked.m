@@ -58,8 +58,6 @@
 %       nfolds_svm: default 5, number of folds for kfold CV
 % - dosearchlight_svm: perform searchlight SVM analysis 
 %       searchlight_radius_svm: radius for searchlight sphere
-%       IMPORTANT NOTE: searchlight option is currently not working because of
-%                       weird memory issues in fmri_data.searchlight - DO NOT USE UNTIL FIXED
 % - ml_method_svm: 'oofmridataobj', or 'predict'
 %       'oofmridataobj' option:
 %           use @bogpetre's object-oriented method
@@ -120,13 +118,14 @@ plugin_get_options_for_analysis_script;
 % maskname_svm = []/which(maskname);
 % myscaling_svm = 'raw'/'subjectnorm'/'imagenorm'/'zscoreimages'/'zscorevoxels'
 % dosavesvmstats = true/false;
+save_figures_svm = true;
 dobootstrap_svm = true;
-   boot_n_svm = 5000;
+%    boot_n_svm = 5000;
    cons2boot_svm = [4:6];
-% parallelstr = 'parallel'/'noparallel';
-% dosearchlight_svm = true;
+parallelstr = 'noparallel';
+dosearchlight_svm = true;
 %    searchlight_radius_svm = z;
-%    cons2searchlight_svm = [4:6];
+   cons2searchlight_svm = [4:6];
 
 
 %% LOAD NECESSARY VARIABLES IF NEEDED
@@ -221,6 +220,7 @@ for c = 1:kc
     
     if exist('svmmask', 'var')
         fprintf('\nMasking data with %s\n\n',maskname_short);
+        svmmask = resample_space(svmmask,cat_obj); % resample to space of data object
         cat_obj = apply_mask(cat_obj, svmmask);
         cat_obj = trim_mask(cat_obj);
         cat_obj.mask_descrip = maskname_svm;
@@ -532,11 +532,13 @@ for c = 1:kc
         if isempty(cons2searchlight_svm) || ismember(c,cons2searchlight_svm)
 
             fprintf ('\nMONTAGE SEARCHLIGHT SVM ACCURACY RESULTS, CONTRAST: %s, %s, SCALING: %s\n\n', analysisname, mask_string, scaling_string);
+            
+            figure;
 
             s = threshold(cat_obj_sl,[0.5, max(cat_obj_sl.dat)],'raw-between');
             
-            o3 = montage(s, 'maxcolor', [1 1 0], 'mincolor', [1 0 0], 'cmaprange', [0.5 max(cat_obj_sl.dat)]);
-            o3 = title_montage(o3, whmontage, [analysisname ' searchlight accuracy > 50% ' mask_string ' ' scaling_string]);
+            o2 = montage(s, 'maxcolor', [0.94 0.98 0.13], 'mincolor', [0.47 0.11 0.43], 'cmaprange', [0.5 max(cat_obj_sl.dat)]); % colormap ~ inferno in MRIcroGL
+            o2 = title_montage(o2, whmontage, [analysisname ' searchlight accuracy > 50% ' mask_string ' ' scaling_string]);
 
             figtitle = sprintf('%s_unthresholded_searchlight_montage_%s_%s', analysisname, mask_string, scaling_string);
             set(gcf, 'Tag', figtitle, 'WindowState','maximized');
@@ -544,7 +546,7 @@ for c = 1:kc
                 if save_figures_svm
                     plugin_save_figure;
                 end
-            clear o3, clear figtitle
+            clear o2, clear figtitle
 
         end
         
