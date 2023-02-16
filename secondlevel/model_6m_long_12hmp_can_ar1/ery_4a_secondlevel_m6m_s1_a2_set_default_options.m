@@ -253,6 +253,13 @@ dosourcerecon_pdm = false;                                      % default false 
 dosavepdmstats = true;                                          % see saving options above
 
 
+%% E1_CORR_PATTERNS
+%--------------------------------------------------------------------------
+
+r_threshold_corr = 0.50;                                        % default 0.50          r threshold for correlation coeffs 
+corr_type = 'Pearson';                                          % default 'Pearson'     'Spearman', or 'Kendall'
+
+
 %% prep_4_apply_signatures_and_save options 
 % --------------------------------------------------------------------
 use_scaled_images = false; % @lukasvo76: change to true to use z-scored images - see above

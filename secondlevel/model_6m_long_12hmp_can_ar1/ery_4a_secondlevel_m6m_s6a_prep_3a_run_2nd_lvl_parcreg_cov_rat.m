@@ -375,7 +375,7 @@ for c = 1:kc
             
         case 'conditions'
             fprintf('\n\n');
-            printhdr(['CONTRAST #', num2str(c), ': ', upper(DAT.conditions{c})]);
+            printhdr(['CONDITION #', num2str(c), ': ', upper(DAT.conditions{c})]);
             fprintf('\n\n');
     
     end
