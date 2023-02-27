@@ -70,6 +70,7 @@ results_suffix = ''; % suffix added to .mat file with saved results
 
 % myscaling_svm: 'raw'/'subjectnorm'/'imagenorm'/'zscoreimages'/'zscorevoxels'
 % maskname_svm: which('maskname');
+dosavesvmstats = false;
 dobootstrap_svm = true;
       cons2boot_svm = [4:6];
 dosearchlight_svm = true;
@@ -295,18 +296,19 @@ for c = 1:kc
     % ROC PLOT
     % --------------------------------------------------------------------
     
+    fprintf('\n\n');
+    printhdr('ROC plot');
+    fprintf('\n\n');
+    
     figtitle = sprintf('SVM ROC %s', upper(analysisname));
     create_figure(figtitle);
     set(gcf,'WindowState','maximized');
     
     ROC = roc_plot(dist_from_hyperplane{c}, logical(Y{c} > 0), 'color', DAT.contrastcolors{c}, rocpairstring);
     
-    d_paired = dfun_paired(dist_from_hyperplane{c}, Y{c});
-    fprintf('\nEffect size, cross-validated: Forced choice: d = %3.2f\n\n', d_paired);
+%     d_paired = dfun_paired(dist_from_hyperplane{c}, Y{c});
+%     fprintf('\nEffect size, cross-validated: Forced choice: d = %3.2f\n\n', d_paired);
     
-    fprintf('\n\n');
-    printhdr('ROC plot');
-    fprintf('\n\n');
     drawnow, snapnow;
     
     if save_figures_svm
@@ -479,6 +481,8 @@ for c = 1:kc
                 fprintf ('\nMONTAGE SVM SEARCHLIGHT ACCURACY RESULTS AT FDR q < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', q_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
 
                 p = sl_stats.stat_img_obj;
+%                 p.dat(p.dat < .50) = .50; % get rid of below chance accuracies by setting them to chance level
+                p.p(p.dat < .51) = 1; % get rid of below chance accuracy p-values by setting them to chance level
                 p = threshold(p, q_threshold_svm, 'fdr', 'k', k_threshold_svm); 
                 r = region(p,'noverbose');
                 
@@ -505,9 +509,9 @@ for c = 1:kc
                 if ~isempty(r)
                 
                     if exist('combined_atlas','var')
-                        [r, r_table] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
+                        [r, ~, r_table] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
                     else
-                        [r, r_table] = table(r);                            % add labels from default canlab_2018 atlas 
+                        [r, ~, r_table] = table(r);                            % add labels from default canlab_2018 atlas 
                     end
  
                     region_objs_sl_fdr{c} = r;
@@ -542,6 +546,8 @@ for c = 1:kc
                 fprintf ('\nMONTAGE SVM SEARCHLIGHT ACCURACY RESULTS AT UNCORRECTED p < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', p_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
 
                 p = sl_stats.stat_img_obj;
+%                 p.dat(p.dat < .50) = .50; % get rid of below chance accuracies by setting them to chance level
+                p.p(p.dat < .50) = 1; % get rid of below chance accuracy p-values by setting them to chance level
                 p = threshold(p, p_threshold_svm, 'unc', 'k', k_threshold_svm); 
                 r = region(p,'noverbose');
                 
@@ -568,9 +574,9 @@ for c = 1:kc
                 if ~isempty(r)
                 
                     if exist('combined_atlas','var')
-                        [r, r_table] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
+                        [r, ~, r_table] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
                     else
-                        [r, r_table] = table(r);                            % add labels from default canlab_2018 atlas 
+                        [r, ~, r_table] = table(r);                            % add labels from default canlab_2018 atlas 
                     end
  
                     region_objs_sl_unc{c} = r;

@@ -153,14 +153,14 @@ plugin_get_options_for_analysis_script;
 % maskname_svm = []/which(maskname);
 % myscaling_svm = 'raw'/'subjectnorm'/'imagenorm'/'zscoreimages'/'zscorevoxels'
 % dosavesvmstats = true/false;
-save_figures_svm_unthresh = false;
-% dobootstrap_svm = true/false;
+save_figures_svm_unthresh = true;
+dobootstrap_svm = true;
 %    boot_n_svm = yyyy;
-%    cons2boot_svm = [con_indices];
+   cons2boot_svm = [4:6];
 parallelstr_svm = 'noparallel';
-% dosearchlight_svm = true/false;
-%    searchlight_radius_svm = z;
-%    cons2searchlight_svm = [con_indices];
+dosearchlight_svm = true;
+%    searchlight_radius_svm = x;
+   cons2searchlight_svm = [4:6];
 
 
 %% LOAD NECESSARY VARIABLES IF NEEDED
@@ -537,12 +537,14 @@ for c = 1:kc
                       
             cat_obj_sl = cat_obj;
             cat_obj_sl.dat = sl_stats.test_results{1}.acc;
+%             cat_obj_sl.dat(cat_obj_sl.dat < .50) = .50; % get rid of below chance accuracies by setting them to chance level
             
             filename = fullfile(resultsdir,'cat_obj_sl.nii');
             write(cat_obj_sl,'fname',filename);
             cat_obj_sl = statistic_image(filename);
             cat_obj_sl = apply_mask(cat_obj_sl, svmmask);
             cat_obj_sl.p = sl_stats.test_results{1}.p;
+            cat_obj_sl.p(cat_obj_sl.dat < .51) = 1; % get rid of below chance accuracy p-values by setting them to chance level
             delete(filename);
             
             sl_stats.stat_img_obj = cat_obj_sl;

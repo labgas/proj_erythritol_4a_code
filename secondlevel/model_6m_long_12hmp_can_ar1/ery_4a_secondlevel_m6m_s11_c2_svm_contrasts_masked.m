@@ -94,10 +94,10 @@ results_suffix = '';        % suffix added to .mat file with saved results
 
 % myscaling_svm: 'raw'/'subjectnorm'/'imagenorm'/'zscoreimages'/'zscorevoxels'
 % maskname_svm: which('maskname');
-% dobootstrap_svm = true/false;
-%       cons2boot_svm = [contrast_indices];
-% dosearchlight_svm: true/false
-%       cons2searchlight_svm: [contrast_indices]
+dobootstrap_svm = true;
+      cons2boot_svm = [4:6];
+dosearchlight_svm = true;
+      cons2searchlight_svm = [4:6];
 
 % SET CUSTOM OPTIONS FOR THIS SCRIPT
 
@@ -356,20 +356,25 @@ for c = 1:kc
     printhdr(['CONTRAST #', num2str(c), ': ', upper(analysisname)]);
     fprintf('\n\n');
     
-    ROC = roc_plot(dist_from_hyperplane{c}, logical(Y{c} > 0), 'color', DAT.contrastcolors{c}, rocpairstring);
-    
-    d_paired = dfun_paired(dist_from_hyperplane{c}, Y{c});
-    fprintf('\nEffect size, cross-validated: Forced choice: d = %3.2f\n\n', d_paired);
-    
     fprintf('\n\n');
     printhdr('ROC plot');
     fprintf('\n\n');
-%     drawnow, snapnow;
+    
+    ROC = roc_plot(dist_from_hyperplane{c}, logical(Y{c} > 0), 'color', DAT.contrastcolors{c}, rocpairstring); % this generates the d based on the model rather than the observed data which is better than the calculation commented out below - see roc_plot function
+    
+%     d_paired = dfun_paired(dist_from_hyperplane{c}, Y{c});
+%     fprintf('\nEffect size, cross-validated: Forced choice: d = %3.2f\n\n', d_paired);
+    
+    disableDefaultInteractivity(gca);
+    
+    snapnow;
     
     if save_figures_svm
         plugin_save_figure
     end
-        
+    
+    drawnow nocallbacks; 
+    
     
     if dobootstrap_svm
         
@@ -400,12 +405,18 @@ for c = 1:kc
 
                 figtitle = sprintf('%s_%s_%1.4f_FDR_montage_%s_%s', analysisname, results_suffix, q_threshold_svm, mask_string, scaling_string);
                 set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                drawnow, snapnow;
+                
+                disableDefaultInteractivity(gca);
+                
+                snapnow;
                     if save_figures_svm
                         plugin_save_figure;
                     end
+               
 
                 clear o2, clear figtitle
+                
+                drawnow nocallbacks; 
 
                 % table and montage of regioncenters
 
@@ -433,12 +444,17 @@ for c = 1:kc
                     % Activate, name, and save figure
                     figtitle = sprintf('%s_%s_%1.4f_FDR_regions_%s_%s', analysisname, results_suffix, q_threshold_svm, mask_string, scaling_string);
                     set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                    drawnow, snapnow;
+                    
+                    disableDefaultInteractivity(gca);
+                    
+                    snapnow;
                         if save_figures_svm
                             plugin_save_figure;
                         end
 
                     clear o3, clear figtitle, clear t, clear r, clear r_table
+                    
+                    drawnow nocallbacks;
 
                 end % conditional montage plot if there are regions to show
 
@@ -461,12 +477,18 @@ for c = 1:kc
 
                 figtitle = sprintf('%s_%s_%1.4f_unc_montage_%s_%s', analysisname, results_suffix, p_threshold_svm, mask_string, scaling_string);
                 set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                drawnow, snapnow;
+                
+                disableDefaultInteractivity(gca);
+                
+                snapnow;
+                
                     if save_figures_svm
                         plugin_save_figure;
                     end
-
+               
                 clear o2, clear figtitle
+                
+                drawnow nocallbacks;
 
                 % table and montage of regioncenters
 
@@ -495,12 +517,18 @@ for c = 1:kc
                     % Activate, name, and save figure
                     figtitle = sprintf('%s_%s_%1.4f_unc_regions_%s_%s', analysisname, results_suffix, p_threshold_svm, mask_string, scaling_string);
                     set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                    drawnow, snapnow;
+                    
+                    disableDefaultInteractivity(gca);
+                    
+                    snapnow;
                         if save_figures_svm
                             plugin_save_figure;
                         end
+                    
 
                     clear o3, clear figtitle, clear t, clear r, clear r_table
+                    
+                    drawnow nocallbacks;
 
                 end % conditional montage plot if there are regions to show
             
@@ -537,6 +565,8 @@ for c = 1:kc
                 fprintf ('\nMONTAGE SVM SEARCHLIGHT ACCURACY RESULTS AT FDR q < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', q_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
 
                 p = sl_stats.stat_img_obj;
+%                 p.dat(p.dat < .50) = .50; % get rid of below chance accuracies by setting them to chance level
+                p.p(p.dat < .51) = 1; % get rid of below chance accuracy p-values by setting them to chance level
                 p = threshold(p, q_threshold_svm, 'fdr', 'k', k_threshold_svm); 
                 r = region(p,'noverbose');
                 
@@ -547,12 +577,18 @@ for c = 1:kc
 
                 figtitle = sprintf('%s_%s_%1.4f_FDR_searchlight_montage_%s_%s', analysisname, results_suffix, q_threshold_svm, mask_string, scaling_string);
                 set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                drawnow, snapnow;
+                
+                disableDefaultInteractivity(gca);
+                
+                snapnow;
                     if save_figures_svm
                         plugin_save_figure;
                     end
 
+
                 clear o2, clear figtitle
+                
+                drawnow nocallbacks;
 
                 % table and montage of regioncenters
 
@@ -563,9 +599,9 @@ for c = 1:kc
                 if ~isempty(r)
                 
                     if exist('combined_atlas','var')
-                        [r, r_table] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
+                        [r, ~, r_table] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
                     else
-                        [r, r_table] = table(r);                            % add labels from default canlab_2018 atlas 
+                        [r, ~, r_table] = table(r);                            % add labels from default canlab_2018 atlas 
                     end
  
                     region_objs_sl_fdr{c} = r;
@@ -578,12 +614,18 @@ for c = 1:kc
                     % Activate, name, and save figure
                     figtitle = sprintf('%s_%s_%1.4f_FDR_searchlight_regions_%s_%s', analysisname, results_suffix, q_threshold_svm, mask_string, scaling_string);
                     set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                    drawnow, snapnow;
+                    
+                    disableDefaultInteractivity(gca);
+                    
+                    snapnow;
                         if save_figures_svm
                             plugin_save_figure;
                         end
+                    
 
                     clear o3, clear figtitle, clear p, clear r, clear r_table
+                    
+                    drawnow nocallbacks;
 
                 end % conditional montage plot if there are regions to show
 
@@ -600,6 +642,8 @@ for c = 1:kc
                 fprintf ('\nMONTAGE SVM SEARCHLIGHT ACCURACY RESULTS AT UNCORRECTED p < %1.4f, k = %d, CONTRAST: %s, %s, SCALING: %s\n\n', p_threshold_svm, k_threshold_svm, analysisname, mask_string, scaling_string);
 
                 p = sl_stats.stat_img_obj;
+%                 p.dat(p.dat < .50) = .50; % get rid of below chance accuracies by setting them to chance level
+                p.p(p.dat < .50) = 1; % get rid of below chance accuracy p-values by setting them to chance level
                 p = threshold(p, p_threshold_svm, 'unc', 'k', k_threshold_svm); 
                 r = region(p,'noverbose');
                 
@@ -610,12 +654,18 @@ for c = 1:kc
 
                 figtitle = sprintf('%s_%s_%1.4f_unc_searchlight_montage_%s_%s', analysisname, results_suffix, p_threshold_svm, mask_string, scaling_string);
                 set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                drawnow, snapnow;
+                
+                disableDefaultInteractivity(gca);
+                
+                snapnow;
+                
                     if save_figures_svm
                         plugin_save_figure;
                     end
-
+                
                 clear o2, clear figtitle
+                
+                drawnow nocallbacks;
 
                 % table and montage of regioncenters
 
@@ -626,9 +676,9 @@ for c = 1:kc
                 if ~isempty(r)
                 
                     if exist('combined_atlas','var')
-                        [r, r_table] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
+                        [r, ~, r_table] = table(r,'atlas_obj',combined_atlas); % add labels from combined_atlas
                     else
-                        [r, r_table] = table(r);                            % add labels from default canlab_2018 atlas 
+                        [r, ~, r_table] = table(r);                            % add labels from default canlab_2018 atlas 
                     end
  
                     region_objs_sl_unc{c} = r;
@@ -641,12 +691,18 @@ for c = 1:kc
                     % Activate, name, and save figure
                     figtitle = sprintf('%s_%s_%1.4f_unc_searchlight_regions_%s_%s', analysisname, results_suffix, p_threshold_svm, mask_string, scaling_string);
                     set(gcf, 'Tag', figtitle, 'WindowState','maximized');
-                    drawnow, snapnow;
+                    
+                    disableDefaultInteractivity(gca);
+                    
+                    snapnow;
                         if save_figures_svm
                             plugin_save_figure;
                         end
+                    
 
                     clear o3, clear figtitle, clear p, clear r, clear r_table
+                    
+                    drawnow nocallbacks;
 
                 end % conditional montage plot if there are regions to show
             
