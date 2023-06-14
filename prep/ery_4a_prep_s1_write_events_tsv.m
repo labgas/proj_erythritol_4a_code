@@ -235,7 +235,7 @@ else
                 pheno_file_subj = table();
             end
 
-        % DEFINE SUBJECT LEVEL DIRS
+        % DEFINE SUBJECT LEVEL DIRS),':')
         subjsourcedir = sourcesubjdirs{sub};
         subjBIDSdir = fullfile(BIDSsubjdirs{sub},'func');
 

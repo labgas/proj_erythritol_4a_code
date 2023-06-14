@@ -1,6 +1,6 @@
-%% ery_4a_masks_m6_s0_binary_mask_from_atlas.m
+%% ery_4a_masks_m6_s0_taste_cortex_L_mask_from_atlas.m
 %
-% This script creates a binary mask by combining regions from one or more
+% This script creates a Left side taste cortex mask by combining regions from one or more
 % atlases, and automatically saves the fmri_mask_image, and .nii versions
 % of it in maskdir of your dataset
 % 
@@ -20,14 +20,14 @@
 % date:   KU Leuven, July, 2022
 %
 %__________________________________________________________________________
-% @(#)% LaBGAScore_atlas_binary_mask_from_atlas.m         v1.2       
+% @(#)% LaBGAScore_atlas_taste_cortex_L_mask_from_atlas.m         v1.2       
 % last modified: 2022/07/26
 
 
 % Define maskname and directory where mask will be written
 %--------------------------------------------------------------------------
 
-maskname = 'ery_4a_m6_mask_taste_cortex';
+maskname = 'ery_4a_m6_mask_taste_cortex_L';
 maskdir = '/data/proj_erythritol/proj_erythritol_4a/secondlevel/model_6m_long_12hmp_can_ar1/masks';
 
 % NOTE: in default LaBGAS file organization this is a model-specific dir in
@@ -46,7 +46,7 @@ canlab = load_atlas('canlab2018_2mm'); % you get a CANlab atlas object
 
 % Select regions you want to include from the selected atlas 
 %--------------------------------------------------------------------------
-canlab_subset = select_atlas_subset(canlab, {'Ctx_AVI_L','Ctx_AVI_R','Ctx_AAIC_L','Ctx_AAIC_R','Ctx_MI_L','Ctx_MI_R','Ctx_FOP3_L','Ctx_FOP3_R','Ctx_FOP2_L','Ctx_FOP2_R'});
+canlab_subset = select_atlas_subset(canlab, {'Ctx_AVI_L','Ctx_AAIC_L','Ctx_MI_L','Ctx_FOP3_L','Ctx_FOP2_L'});
 % NOTE: you can also use the numbers rather than the labels of regions to
 % select as a vector
 % see help atlas.select_atlas_subset
