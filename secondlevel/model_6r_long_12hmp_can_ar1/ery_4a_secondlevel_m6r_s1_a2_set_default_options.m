@@ -1,4 +1,4 @@
-%% a2_set_default_options.m
+%% ery_4a_secondlevel_m6r_s1_a2_set_default_options.m
 %
 %
 % USAGE
