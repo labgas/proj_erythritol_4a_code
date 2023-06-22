@@ -78,7 +78,7 @@ end
 
 % STUDY-SPECIFIC: add study name and model name to script name
 
-ery_4a_secondlevel_m6r_a2_set_default_options;
+ery_4a_secondlevel_m6r_s1_a2_set_default_options;
 
     
 %% MAKE SURE DEPENDENCIES ARE ON MATLAB PATH
