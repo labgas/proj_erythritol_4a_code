@@ -95,7 +95,7 @@ BF_threshold_glm = 10; % threshold for Bayes Factor maps, |BF| > 10 indicates st
 
 % MVPA OPTIONS
 % ------------
-dobootstrap_mvpa_reg_cov = true;                                % default false     bootstrapping; takes a lot of time, hence only use true for final analysis, since this takes a lot of time, especially if boot_n is set to 10k samples
+dobootstrap_mvpa_reg_cov = false;                                % default false     bootstrapping; takes a lot of time, hence only use true for final analysis, since this takes a lot of time, especially if boot_n is set to 10k samples
     % mvpa bootstrapping options
     boot_n_mvpa_reg_cov = 1000;                                      % default 5000      number of bootstrap samples, reduce number for quick results, increase to 10k for publication
     parallelstr_mvpa_reg_cov = 'parallel';                           % parallel proc for boot.   'parallel' or 'noparallel'

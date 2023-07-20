@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6m_s7_c2a_2nd_lvl_reg_cov_rat.m
+%% ery_4a_secondlevel_m6_s7c_c2a_2nd_lvl_parcreg_cov_int.m
 %
 %
 % USAGE
@@ -68,7 +68,7 @@
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6_s0_a_set_up_paths_always_run_first;
 
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
@@ -78,25 +78,25 @@ ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
 % Mandatory options
 
 mygroupnamefield = 'contrasts'; 
-results_suffix = 'cov_rating'; % suffix of your choice added to .mat file with saved results
+results_suffix = 'cov_int'; % suffix of your choice added to .mat file with saved results
 
 % Options to copy if specified in prep_3a script
 
-covs2use = {'delta_rating'};
+covs2use = {'delta_intensity'};
 % group_id = {'varname'};
 
 % Custom options
 
 % dorobust = true/false;
-% dorobfit_parcelwise = true/false;
-%   csf_wm_covs = true/false;
-%   remove_outliers = true/false;
-% atlasname_glm = 'atlas_name';
+dorobfit_parcelwise = true;
+%   csf_wm_covs = false;
+%   remove_outliers = false;
+%   atlasname_glm = 'atlas_name';
 % maskname_glm = 'mask_name';
 % myscaling_glm = 'raw'/'scaled'/'scaled_contrasts';
-% design_matrix_type = 'group'/'custom'/'onesample';
+design_matrix_type = 'custom';
 % doBayes = true/false;
-domvpa_reg_cov = true;
+% domvpa_reg_cov = true/false;
 %   algorithm_mvpa_reg_cov = 'cv_pcr';
 %   holdout_set_method_mvpa_reg_cov = 'no_group'/'group';
 %   nfolds_mvpa_reg_cov = x;
@@ -124,7 +124,7 @@ domvpa_reg_cov = true;
     % mvpa bootstrapping options
 %     boot_n_mvpa_reg_cov = x;                                      
 %     parallelstr_mvpa_reg_cov = 'parallel'/'noparallel';   
-%     cons2boot = [];
+%     cons2boot = [contrast_indices];
     % mvpa thresholding options
 %     q_threshold_mvpa_reg_cov = .yy;                                  
 %     k_threshold_mvpa_reg_cov = z; 
@@ -304,7 +304,7 @@ end
     
 %% VISUALIZE GLM RESULTS FOR EACH CONTRAST
 % -------------------------------------------------------------------------
-
+    
 region_objs_fdr = cell(1,size(results,2));
 region_tables_fdr = cell(1,size(results,2));
 
@@ -339,7 +339,7 @@ for c = 1:size(results, 2) % number of contrasts or conditions
             
         else
             
-            t = results{c}.t_obj; % NOTE: this statistic_object is thresholded at FDR q < 0.05, resampled to the space of the fmri_data_object and masked in the previous script!
+            t = results{c}.t_obj; % NOTE: this statistic_object is thresholded at FDR q < 0.05 AND masked!
             
         end
         
@@ -480,8 +480,8 @@ for c = 1:size(results, 2) % number of contrasts or conditions
         
         region_objs_fdr{c} = region_fdr;
         region_tables_fdr{c} = table_fdr;
-    
-        
+            
+   
     % BETWEEN-SUBJECT REGRESSORS & INTERCEPT: uncorrected
     % ---------------------------------------------------------------------
     

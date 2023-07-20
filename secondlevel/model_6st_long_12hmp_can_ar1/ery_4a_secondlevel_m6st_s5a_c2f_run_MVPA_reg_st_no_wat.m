@@ -540,10 +540,8 @@ fprintf('\n\n');
 
             figure
             
-            nr_subjs = max(unique(subject_id));
-            
-            colors = distinguishable_colors(nr_subjs);
-            colors_cell = mat2cell(colors,ones(1,nr_subjs));
+            colors = distinguishable_colors(n_subj);
+            colors_cell = mat2cell(colors,ones(1,n_subj));
             [han,~,~,slope_stats] = line_plot_multisubject(fmri_dat.Y, stats.yfit, 'subjid', subject_id, 'group_avg_ref_line', 'MarkerTypes','d', 'colors', colors_cell);
             xlabel({['Observed ' behav_outcome_dat_st],'(across conditions)'},'FontSize',14); 
             ylabel({['Estimated ' behav_outcome_dat_st],'(cross validated)'},'FontSize',14);
@@ -562,6 +560,8 @@ fprintf('\n\n');
 
             set(gcf,'WindowState','Maximized','Color','w');
             drawnow, snapnow;
+            
+%             print(gcf,fullfile(htmlsavedir,'ery_4a_secondlevel_m6st_s5a_final_observed_expected'),'-dpng','-r600');
 
         case 'oofmridataobj'
 

@@ -1,4 +1,4 @@
-%% ery_4a_secondlevel_m6m_s6a_prep_3a_run_2nd_lvl_reg_cov_rat.m
+%% ery_4a_secondlevel_m6_s6b_prep_3a_run_2nd_lvl_reg_cov_rat.m
 %
 %
 % USAGE
@@ -144,7 +144,7 @@
 % SET MANDATORY OPTIONS
 
 mygroupnamefield = 'contrasts'; 
-results_suffix = 'cov_rating'; % adds a suffix of your choice to .mat file with results that will be saved
+results_suffix = 'cov_rat'; % adds a suffix of your choice to .mat file with results that will be saved
 
 % NOTE: do NOT delete the latter option, leave empty if not needed
 % NOTE: do NOT use to add a suffix specifying the regressors, scaling or masking option, this will be added automatically
@@ -187,11 +187,11 @@ plugin_get_options_for_analysis_script;
 % dorobust = true/false;
 % dorobfit_parcelwise = true/false;
 %   csf_wm_covs = true/false;
-%   remove_outliers = true/falsefalse;
+%   remove_outliers = true/false;
 % myscaling_glm = 'raw'/'scaled'/'scaled_contrasts';
-% design_matrix_type = 'group'/'custom'/'onesample';
+% design_matrix_type = 'onsample'/'group'/'custom';
 % doBayes = true/false;
-domvpa_reg_cov = true;
+% domvpa_reg_cov = true/false;
 %   algorithm_mvpa_reg_cov = 'cv_pcr';
 %   holdout_set_method_mvpa_reg_cov = 'no_group'/'group';
 %   nfolds_mvpa_reg_cov = x;
@@ -268,6 +268,7 @@ if ~dorobfit_parcelwise
         [~,maskname_short] = fileparts(maskname_glm);
         mask_string = sprintf('masked with %s', maskname_short);
         glmmask = fmri_mask_image(maskname_glm, 'noverbose'); 
+        glmmask.dat(glmmask.dat > 0) = 1; % binarize mask
         fprintf('\nMasking voxelwise results visualization with %s\n\n', maskname_short);
         
     else
@@ -375,7 +376,7 @@ for c = 1:kc
             
         case 'conditions'
             fprintf('\n\n');
-            printhdr(['CONTRAST #', num2str(c), ': ', upper(DAT.conditions{c})]);
+            printhdr(['CONDITION #', num2str(c), ': ', upper(DAT.conditions{c})]);
             fprintf('\n\n');
     
     end
@@ -538,7 +539,11 @@ for c = 1:kc
         
     else 
         
-        combined_atlas = resample_space(combined_atlas,cat_obj);
+        if exist('atlasname_glm','var') && ~isempty(atlasname_glm) && exist(atlasname_glm, 'file')
+        
+            combined_atlas = resample_space(combined_atlas,cat_obj);
+            
+        end
         
     end
     
