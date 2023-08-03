@@ -1,4 +1,4 @@
-%% ery_4a_m6r_decoding_template_xclass_acc.m
+%% ery_4a_m6r_s3_decoding_template_xclass_acc.m
 %
 %
 % *USAGE*
@@ -186,7 +186,7 @@ for sub = 1:firstsub
     % You can also use a mask file with multiple masks inside that are
     % separated by different integer values (a "multi-mask")
     if sub == 1
-        mask_img = fmri_mask_image(which(mask_name),'noverbose');
+        mask_img = fmri_mask_image(which(mask_name),'noverbose'); % no need to binarize since TDT takes care of this under the hood
         target = fmri_data(fullfile(firstsubjdirs{sub},'beta_0001.nii'),'noverbose');
         mask2write = resample_space(mask_img,target);
     %     if contains(mask_name,'.nii')
@@ -368,7 +368,7 @@ posthoctbl = multcompare(rm,'Conditions'); % default Tukey-Kramer corrected
     for var = 1:size(varnames,2)
         [input] = confusion_matrices(var,var,:);
         inputs{var} = input(:);
-        [p{var},~, stats{var}] = signrank(inputs{var},(100/size(conds2include,2));
+        [p{var},~, stats{var}] = signrank(inputs{var},(100/size(conds2include,2)));
         clear input;
     end
     
