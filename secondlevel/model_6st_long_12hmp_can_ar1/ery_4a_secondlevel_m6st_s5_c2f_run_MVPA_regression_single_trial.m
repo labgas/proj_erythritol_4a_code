@@ -108,7 +108,7 @@
 %    dosourcerecon_perm_mvpa_reg_st: default false; true performs
 %    permutation testing on source recon images; takes an AWFUL LOT OF TIME
 % q_threshold_mvpa_reg_st: default .05; threshold for FDR-corrected display items
-% k_threshold_mvpa_reg_st: default = true;                                      % see saving options above 10; extent threshold for FDR-corrected display items 
+% k_threshold_mvpa_reg_st: default = true; extent threshold for FDR-corrected display items 
 % dosavemvparegstats: default true; Save statistics and weight map objects
 % domultilevel_mvpa_reg_st: default false; fits multilevel mvpa models - WORK IN PROGRESS
 %
@@ -784,7 +784,7 @@ fprintf('\n\n');
         o2 = canlab_results_fmridisplay([], 'compact', 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
 
         t = bs_stats.weight_obj;
-        t = threshold(t, q_threshold_mvpa_reg_st, 'fdr', 'k', k_threshold_mvpa_reg_st); 
+        t = threshold (t, q_threshold_mvpa_reg_st, 'fdr', 'k', k_threshold_mvpa_reg_st); 
         r = region(t);
 
         o2 = addblobs(o2, r);
@@ -807,7 +807,7 @@ fprintf('\n\n');
         o2 = canlab_results_fmridisplay([], 'compact', 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
 
         t = perm_stats_obj;
-        t = threshold(t, q_threshold_mvpa_reg_st, 'fdr', 'k', k_threshold_mvpa_reg_st); 
+        t = threshold (t, q_threshold_mvpa_reg_st, 'fdr', 'k', k_threshold_mvpa_reg_st); 
         r = region(t);
 
         o2 = addblobs(o2, r);
@@ -943,7 +943,7 @@ fprintf('\n\n');
         o2 = canlab_results_fmridisplay([], 'compact', 'outline', 'linewidth', 0.5, 'splitcolor',{[.1 .8 .8] [.1 .1 .8] [.9 .4 0] [1 1 0]}, 'overlay', 'mni_icbm152_t1_tal_nlin_sym_09a_brainonly.img');
 
         t = source_recon_perm_stats_obj;
-        t = threshold(t, q_threshold_mvpa_reg_st, 'fdr', 'k', k_threshold_mvpa_reg_st); 
+        t = threshold (t, q_threshold_mvpa_reg_st, 'fdr', 'k', k_threshold_mvpa_reg_st); 
         r = region(t);
 
         o2 = addblobs(o2, r);
