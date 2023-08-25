@@ -1,4 +1,4 @@
-%% LaBGAScore_prep_juspace_input.m
+%% ery_4a_secondlevel_m6m_s13_prep_juspace_input.m
 %
 %
 % *USAGE*
@@ -47,7 +47,7 @@
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6m_s0_a_set_up_paths_always_run_first;
 
 
 % LOAD DSGN, DAT, AND DATA OBJECTS
