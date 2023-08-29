@@ -1,4 +1,4 @@
-%% prep_4_apply_signatures_and_save
+%% ery_4a_secondlevel_m6_s8_prep_4_apply_signatures
 %
 %
 % USAGE
@@ -47,7 +47,7 @@
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6_s0_a_set_up_paths_always_run_first;
 
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
@@ -59,7 +59,9 @@ options_exist = cellfun(@exist, options_needed);
 
 option_default_values = {'raw','dotproduct','all'};          % defaults if we cannot find info in a2_set_default_options at all 
 
-plugin_get_options_for_analysis_script
+if ~iscell(keyword_sigs)
+    plugin_get_options_for_analysis_script
+end
 
 % SET CUSTOM OPTIONS
 
@@ -111,7 +113,12 @@ end
 % -------------------------------------------------------------------------
 
 fprintf('\n\n');
-printhdr(['APPLYING SIGNATURE(S) ', upper(keyword_sigs), ' ON ', upper(myscaling_sigs), ' CONDITIONS AND CONTRASTS, SIMILARITY METRIC ', similarity_metric_sigs]);
+    if ~iscell(keyword_sigs)
+        printhdr(['APPLYING SIGNATURE(S) ', upper(keyword_sigs), ' ON ', upper(myscaling_sigs), ' CONDITIONS AND CONTRASTS, SIMILARITY METRIC ', similarity_metric_sigs]);
+    else
+        [~,signame] = fileparts(char(keyword_sigs));
+        printhdr(['APPLYING SIGNATURE(S) ', upper(signame), ' ON ', upper(myscaling_sigs), ' CONDITIONS AND CONTRASTS, SIMILARITY METRIC ', similarity_metric_sigs]);
+    end
 fprintf('\n\n');
 
 switch myscaling_sigs
@@ -131,14 +138,19 @@ end
 % CONDITIONS
 % ----------
 
-DAT.SIG_conditions.(myscaling_sigs).(similarity_metric_sigs).(keyword_sigs) = apply_all_signatures(data_object_conds, 'conditionnames', DAT.conditions, 'similarity_metric', similarity_metric_sigs, 'image_set', keyword_sigs);
-    
+    if ~iscell(keyword_sigs)
+        DAT.SIG_conditions.(myscaling_sigs).(similarity_metric_sigs).(keyword_sigs) = apply_all_signatures(data_object_conds, 'conditionnames', DAT.conditions, 'similarity_metric', similarity_metric_sigs, 'image_set', keyword_sigs);
+    else
+        DAT.SIG_conditions.(myscaling_sigs).(similarity_metric_sigs).(signame) = apply_all_signatures(data_object_conds, 'conditionnames', DAT.conditions, 'similarity_metric', similarity_metric_sigs, 'image_set', keyword_sigs);
+    end
 
 % CONTRASTS
 % ---------
-
-DAT.SIG_contrasts.(myscaling_sigs).(similarity_metric_sigs).(keyword_sigs) = apply_all_signatures(data_object_conts, 'conditionnames', DAT.contrastnames, 'similarity_metric', similarity_metric_sigs, 'image_set', keyword_sigs);
-
+    if ~iscell(keyword_sigs)
+        DAT.SIG_contrasts.(myscaling_sigs).(similarity_metric_sigs).(keyword_sigs) = apply_all_signatures(data_object_conts, 'conditionnames', DAT.contrastnames, 'similarity_metric', similarity_metric_sigs, 'image_set', keyword_sigs);
+    else
+        DAT.SIG_contrasts.(myscaling_sigs).(similarity_metric_sigs).(signame) = apply_all_signatures(data_object_conts, 'conditionnames', DAT.contrastnames, 'similarity_metric', similarity_metric_sigs, 'image_set', keyword_sigs);
+    end
 
 %% NPS SUBREGIONS
 % -------------------------------------------------------------------------
@@ -239,6 +251,10 @@ end
 
 %% SAVE RESULTS
 % -------------------------------------------------------------------------
+
+% NOTE: you may get permission errors here, in which case temporarily
+% unannexing image_names_and_setup.mat using the command git annex unannex
+% helps, followed by datalad saving the appended file
 
 fprintf('\n\n');
 printhdr('SAVING SIGNATURE RESPONSES TO DAT');

@@ -1,4 +1,4 @@
-%% d_signature_responses_generic
+%% ery_4a_secondlevel_m6_s9_d_signature_responses
 %
 %
 % USAGE
@@ -35,7 +35,7 @@
 
 % GET MODEL-SPECIFIC PATHS AND OPTIONS
 
-a_set_up_paths_always_run_first;
+ery_4a_secondlevel_m6_s0_a_set_up_paths_always_run_first;
 
 % NOTE: CHANGE THIS TO THE MODEL-SPECIFIC VERSION OF THIS SCRIPT
 % NOTE: THIS WILL ALSO AUTOMATICALLY CALL A2_SET_DEFAULT_OPTIONS
@@ -47,7 +47,7 @@ options_exist = cellfun(@exist, options_needed);
 
 option_default_values = {{}};          % defaults if we cannot find info in a2_set_default_options at all 
 
-plugin_get_options_for_analysis_script
+% plugin_get_options_for_analysis_script
 
 % SET CUSTOM OPTIONS
 
@@ -97,6 +97,12 @@ end
 %--------------------------------------------------------------------------
 
 if isempty(signatures_to_plot)
+    
+    if iscell(keyword_sigs)
+        [~,signame] = fileparts(char(keyword_sigs));
+        clear keyword_sigs;
+        keyword_sigs = signame;
+    end
     
     signatures_to_plot = DAT.SIG_conditions.(myscaling_sigs).(similarity_metric_sigs).(keyword_sigs).signaturenames;
     

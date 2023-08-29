@@ -227,9 +227,20 @@ dosourcerecon_pdm = false;                                      % default false 
 dosavepdmstats = true;                                          % see saving options above
 
 
-%% prep_4_apply_signatures_and_save options 
-% --------------------------------------------------------------------
-use_scaled_images = false; % @lukasvo76: change to true to use z-scored images - see above
+%% PREP_4_APPLY_SIGNATURES_AND_SAVE 
+% -------------------------------------------------------------------------
+myscaling_sigs = 'raw';                                         % default 'raw'                     'raw', or 'scaled', see myscaling_glm above
+similarity_metric_sigs = 'dotproduct';                          % default 'dotproduct'              other options 'cosine_similarity','correlation' - passed into apply_all_signatures
+keyword_sigs = {which('PleasureSignature.nii')};                % default 'all'                     passed into load_image_set, help load_image_set for overview of many options, including custom in which case you need to convert to cell array using {}
+
+
+%% D_SIGNATURE_RESPONSES_GENERIC & D10_SIGNATURE_RIVERPLOTS
+% -------------------------------------------------------------------------
+signatures_to_plot = {};                                        % default empty 
+                                                                    % empty: include all signatures in DAT.SIG_conditions.(myscaling_sigs).(similarity_metric_sigs).(keyword_sigs).signaturenames
+                                                                    % cell array of selected signatures in DAT.SIG_conditions.(myscaling_sigs).(similarity_metric_sigs).(keyword_sigs).signaturenames to plot, separated by commas (or blanks)
+                                                                        % NOTE:
+                                                                        % d10 script will not work with individual signatures, only with groups defined in load_image_set
 
 
 %% z_batch_publish_everything, z_batch_publish_analyses options 
