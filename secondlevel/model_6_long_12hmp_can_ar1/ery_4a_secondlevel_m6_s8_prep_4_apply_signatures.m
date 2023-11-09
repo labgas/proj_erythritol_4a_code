@@ -152,6 +152,7 @@ end
         DAT.SIG_contrasts.(myscaling_sigs).(similarity_metric_sigs).(signame) = apply_all_signatures(data_object_conts, 'conditionnames', DAT.contrastnames, 'similarity_metric', similarity_metric_sigs, 'image_set', keyword_sigs);
     end
 
+    
 %% NPS SUBREGIONS
 % -------------------------------------------------------------------------
 
